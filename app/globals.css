@@ -145,3 +145,18 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
 }
+
+/* Liquid loader wave animation - horizontal movement for vertical wave */
+@keyframes liquid-wave {
+  0%,
+  100% {
+    transform: translateY(-100%);
+  }
+  50% {
+    transform: translateY(100%);
+  }
+}
+
+.liquid-wave {
+  animation: liquid-wave 2s ease-in-out infinite;
+}

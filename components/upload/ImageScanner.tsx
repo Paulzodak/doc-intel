@@ -8,6 +8,8 @@ import { HiOutlineUpload } from "react-icons/hi";
 import { LuScanText } from "react-icons/lu";
 import { FaCamera } from "react-icons/fa6";
 import { X } from "lucide-react";
+import { ErrorFeedback } from "@/components/atoms/form/feedback";
+import { AnimatePresence } from "framer-motion";
 
 interface ImageFile {
   file: File;
@@ -243,11 +245,9 @@ const ImageScanner = ({ value, onChange }: ImageScannerProps) => {
       />
 
       {/* Error message */}
-      {error && (
-        <div className="mb-3 md:mb-4 p-2 text-xs md:text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
-          {error}
-        </div>
-      )}
+      <AnimatePresence mode="wait">
+        {error && <ErrorFeedback key="error" message={error} />}
+      </AnimatePresence>
 
       {/* File size info */}
       {images.length > 0 && (

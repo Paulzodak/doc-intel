@@ -63,7 +63,7 @@ const InputStack: React.FC<CardStackProps> = ({ cards: propCards }) => {
           </p>
         </div>
       ),
-      content: <TextInput value={textValue} onChange={(value) => setTextValue(value)} />,
+      content: <TextInput />,
       color: "bg-purple-100",
     },
   ];

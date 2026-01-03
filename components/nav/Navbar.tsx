@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiMenu, HiOutlineMenuAlt3, HiX } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
+import ResponsiveWrapper from "../atoms/ResponsiveWrapper";
 
 const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -49,7 +50,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="py-4 flex items-center justify-end gap-4 bg-transparent text-black relative">
+    <ResponsiveWrapper className="py-4 flex items-center justify-end gap-4 bg-transparent text-black relative">
       {/* Desktop Menu */}
       <nav className="hidden md:flex border border-gray-200 bg-white shadow-[0_0_5px_2px_rgba(156,163,175,0.1)] rounded-2xl text-md font-medium relative">
         {navItems.map((item) => (
@@ -201,7 +202,7 @@ const Navbar = () => {
           </>
         )}
       </AnimatePresence>
-    </div>
+    </ResponsiveWrapper>
   );
 };
 

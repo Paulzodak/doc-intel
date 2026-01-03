@@ -3,9 +3,11 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { LiquidLoader } from "./LiquidLoader";
+import { SpinnerLoader } from "./SpinnerLoader";
 
 const buttonVariants = cva(
-  "cursor-pointer text-lg inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 ease-out hover:scale-95 active:scale-90 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "relative cursor-pointer text-lg inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-200 ease-out hover:scale-95 active:scale-90 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive overflow-hidden",
   {
     variants: {
       variant: {
@@ -35,24 +37,72 @@ const buttonVariants = cva(
   }
 );
 
+interface ButtonProps extends React.ComponentProps<"button">, VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+  isLoading?: boolean;
+  loadingType?: "spinner" | "liquid" | "both";
+  loadingPercentage?: number;
+  loadingText?: string;
+  showSpinner?: boolean;
+  showLiquid?: boolean;
+}
+
 function Button({
   className,
   variant,
   size,
   asChild = false,
+  isLoading = false,
+  loadingPercentage = 0,
+  loadingText,
+  children,
+  disabled,
+  showLiquid,
+  showSpinner,
   ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
+}: ButtonProps) {
   const Comp = asChild ? Slot : "button";
+  const isDisabled = disabled || isLoading;
 
   return (
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
+      // disabled={isDisabled}
       {...props}
-    />
+    >
+      {/* Liquid Loader */}
+      {isLoading && showLiquid && (
+        <LiquidLoader
+          percentage={loadingPercentage}
+          color={
+            variant === "secondary"
+              ? "bg-[#3767ea]"
+              : variant === "destructive"
+              ? "bg-white"
+              : "bg-white"
+          }
+        />
+      )}
+
+      {/* Content wrapper with relative positioning for z-index */}
+      <span className="relative z-10 flex items-center justify-center gap-2">
+        {/* Spinner Loader */}
+        {isLoading && showSpinner && (
+          <SpinnerLoader
+            size={size === "sm" ? "sm" : size === "lg" ? "lg" : "md"}
+            color={
+              variant === "secondary" || variant === "outline" || variant === "ghost"
+                ? "text-black"
+                : "text-white"
+            }
+          />
+        )}
+
+        {/* Button content */}
+        {isLoading && loadingText ? <span>{loadingText}</span> : children}
+      </span>
+    </Comp>
   );
 }
 

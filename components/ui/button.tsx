@@ -20,11 +20,14 @@ const buttonVariants = cva(
           "border bg-background shadsow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
+        "primary-green":
+          "bg-primary-green hover:bg-green-600 shadow-lg shadow-primary-green/30 text-black font-bold transition-colors",
       },
       size: {
         default: "h-13 px-6 rounded-[20px]  py-2 has-[>svg]:px-3",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-16 rounded-md px-10  rounded-[12px] has-[>svg]:px-4",
+        analyze: "px-8 py-3 rounded-[20px] text-sm",
         icon: "size-9",
         "icon-sm": "size-8",
         "icon-lg": "size-10",
@@ -92,7 +95,10 @@ function Button({
           <SpinnerLoader
             size={size === "sm" ? "sm" : size === "lg" ? "lg" : "md"}
             color={
-              variant === "secondary" || variant === "outline" || variant === "ghost"
+              variant === "secondary" ||
+              variant === "outline" ||
+              variant === "ghost" ||
+              variant === "primary-green"
                 ? "text-black"
                 : "text-white"
             }

@@ -103,54 +103,125 @@ const useCases: UseCase[] = [
   },
 ];
 
+interface WorkflowCard {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+  colorClass: string;
+  hoverBorderClass: string;
+}
+
+const workflowCards: WorkflowCard[] = [
+  {
+    id: 1,
+    title: "Contract Review",
+    description:
+      "Identify hidden liabilities, unusual clauses, and unfavorable terms automatically using our specialized neural engine.",
+    icon: "contract",
+    colorClass: "primary",
+    hoverBorderClass: "primary",
+  },
+  {
+    id: 2,
+    title: "Compliance Checking",
+    description:
+      "Automatically map internal documents against GDPR, CCPA, and global financial standards in real-time.",
+    icon: "rule",
+    colorClass: "accent-blue",
+    hoverBorderClass: "accent-blue",
+  },
+  {
+    id: 3,
+    title: "Legal Due Diligence",
+    description:
+      "Rapidly audit large volumes of documents during M&A or litigation phases with high-precision summaries.",
+    icon: "search_check",
+    colorClass: "accent-purple",
+    hoverBorderClass: "accent-purple",
+  },
+  {
+    id: 4,
+    title: "Policy Analysis",
+    description:
+      "Ensure corporate governance alignment by identifying discrepancies between operational policies and legal mandates.",
+    icon: "policy",
+    colorClass: "accent-blue",
+    hoverBorderClass: "accent-blue",
+  },
+  {
+    id: 5,
+    title: "Agreement Review",
+    description:
+      "Compare multiple versions of an agreement clause-by-clause to visualize changes in risk profile instantly.",
+    icon: "handshake",
+    colorClass: "primary",
+    hoverBorderClass: "primary",
+  },
+  {
+    id: 6,
+    title: "Regulatory Compliance",
+    description:
+      "Stay ahead of shifting laws with AI that automatically updates your risk assessments based on the latest regulations.",
+    icon: "update",
+    colorClass: "accent-purple",
+    hoverBorderClass: "accent-purple",
+  },
+];
+
 const UseCasesSection = () => {
   return (
-    <section className="py-2 md:py-8 px-4 lg:px-0 max-w-[1440px] mx-auto font-nunito mt-16 md:mt-32">
-      <div className="text-center mb-8 md:mb-16">
-        <h1 className="bg-gradient-to-r from-black to-blue-800 bg-clip-text text-transparent text-3xl sm:text-4xl md:text-5xl font-[800] text-center">
-          Use Cases
-        </h1>
-        {/* <h2 className="text-4xl font-bold text-white mb-4">Use Cases</h2> */}
-        <p className="text-black text-base md:text-lg max-w-2xl mx-auto mt-4 font-medium text-neutral-500 px-4 md:px-0">
-          Discover how Legal Document Analyzer can transform your document review process
-        </p>
-      </div>
+    <section className="py-2  px-4 lg:px-0 max-w-[1440px] mx-auto font-nunito mts-16 mds:mt-20">
+      {/* <!-- Use Cases Section --> */}
+      <section className="py-24 px-6 md:px-20 lg:px-40 bg-background-light dark:bg-background-dark">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="mb-16">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-4">
+              Intelligence for every workflow
+            </h2>
+            <div className="h-1.5 w-24 bg-primary rounded-full"></div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {workflowCards.map((card) => {
+              const colorClasses = {
+                primary: {
+                  bg: "bg-primary-green/10",
+                  text: "text-primary-green",
+                  hover: "hover:border-primary-green/30",
+                },
+                "accent-blue": {
+                  bg: "bg-blue-500/10",
+                  text: "text-blue-500",
+                  hover: "hover:border-blue-500/30",
+                },
+                "accent-purple": {
+                  bg: "bg-purple-500/10",
+                  text: "text-purple-500",
+                  hover: "hover:border-purple-500/30",
+                },
+              };
+              const colors = colorClasses[card.colorClass as keyof typeof colorClasses];
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
-        {useCases.map((useCase, index) => (
-          <motion.div
-            key={useCase.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
-            className={` ${
-              index % 2 === 0 ? "bg-[#192435]" : "bg-[#44E39E] text-[#192435]"
-            }  rounded-xl p-4 md:p-6  transition-colors group `}
-          >
-            <div>
-              <div className="flex items-center gap-2">
-                <FaTag className="text-sm md:text-base" />
-                <h2 className="font-semibold text-base md:text-lg uppercase">{useCase.title}</h2>
-              </div>
-              <div
-                className={`${
-                  index % 2 === 0
-                    ? "bg-[#192435] brightness-140"
-                    : "bg-[#44e39e22]  brightness-200 "
-                } p-3 md:p-4 rounded-2xl mt-6 md:mt-12 font-medium text-sm md:text-base`}
-              >
-                {useCase.description}
-              </div>
-            </div>
-            {/* <div className="text-purple-400 mb-4 group-hover:text-purple-300 transition-colors">
-              {useCase.icon}
-            </div>
-            <h3 className="text-xl font-bold text-white mb-3">{useCase.title}</h3>
-            <p className="text-gray-400 leading-relaxed">{useCase.description}</p> */}
-          </motion.div>
-        ))}
-      </div>
+              return (
+                <div
+                  key={card.id}
+                  className={` bento-card group p-8 rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl ${colors.hover} transition-all`}
+                >
+                  <div
+                    className={`  size-12 rounded-full ${colors.bg} ${colors.text}    flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
+                  >
+                    <span className="material-symbols-outlined">{card.icon}</span>
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">{card.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                    {card.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
     </section>
   );
 };

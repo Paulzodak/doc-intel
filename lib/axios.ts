@@ -1,7 +1,10 @@
 import axios from "axios";
+import { isProduction } from "./utils";
 
 // Configure axios instance with base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+const API_BASE_URL = isProduction
+  ? "https://doc-llm-server-production.up.railway.app/"
+  : "http://localhost:8000";
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,

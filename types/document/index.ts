@@ -32,22 +32,20 @@ export interface ProcessDocumentResponse {
 }
 
 export interface JobResponse {
-  success: boolean;
-  message?: string;
-  data?: {
-    status: "processing" | "completed" | "failed";
-    progress?: number;
-  };
-  inputText?: string;
-  result?: {
-    grade?: {
-      keyPoints?: unknown[];
-      risks?: unknown[];
-      advantages?: unknown[];
-      highlights?: unknown[];
-      risk?: number;
-      compliance?: number;
-      overall?: number;
+  jobId: string;
+  message: string;
+  percentage: number;
+  inputText: string;
+  result: {
+    analyzeChunkResults: {
+      highlights: Highlight[];
+    };
+    legalAnalysis: {
+      confidence: number;
+      isLegalDocument: boolean;
     };
   };
+  status: "boolean";
+  statusText: string;
+  timestamp: number;
 }

@@ -5,6 +5,7 @@ import DocumentHeader from "@/components/doc/DocumentHeader";
 import InputStack from "@/components/InputStack";
 import { useDocumentNames } from "@/hooks/useDocumentNames";
 import { motion } from "framer-motion";
+import DocumentInput from "@/components/documentInput/DocumentInput";
 
 export default function NewDocumentPage() {
   const { generateUniqueName } = useDocumentNames();
@@ -14,9 +15,6 @@ export default function NewDocumentPage() {
 
   return (
     <>
-      {/* Header */}
-      <DocumentHeader title="Create New Document Analysis" />
-
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -43,9 +41,10 @@ export default function NewDocumentPage() {
             </div>
 
             {/* Input Methods Section */}
-            <div className="bg-whikte/80 backdrop-blur-sm rounded-xl px-6 bofrder bordejr-gray-200/50 shadjow-sm">
+            <div className="bg-whikte/80 backdrop-blur-sm rousnded-xl px-6 borsder bordejr-gray-200/50 shadjow-sm flex justify-center items-center">
               {/* <h2 className="text-xl font-bold text-gray-900 mb-6">Upload Document</h2> */}
-              <InputStack />
+              {/* <InputStack /> */}
+              <DocumentInput />
             </div>
 
             {/* Instructions */}

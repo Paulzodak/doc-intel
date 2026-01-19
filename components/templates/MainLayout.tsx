@@ -1,6 +1,6 @@
 import React from "react";
 import ResponsiveWrapper from "../atoms/ResponsiveWrapper";
-import Navbar from "../nav/Navbar";
+import Navbar from "../nav/OldNavbar";
 import DecorativeDots from "../DecorativeDots";
 
 interface IProps {
@@ -11,7 +11,13 @@ const MainLayout = ({ children, showNavbar = true }: IProps) => {
   return (
     <div className="relative overflow-hidden">
       <DecorativeDots count={100} />
-      <div className="relative font-nunito mx-auto">
+      <div
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(0, 0, 0, 0.2) 1px, transparent 1px)",
+          backgroundSize: "30px 30px",
+        }}
+        className="relative font-nunito mx-auto"
+      >
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           // style={{
@@ -23,7 +29,7 @@ const MainLayout = ({ children, showNavbar = true }: IProps) => {
         <div className="relative z-10 ">
           {/* <ResponsiveWrapper> */}
           {showNavbar && <Navbar />}
-          <div className="py-20 md:py-0">{children}</div>
+          <div className="py-2s0 md:py-0">{children}</div>
           {/* </ResponsiveWrapper> */}
         </div>
       </div>

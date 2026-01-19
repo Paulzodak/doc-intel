@@ -1,13 +1,18 @@
 "use client";
 
-import { use, useState, useEffect, useRef, useCallback } from "react";
-import DocumentHeader from "@/components/doc/DocumentHeader";
+import { use, useEffect, useRef, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AnalysisPanel from "@/components/doc/AnalysisPanel";
 import DocumentContent from "@/components/doc/DocumentContent";
 import HighlightDetailsModal from "@/components/doc/HighlightDetailsModal";
 import { testDocumentText, testAnalysis } from "@/data/testAnalysis";
 import { useJob } from "@/data/document";
 import { useDocumentNames } from "@/hooks/useDocumentNames";
+import {
+  setSelectedHighlight,
+  clearSelectedHighlight,
+  selectSelectedHighlight,
+} from "@/redux/slices/document/documentContent.slice";
 import type { Highlight } from "@/types/analysis";
 
 interface DocPageProps {
@@ -16,7 +21,8 @@ interface DocPageProps {
 
 export default function DocPage({ params }: DocPageProps) {
   const { docId } = use(params);
-  const [selectedHighlight, setSelectedHighlight] = useState<Highlight | null>(null);
+  const dispatch = useDispatch();
+  const selectedHighlight = useSelector(selectSelectedHighlight);
   const { setDocumentName, documents: allDocuments } = useDocumentNames();
   const hasInitializedName = useRef<string | null>(null);
 
@@ -27,7 +33,7 @@ export default function DocPage({ params }: DocPageProps) {
     error,
   } = useJob(docId, {
     refetchInterval: (query) => {
-      const status = query.state.data?.data?.status;
+      const status = query.state.data?.statusText;
       return status === "processing" ? 2000 : false;
     },
   });
@@ -55,9 +61,12 @@ export default function DocPage({ params }: DocPageProps) {
     hasInitializedName.current = docId;
   }, [docId, allDocuments, setDocumentName]);
 
-  const handleHighlightClick = useCallback((highlight: Highlight) => {
-    setSelectedHighlight(highlight);
-  }, []);
+  const handleHighlightClick = useCallback(
+    (highlight: Highlight) => {
+      dispatch(setSelectedHighlight(highlight));
+    },
+    [dispatch]
+  );
 
   // Show loading state
   if (isLoading) {
@@ -86,8 +95,8 @@ export default function DocPage({ params }: DocPageProps) {
   }
 
   // Show processing state
-  if (jobData?.data?.status === "processing") {
-    const progress = jobData.data.progress || 0;
+  if (jobData?.statusText === "processing") {
+    const progress = jobData.percentage || 0;
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
         <div className="text-center max-w-md mx-4">
@@ -106,14 +115,16 @@ export default function DocPage({ params }: DocPageProps) {
     );
   }
 
+  console.log(jobData);
+
   // Process document data
   const documentText = jobData?.inputText || testDocumentText;
 
   const highlights: Highlight[] = [];
   // Handle result as array or object
   if (jobData?.result) {
-    if (Array.isArray(jobData.result)) {
-      jobData.result.forEach((item: { highlights?: Highlight[] }) => {
+    if (Array.isArray(jobData.result?.analyzeChunkResults)) {
+      jobData.result?.analyzeChunkResults?.forEach((item: { highlights?: Highlight[] }) => {
         if (item.highlights && Array.isArray(item.highlights)) {
           highlights.push(...item.highlights);
         }
@@ -171,7 +182,7 @@ export default function DocPage({ params }: DocPageProps) {
   return (
     <>
       {/* Header */}
-      <DocumentHeader title="Document Analysis Dashboard" />
+      {/* <DocumentHeader title="Document Analysis Dashboard" /> */}
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
@@ -180,11 +191,7 @@ export default function DocPage({ params }: DocPageProps) {
             {/* Analysis Panel - First on mobile, right column on desktop */}
             <div className="order-1 lg:order-2 lg:col-span-1">
               <div className="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)]">
-                <AnalysisPanel
-                  analysis={analysis}
-                  selectedHighlight={selectedHighlight}
-                  onHighlightSelect={setSelectedHighlight}
-                />
+                <AnalysisPanel analysis={analysis} />
               </div>
             </div>
 
@@ -204,7 +211,7 @@ export default function DocPage({ params }: DocPageProps) {
       <HighlightDetailsModal
         highlight={selectedHighlight}
         isOpen={!!selectedHighlight}
-        onClose={() => setSelectedHighlight(null)}
+        onClose={() => dispatch(clearSelectedHighlight())}
       />
     </>
   );

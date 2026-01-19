@@ -8,6 +8,7 @@
   --color-foreground: var(--foreground);
   --color-light-blue: #f0f7ff;
   --color-primary: #1e2939;
+  --color-primary-green: #47e18c;
   --color-secondary: #3767ea23;
   --font-sans: var(--font-geist-sans);
   --font-nunito: "Nunito Sans", sans-serif;
@@ -67,6 +68,7 @@ body {
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: #1e2939;
+  --primary-green: #47e18c;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -159,4 +161,33 @@ body {
 
 .liquid-wave {
   animation: liquid-wave 2s ease-in-out infinite;
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f4f2 40%, #1e293954 100%);
+}
+.text-gradient {
+  background: linear-gradient(to right, #121714, #1e2939, #237247);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.grid-overlay {
+  background-image: radial-gradient(#47e18c22 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.bento-card {
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.bento-card:hover {
+  transform: translateY(-4px);
+}
+
+@keyframes rollProgress {
+  0% {
+    stroke-dashoffset: 122;
+  }
+  100% {
+    stroke-dashoffset: -412;
+  }
 }

@@ -17,6 +17,7 @@ import {
 import { MdOutlineHistory } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import Dialog from "@/components/atoms/Dialog";
+import { Button } from "../ui/button";
 
 interface Document {
   id: string;
@@ -104,9 +105,9 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
     }, [openDropdownId]);
 
     const sidebarContent = (
-      <div className="h-full flex flex-col">
+      <div className="h-full flex flex-col bg-[#091527]">
         {/* Current Document Section */}
-        <div className="p-4 border-b border-gray-700">
+        {/* <div className="p-4 border-b border-gray-700">
           <div className="flex items-center gap-2 mb-3">
             <FiFileText className="text-blue-400" size={20} />
             <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
@@ -118,16 +119,16 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
               {currentDocumentName}
             </p>
           </div>
-        </div>
+        </div> */}
 
         {/* Recent Documents Section */}
         <div className="flex-1 overflow-y-auto p-4">
-          <div className="flex items-center gap-2 mb-3">
+          {/* <div className="flex items-center gap-2 mb-3">
             <MdOutlineHistory className="text-purple-400" size={20} />
             <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
               Recent Documents
             </h3>
-          </div>
+          </div> */}
           {recentDocuments.length > 0 ? (
             <div className="space-y-2">
               {recentDocuments.map((doc) => {
@@ -136,10 +137,10 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
                 return (
                   <div
                     key={doc.id}
-                    className={`relative rounded-lg border transition-all duration-200 group ${
+                    className={`relative rounded-xl border transition-all duration-200 group ${
                       isActive
-                        ? "bg-blue-600/20 border-blue-500/50 hover:bg-blue-600/30"
-                        : "bg-gray-800/30 border-gray-700/30 hover:bg-gray-800/60 hover:border-gray-600/50"
+                        ? "bg-primary-green/20 border-primary-green/50 hover:bg-primary-green/30"
+                        : "bg-gray-800/40 border-gray-700/40 hover:bg-gray-800/60 hover:border-gray-600/50"
                     }`}
                   >
                     <button
@@ -150,13 +151,13 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             {isActive && (
-                              <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0" />
+                              <div className="w-2 h-2 bg-primary-green rounded-full flex-shrink-0" />
                             )}
                             <p
                               className={`text-sm font-medium truncate transition-colors ${
                                 isActive
-                                  ? "text-blue-300 group-hover:text-blue-200"
-                                  : "text-white group-hover:text-blue-400"
+                                  ? "text-primary-green group-hover:text-primary-green"
+                                  : "text-white group-hover:text-primary-green"
                               }`}
                             >
                               {doc.name}
@@ -164,12 +165,12 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
                           </div>
                           <div className="flex items-center gap-1 mt-1">
                             <FiClock
-                              className={isActive ? "text-blue-400/70" : "text-gray-500"}
+                              className={isActive ? "text-primary-green/70" : "text-gray-500"}
                               size={12}
                             />
                             <span
                               className={
-                                isActive ? "text-blue-400/70 text-xs" : "text-gray-500 text-xs"
+                                isActive ? "text-primary-green/70 text-xs" : "text-gray-500 text-xs"
                               }
                             >
                               {doc.date}
@@ -180,8 +181,8 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
                           <FiChevronRight
                             className={`flex-shrink-0 mt-0.5 transition-colors ${
                               isActive
-                                ? "text-blue-400 group-hover:text-blue-300"
-                                : "text-gray-500 group-hover:text-blue-400"
+                                ? "text-primary-green group-hover:primary-green"
+                                : "text-gray-500 group-hover:text-primary-green"
                             }`}
                             size={16}
                           />
@@ -192,7 +193,7 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
                             }`}
                           >
                             <FiMoreVertical
-                              className={isActive ? "text-blue-400" : "text-gray-400"}
+                              className={isActive ? "text-primary-green" : "text-gray-400"}
                               size={16}
                             />
                           </button>
@@ -234,17 +235,20 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
         {/* Utils Section */}
         <div className="p-4 border-t border-gray-700">
           {showCreateNew && (
-            <button
+            <Button
               onClick={handleCreateNew}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg p-3 mb-3 transition-all duration-200 shadow-lg group"
+              variant="primary-green"
+              className="w-full"
+              size="default"
+              // className="w-full flex items-center justify-center gap-2 bg-primary-green sbg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg p-3 mb-3 transition-all duration-200 shadow-lg group"
             >
-              <FiPlus className="text-white" size={18} />
-              <span className="text-white text-sm font-semibold group-hover:scale-105 transition-transform">
+              <FiPlus className="text-black" size={18} />
+              <span className="text-black text-sm font-semibold group-hover:scale-105 transition-transform">
                 Create New
               </span>
-            </button>
+            </Button>
           )}
-          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-3">
+          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-3 mt-4">
             Actions
           </h3>
           <div className="space-y-2">
@@ -279,11 +283,11 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
         {/* <AnimatePresence> */}
         {isMobileOpen && (
           <>
-            <div
+            {/* <div
               onClick={toggleMobileSidebar}
               className="lg:hidden fixed inset-0 bg-black/50 z-40"
-            />
-            <div className="lg:hidden fixed left-0 top-0 h-full w-72 bg-[#1e2939] z-40 shadow-2xl">
+            /> */}
+            <div className="lg:hidden fixed left-0 top-0 h-full w-72 bg-[#1e2939] z-40 shasdow-2xl">
               {sidebarContent}
             </div>
           </>
@@ -292,13 +296,13 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
 
         {/* Desktop Sidebar */}
         <aside className="hidden lg:block relative h-screen bg-[#1e2939] border-r border-gray-700 overflow-hidden">
-          {isOpen && <div className="w-72 h-full">{sidebarContent}</div>}
-          <button
+          {isOpen && <div className="w-72 h-full ">{sidebarContent}</div>}
+          {/* <button
             onClick={toggleSidebar}
             className="absolute top-4 -right-3 bg-[#1e2939] text-white p-1.5 rounded-full shadow-lg border border-gray-700 hover:bg-gray-800 transition-colors z-10"
           >
             {isOpen ? <HiX size={16} /> : <HiMenu size={16} />}
-          </button>
+          </button> */}
         </aside>
 
         {/* Delete Confirmation Dialog */}

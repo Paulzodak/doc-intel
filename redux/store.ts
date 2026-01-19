@@ -6,9 +6,13 @@ import { combineReducers } from "redux";
 // slice imports
 import documentInputSlice from "./slices/document/input.slice";
 import type { IDocumentInputState } from "./slices/document/input.slice";
+import analysisPanelSlice from "./slices/dashboard/analysispanel.slice";
+import documentContentSlice from "./slices/document/documentContent.slice";
 
 const rootReducer = combineReducers({
   documentInput: documentInputSlice,
+  analysisPanel: analysisPanelSlice,
+  documentContent: documentContentSlice,
 
   // add more reducers here
 });
@@ -40,6 +44,7 @@ const persistConfig: PersistConfig<ReturnType<typeof rootReducer>> = {
   storage,
   whitelist: [
     "documentInput", // ✅ Document input
+    "analysisPanel", // ✅ Analysis panel
   ],
   transforms: [documentInputTransform],
 };

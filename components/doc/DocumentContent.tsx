@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
+import { useDispatch } from "react-redux";
 import type { Highlight } from "@/types/analysis";
+import { setSelectedHighlight } from "@/redux/slices/document/documentContent.slice";
+import { setActiveTab } from "@/redux/slices/dashboard/analysispanel.slice";
 
 interface DocumentContentProps {
   documentText: string;
@@ -15,7 +18,7 @@ const DocumentContent: React.FC<DocumentContentProps> = ({
   highlights,
   onHighlightClick,
 }) => {
-  const [selectedHighlight, setSelectedHighlight] = useState<Highlight | null>(null);
+  const dispatch = useDispatch();
 
   // Sort highlights by start position
   const sortedHighlights = useMemo(() => {
@@ -23,16 +26,23 @@ const DocumentContent: React.FC<DocumentContentProps> = ({
   }, [highlights]);
 
   const handleHighlightClick = (highlight: Highlight) => {
-    setSelectedHighlight(highlight);
+    dispatch(setSelectedHighlight(highlight));
+    dispatch(setActiveTab("details"));
     onHighlightClick?.(highlight);
+  };
+
+  const handleTextSelection = () => {
+    const selection = window.getSelection();
+    if (selection && selection.toString().trim().length > 0) {
+      const selectedText = selection.toString().trim();
+      console.log("Selected text:", selectedText);
+    }
   };
 
   // Render text with highlights
   const renderHighlightedText = () => {
     if (sortedHighlights.length === 0) {
-      return (
-        <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">{documentText}</p>
-      );
+      return <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">{documentText}</p>;
     }
 
     const parts: React.ReactNode[] = [];
@@ -99,7 +109,10 @@ const DocumentContent: React.FC<DocumentContentProps> = ({
           <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded">Compliance</span>
         </div>
       </div>
-      <div className="prose max-w-none border-t border-gray-200 pt-6">
+      <div
+        className="prose max-w-none border-t border-gray-200 pt-6 select-text"
+        onMouseUp={handleTextSelection}
+      >
         {renderHighlightedText()}
       </div>
     </motion.div>
@@ -107,4 +120,3 @@ const DocumentContent: React.FC<DocumentContentProps> = ({
 };
 
 export default DocumentContent;
-

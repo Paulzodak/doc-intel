@@ -28,7 +28,7 @@ export default function Home() {
     //         <Navbar />
     //       </ResponsiveWrapper>
 
-    <MainLayout showNavbar={false}>
+    <MainLayout>
       <div
       // className="min-h-screen relative bsg-[linear-gradient(135deg,white_60%,#1e2939_60%)] md:bsg-[linear-gradient(135deg,white_50%,#1e2939_50%)]"
       // style={{
@@ -38,12 +38,12 @@ export default function Home() {
         {/* <DocumentInput /> */}
         <div className="psy-20 md:py-0 ">
           <div className="bg-background-light dark:bg-background-dark font-display text-[#121714] dark:text-white">
-            <Navbar />
+            {/* <Navbar /> */}
             {/* <!-- Top Navigation --> */}
             {/* <!-- Hero Section --> */}
             <section className="relative herso-gradient dark:hero-gradient overflow-hidden">
               <div className="absolute inset-0 grid-overlay opacity-50"></div>
-              <div className="relative masx-w-[1200px] mx-auto px-6 md:px-20 lsg:px-40 py-20 lg:py-32 flex flex-col items-center text-center">
+              <div className="relative masx-w-[1200px] md:mx-auto mx-6 md:px-20 lsg:px-40 py-20 lg:py-32 flex flex-col items-center text-center">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-8 bg-gradient-to-r from-blue-500/5 via-purple-500/5 bordser via-pink-500/5 via-orange-500/5 to-primary-green/5 backdrop-blur-[2px]">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -54,7 +54,7 @@ export default function Home() {
                 <h1 className="text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight mb-8 max-w-4xl text-gradient dark:text-white">
                   Analyze legal documents instantly with AI-powered insights
                 </h1>
-                <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mb-12 leading-relaxed">
+                <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mb-12 leading-relaxed font-brockmann font-light">
                   Scale your legal expertise with precision-engineered AI that identifies risks,
                   ensures compliance, and streamlines contract review in seconds.
                 </p>

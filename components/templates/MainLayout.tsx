@@ -1,6 +1,6 @@
 import React from "react";
 import ResponsiveWrapper from "../atoms/ResponsiveWrapper";
-import Navbar from "../nav/OldNavbar";
+import Navbar from "../nav/Navbar";
 import DecorativeDots from "../DecorativeDots";
 
 interface IProps {
@@ -29,7 +29,7 @@ const MainLayout = ({ children, showNavbar = true }: IProps) => {
         <div className="relative z-10 ">
           {/* <ResponsiveWrapper> */}
           {showNavbar && <Navbar />}
-          <div className="py-2s0 md:py-0">{children}</div>
+          <div className="py-20 md:py-0">{children}</div>
           {/* </ResponsiveWrapper> */}
         </div>
       </div>

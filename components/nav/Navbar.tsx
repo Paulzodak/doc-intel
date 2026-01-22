@@ -23,31 +23,6 @@ interface NavItem {
 const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // const [isVisible, setIsVisible] = useState(true);
-  // const [lastScrollY, setLastScrollY] = useState(0);
-
-  // // Scroll detection for auto-hide/show
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     const currentScrollY = window.scrollY;
-
-  //     // Always show at the top
-  //     if (currentScrollY < 10) {
-  //       setIsVisible(true);
-  //     } else if (currentScrollY > lastScrollY) {
-  //       // Scrolling down - hide navbar
-  //       setIsVisible(false);
-  //     } else if (currentScrollY < lastScrollY) {
-  //       // Scrolling up - show navbar
-  //       setIsVisible(true);
-  //     }
-
-  //     setLastScrollY(currentScrollY);
-  //   };
-
-  //   window.addEventListener("scroll", handleScroll, { passive: true });
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, [lastScrollY]);
 
   const isVisible = useShowNav();
   console.log(isVisible);
@@ -227,7 +202,7 @@ const Navbar = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed top-0 z-50 w-full px-4 md:px-6 pt-4 bg-transparent"
+            className="fixed top-0 z-50 w-full px-4 md:px-6 pt-4 bg-transparent text-[#121714]"
           >
             <div className="max-w-[1400px] mx-auto !p-0 !rounded-full bg-white/80">
               <div className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 bordser via-pink-500/10 via-orange-500/10 to-primary-green/10 backdrop-blur-[2px] border border-zinc-200 shasdow-sm px-6 md:px-20 py-4 flex items-center justify-between rounded-full">
@@ -364,7 +339,7 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 w-screen h-screen bg-black/20 z-40 md:hidden"
+              className="fixed inset-0 w-screen h-screen bg-black/20 z-40 md:hidden "
               onClick={toggleMobileMenu}
             />
             {/* Menu Popup */}
@@ -373,7 +348,7 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="fixed top-24 right-4 left-4 md:hidden bg-white dark:bg-[#192433] border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg z-50 max-h-[80vh] overflow-y-auto"
+              className="fixed top-24 right-4 left-4 md:hidden bg-white dark:bg-[#192433] border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg z-50 max-h-[80vh] overflow-y-auto text-[#121714]"
             >
               <div className="p-4">
                 {navItems.map((item) => (
@@ -382,7 +357,7 @@ const Navbar = () => {
                       onClick={() => handleMobileItemClick(item.label)}
                       className="w-full flex items-center justify-between py-3 px-4 hover:bg-gray-50 dark:hover:bg-white/10 rounded-lg transition-colors"
                     >
-                      <span className="font-medium">{item.label}</span>
+                      <span className="font-medium ">{item.label}</span>
                       <motion.svg
                         width="12"
                         height="12"

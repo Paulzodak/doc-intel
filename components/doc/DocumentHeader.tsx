@@ -19,7 +19,7 @@ const DocumentHeader: React.FC<DocumentHeaderProps> = ({
     <motion.header
       // initial={{ y: -20, opacity: 0 }}
       // animate={{ y: 0, opacity: 1 }}
-      className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-30"
+      className="bg-whsite/80 backdrosp-blur-sm border-b border-gray-200/50 sticky top-0 z-30"
     >
       <div className="px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

@@ -105,9 +105,17 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
     }, [openDropdownId]);
 
     const sidebarContent = (
-      <div className="h-full flex flex-col bg-[#091527]">
-        {/* Current Document Section */}
-        {/* <div className="p-4 border-b border-gray-700">
+      <div className="h-full bg-gradient-to-br  from-[#11161f] via-90% via-primary-green/50 to-[#11161f]">
+        <div
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
+            backgroundSize: "30px 30px",
+          }}
+          className="h-full flex flex-col bg-[#11161fcd] backdrop-blur-3xl "
+        >
+          {/* Current Document Section */}
+          {/* <div className="p-4 border-b border-gray-700">
           <div className="flex items-center gap-2 mb-3">
             <FiFileText className="text-blue-400" size={20} />
             <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
@@ -121,149 +129,152 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
           </div>
         </div> */}
 
-        {/* Recent Documents Section */}
-        <div className="flex-1 overflow-y-auto p-4">
-          {/* <div className="flex items-center gap-2 mb-3">
+          {/* Recent Documents Section */}
+          <div className="flex-1 overflow-y-auto p-4">
+            {/* <div className="flex items-center gap-2 mb-3">
             <MdOutlineHistory className="text-purple-400" size={20} />
             <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide">
               Recent Documents
             </h3>
           </div> */}
-          {recentDocuments.length > 0 ? (
-            <div className="space-y-2">
-              {recentDocuments.map((doc) => {
-                const isActive = doc.id === currentDocumentId;
-                const isDropdownOpen = openDropdownId === doc.id;
-                return (
-                  <div
-                    key={doc.id}
-                    className={`relative rounded-xl border transition-all duration-200 group ${
-                      isActive
-                        ? "bg-primary-green/20 border-primary-green/50 hover:bg-primary-green/30"
-                        : "bg-gray-800/40 border-gray-700/40 hover:bg-gray-800/60 hover:border-gray-600/50"
-                    }`}
-                  >
-                    <button
-                      onClick={() => handleDocumentClick(doc.id)}
-                      className="w-full text-left p-3"
+            {recentDocuments.length > 0 ? (
+              <div className="space-y-2">
+                {recentDocuments.map((doc) => {
+                  const isActive = doc.id === currentDocumentId;
+                  const isDropdownOpen = openDropdownId === doc.id;
+                  return (
+                    <div
+                      key={doc.id}
+                      className={`relative rounded-xl border transition-all duration-200 group ${
+                        isActive
+                          ? "bg-primary-green/20 border-primary-green/50 hover:bg-primary-green/30"
+                          : "bg-gray-800/40 border-gray-700/40 hover:bg-gray-800/60 hover:border-gray-600/50"
+                      }`}
                     >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            {isActive && (
-                              <div className="w-2 h-2 bg-primary-green rounded-full flex-shrink-0" />
-                            )}
-                            <p
-                              className={`text-sm font-medium truncate transition-colors ${
+                      <button
+                        onClick={() => handleDocumentClick(doc.id)}
+                        className="w-full text-left p-3"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              {isActive && (
+                                <div className="w-2 h-2 bg-primary-green rounded-full flex-shrink-0" />
+                              )}
+                              <p
+                                className={`text-sm font-medium truncate transition-colors ${
+                                  isActive
+                                    ? "text-primary-green group-hover:text-primary-green"
+                                    : "text-white group-hover:text-primary-green"
+                                }`}
+                              >
+                                {doc.name}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-1 mt-1">
+                              <FiClock
+                                className={isActive ? "text-primary-green/70" : "text-gray-500"}
+                                size={12}
+                              />
+                              <span
+                                className={
+                                  isActive
+                                    ? "text-primary-green/70 text-xs"
+                                    : "text-gray-500 text-xs"
+                                }
+                              >
+                                {doc.date}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <FiChevronRight
+                              className={`flex-shrink-0 mt-0.5 transition-colors ${
                                 isActive
-                                  ? "text-primary-green group-hover:text-primary-green"
-                                  : "text-white group-hover:text-primary-green"
+                                  ? "text-primary-green group-hover:primary-green"
+                                  : "text-gray-500 group-hover:text-primary-green"
                               }`}
-                            >
-                              {doc.name}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-1 mt-1">
-                            <FiClock
-                              className={isActive ? "text-primary-green/70" : "text-gray-500"}
-                              size={12}
-                            />
-                            <span
-                              className={
-                                isActive ? "text-primary-green/70 text-xs" : "text-gray-500 text-xs"
-                              }
-                            >
-                              {doc.date}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <FiChevronRight
-                            className={`flex-shrink-0 mt-0.5 transition-colors ${
-                              isActive
-                                ? "text-primary-green group-hover:primary-green"
-                                : "text-gray-500 group-hover:text-primary-green"
-                            }`}
-                            size={16}
-                          />
-                          <button
-                            onClick={(e) => toggleDropdown(doc.id, e)}
-                            className={`p-1 rounded hover:bg-gray-700/50 transition-colors ${
-                              isDropdownOpen ? "bg-gray-700/50" : ""
-                            }`}
-                          >
-                            <FiMoreVertical
-                              className={isActive ? "text-primary-green" : "text-gray-400"}
                               size={16}
                             />
+                            <button
+                              onClick={(e) => toggleDropdown(doc.id, e)}
+                              className={`p-1 rounded hover:bg-gray-700/50 transition-colors ${
+                                isDropdownOpen ? "bg-gray-700/50" : ""
+                              }`}
+                            >
+                              <FiMoreVertical
+                                className={isActive ? "text-primary-green" : "text-gray-400"}
+                                size={16}
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </button>
+
+                      {/* Dropdown Menu */}
+                      {isDropdownOpen && (
+                        <div className="absolute right-0 top-full mt-1 z-50 bg-gray-800 border border-gray-700 rounded-lg shadow-xl overflow-hidden min-w-[140px]">
+                          <button
+                            onClick={(e) => handleSelectClick(doc.id, e)}
+                            className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700/50 transition-colors flex items-center gap-2"
+                          >
+                            <FiCheck size={14} />
+                            <span>Select</span>
+                          </button>
+                          <button
+                            onClick={(e) => handleDeleteClick(doc.id, e)}
+                            className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 transition-colors flex items-center gap-2"
+                          >
+                            <FiTrash2 size={14} />
+                            <span>Delete</span>
                           </button>
                         </div>
-                      </div>
-                    </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <FiFileText className="text-gray-600 mx-auto mb-2" size={32} />
+                <p className="text-gray-500 text-sm">No recent documents</p>
+              </div>
+            )}
+          </div>
 
-                    {/* Dropdown Menu */}
-                    {isDropdownOpen && (
-                      <div className="absolute right-0 top-full mt-1 z-50 bg-gray-800 border border-gray-700 rounded-lg shadow-xl overflow-hidden min-w-[140px]">
-                        <button
-                          onClick={(e) => handleSelectClick(doc.id, e)}
-                          className="w-full text-left px-4 py-2 text-sm text-white hover:bg-gray-700/50 transition-colors flex items-center gap-2"
-                        >
-                          <FiCheck size={14} />
-                          <span>Select</span>
-                        </button>
-                        <button
-                          onClick={(e) => handleDeleteClick(doc.id, e)}
-                          className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 transition-colors flex items-center gap-2"
-                        >
-                          <FiTrash2 size={14} />
-                          <span>Delete</span>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+          {/* Utils Section */}
+          <div className="p-4 border-t border-gray-700">
+            {showCreateNew && (
+              <Button
+                onClick={handleCreateNew}
+                variant="primary-green"
+                className="w-full"
+                size="default"
+                // className="w-full flex items-center justify-center gap-2 bg-primary-green sbg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg p-3 mb-3 transition-all duration-200 shadow-lg group"
+              >
+                <FiPlus className="text-black" size={18} />
+                <span className="text-black text-sm font-semibold group-hover:scale-105 transition-transform">
+                  Create New
+                </span>
+              </Button>
+            )}
+            <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-3 mt-4">
+              Actions
+            </h3>
+            <div className="space-y-2">
+              <button className="w-full flex items-center gap-3 bg-gray-800/30 hover:bg-gray-800/60 rounded-lg p-3 border border-gray-700/30 hover:border-gray-600/50 transition-all duration-200 group">
+                <FiDownload className="text-gray-400 group-hover:text-blue-400" size={18} />
+                <span className="text-gray-300 text-sm group-hover:text-white">Export</span>
+              </button>
+              <button className="w-full flex items-center gap-3 bg-gray-800/30 hover:bg-gray-800/60 rounded-lg p-3 border border-gray-700/30 hover:border-gray-600/50 transition-all duration-200 group">
+                <FiShare2 className="text-gray-400 group-hover:text-blue-400" size={18} />
+                <span className="text-gray-300 text-sm group-hover:text-white">Share</span>
+              </button>
+              <button className="w-full flex items-center gap-3 bg-gray-800/30 hover:bg-gray-800/60 rounded-lg p-3 border border-gray-700/30 hover:border-gray-600/50 transition-all duration-200 group">
+                <FiSettings className="text-gray-400 group-hover:text-blue-400" size={18} />
+                <span className="text-gray-300 text-sm group-hover:text-white">Settings</span>
+              </button>
             </div>
-          ) : (
-            <div className="text-center py-8">
-              <FiFileText className="text-gray-600 mx-auto mb-2" size={32} />
-              <p className="text-gray-500 text-sm">No recent documents</p>
-            </div>
-          )}
-        </div>
-
-        {/* Utils Section */}
-        <div className="p-4 border-t border-gray-700">
-          {showCreateNew && (
-            <Button
-              onClick={handleCreateNew}
-              variant="primary-green"
-              className="w-full"
-              size="default"
-              // className="w-full flex items-center justify-center gap-2 bg-primary-green sbg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg p-3 mb-3 transition-all duration-200 shadow-lg group"
-            >
-              <FiPlus className="text-black" size={18} />
-              <span className="text-black text-sm font-semibold group-hover:scale-105 transition-transform">
-                Create New
-              </span>
-            </Button>
-          )}
-          <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wide mb-3 mt-4">
-            Actions
-          </h3>
-          <div className="space-y-2">
-            <button className="w-full flex items-center gap-3 bg-gray-800/30 hover:bg-gray-800/60 rounded-lg p-3 border border-gray-700/30 hover:border-gray-600/50 transition-all duration-200 group">
-              <FiDownload className="text-gray-400 group-hover:text-blue-400" size={18} />
-              <span className="text-gray-300 text-sm group-hover:text-white">Export</span>
-            </button>
-            <button className="w-full flex items-center gap-3 bg-gray-800/30 hover:bg-gray-800/60 rounded-lg p-3 border border-gray-700/30 hover:border-gray-600/50 transition-all duration-200 group">
-              <FiShare2 className="text-gray-400 group-hover:text-blue-400" size={18} />
-              <span className="text-gray-300 text-sm group-hover:text-white">Share</span>
-            </button>
-            <button className="w-full flex items-center gap-3 bg-gray-800/30 hover:bg-gray-800/60 rounded-lg p-3 border border-gray-700/30 hover:border-gray-600/50 transition-all duration-200 group">
-              <FiSettings className="text-gray-400 group-hover:text-blue-400" size={18} />
-              <span className="text-gray-300 text-sm group-hover:text-white">Settings</span>
-            </button>
           </div>
         </div>
       </div>

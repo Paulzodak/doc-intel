@@ -74,7 +74,13 @@ export default function DashboardLayout({
         currentDocumentId={docId}
       />
 
-      <div className="flex-1 flex flex-col lg:ml-0">
+      <div
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(0, 0, 0, 0.2) 1px, transparent 1px)",
+          backgroundSize: "30px 30px",
+        }}
+        className="flex-1 flex flex-col lg:ml-0"
+      >
         <DocumentHeader title={title} />
         {children}
       </div>

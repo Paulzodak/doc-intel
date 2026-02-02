@@ -19,15 +19,21 @@ import { HiArrowLongRight } from "react-icons/hi2";
 import { IoIosArrowRoundUp } from "react-icons/io";
 import { ErrorFeedback, SuccessFeedback } from "@/components/atoms/form/feedback";
 import { MdEmail } from "react-icons/md";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import DecorativeDots from "@/components/DecorativeDots";
 import { FaLink } from "react-icons/fa6";
 import { isProduction } from "@/lib/utils";
+import { error } from "console";
 
 export default function LoginPage() {
   console.log(isProduction, "isProduction");
   console.log(process.env.NEXT_PUBLIC_ENV, "process.env.NEXT_PUBLIC_ENV");
   const router = useRouter();
+  const params = useSearchParams();
+  const status = params.get("status");
+  const message = params.get("message");
+  console.log(status, "status");
+  console.log(message, "message");
 
   const testimonials = [
     {
@@ -268,6 +274,7 @@ export default function LoginPage() {
               </span>
             </div>
           </motion.div> */}
+          {status === "error" && message && <ErrorFeedback message={message} />}
 
           {/* Continue with Google Button */}
           <motion.div

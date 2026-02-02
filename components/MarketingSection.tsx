@@ -22,7 +22,7 @@ const MarketingSection = () => {
               <div className="bg-white rounded-xl p-4 shadow-lg">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="text-sm font-bold text-gray-800 mb-1">Legal AI</h3>
+                    <h3 className="text-sm font-bold text-gray-800 mb-1">Lexoptia</h3>
                     <p className="text-xs text-gray-500">2 Hours Ago</p>
                   </div>
                   <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
@@ -127,7 +127,7 @@ const MarketingSection = () => {
                   <div className="flex-1">
                     <p className="text-xs text-gray-500 mb-1">AI-Powered Contract Analyzer</p>
                     <p className="text-lg font-bold text-gray-900 mb-1">99.2% Accuracy</p>
-                    <p className="text-xs text-gray-600 mb-1">Legal AI Platform</p>
+                    <p className="text-xs text-gray-600 mb-1">Lexoptia Platform</p>
                     <div className="flex items-center gap-1">
                       <div className="flex text-yellow-400">
                         {[...Array(5)].map((_, i) => (
@@ -146,7 +146,7 @@ const MarketingSection = () => {
               <div className="bg-white rounded-xl p-4 shadow-lg">
                 <div className="mb-2">
                   <span className="text-xs text-gray-500">Featured</span>
-                  <p className="text-xs font-semibold text-gray-800 mt-1">Legal AI</p>
+                  <p className="text-xs font-semibold text-gray-800 mt-1">Lexoptia</p>
                 </div>
                 <div className="relative mb-3">
                   <div className="flex gap-2">
@@ -201,7 +201,7 @@ const MarketingSection = () => {
               {/* Collaboration Post 1 */}
               <div className="bg-white rounded-xl p-4 shadow-lg">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-xs font-semibold text-gray-800">Legal AI Team</p>
+                  <p className="text-xs font-semibold text-gray-800">Lexoptia Team</p>
                   <span className="text-xs text-gray-500">1/3</span>
                 </div>
                 <div className="bg-gray-100 rounded-lg h-32 flex items-center justify-center mb-3">
@@ -242,7 +242,7 @@ const MarketingSection = () => {
               {/* Collaboration Post 2 */}
               <div className="bg-white rounded-xl p-4 shadow-lg">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-xs font-semibold text-gray-800">Legal AI</p>
+                  <p className="text-xs font-semibold text-gray-800">Lexoptia</p>
                 </div>
                 <div className="bg-gray-100 rounded-lg h-32 flex items-center justify-center mb-3 relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-b from-primary/20 to-primary/10"></div>

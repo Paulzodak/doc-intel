@@ -5,57 +5,44 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { HiArrowLongRight } from "react-icons/hi2";
-import { IoIosArrowRoundForward, IoIosArrowRoundUp } from "react-icons/io";
+import { IoIosArrowRoundUp } from "react-icons/io";
 import { ErrorFeedback, SuccessFeedback } from "@/components/atoms/form/feedback";
-import { MdArrowBackIosNew, MdEmail, MdPassword } from "react-icons/md";
-import { TiUser } from "react-icons/ti";
+import { MdArrowBackIosNew, MdEmail } from "react-icons/md";
 import Link from "next/link";
-import { FaArrowLeftLong, FaArrowRightLong, FaLink, FaLock, FaUser } from "react-icons/fa6";
+import { FaArrowRightLong, FaLink } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import { useLogin, useSignUp } from "@/data/auth";
+import { useMagicLink } from "@/data/auth";
 
-const signUpSchema = z.object({
+const magicLinkSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
 });
 
-type SignUpFormValues = z.infer<typeof signUpSchema>;
+type MagicLinkFormValues = z.infer<typeof magicLinkSchema>;
 
-export default function LoginPage() {
+export default function MagicLinkPage() {
   const router = useRouter();
-  const { mutateAsync: signIn, isPending, isSuccess, isError, error, data } = useLogin();
-  const form = useForm<SignUpFormValues>({
-    resolver: zodResolver(signUpSchema),
+  const { mutate: sendMagicLink, isPending, isSuccess, isError, error } = useMagicLink();
+
+  const form = useForm<MagicLinkFormValues>({
+    resolver: zodResolver(magicLinkSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  console.log(form.formState.errors);
-  const onSubmit = async (data: SignUpFormValues) => {
-    signIn(data).then((res) => router.push("/doc/new"));
-    // if (isSuccs) {
-    //   router.push("/auth/login");
-    // }
-    // if (isError) {
-    //   console.error(error);
-    // }
+  const onSubmit = async (data: MagicLinkFormValues) => {
+    sendMagicLink(data, {
+      onSuccess: () => {
+        // Redirect to check-inbox page after a short delay
+        setTimeout(() => {
+          router.push("/auth/check-inbox");
+        }, 2000);
+      },
+    });
   };
 
   const handleGoBack = () => {
@@ -82,20 +69,12 @@ export default function LoginPage() {
       avatar: "👨",
     },
   ];
+
   console.log(error);
   return (
-    <div className=" min-h-screen flex dbg-[#0a0a0a] font-nunito relative overflow-hidden bg-gradient-to-br  from-[#11161f] via-100% via-primary-green to-[#11161f]">
+    <div className="min-h-screen flex dbg-[#0a0a0a] font-nunito relative overflow-hidden bg-gradient-to-br  from-[#11161f] via-100% via-primary-green to-[#11161f]">
       {/* Left Section - Branding */}
       <div className="hidden lg:flex w-1/2  relative overflow-hidden bg-[#11161fd9] backdrop-blur-3xl">
-        <div
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
-            backgroundSize: "30px 30px",
-          }}
-          className="absolute w-full h-full inset-0  "
-        ></div>
-
         {/* Back Button */}
         <motion.button
           initial={{ opacity: 0, x: -20 }}
@@ -116,69 +95,109 @@ export default function LoginPage() {
             className="mb-12 text-center"
           >
             <h1 className="text-6xl md:text-7xl font-black text-white mb-4">
-              Your <span className="text-primary-green">AI</span> Assistant
+              Magic <span className="text-primary-green">Link</span>
             </h1>
           </motion.div>
 
-          {/* Robot Graphic Container */}
+          {/* Magic Link Graphic Container */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="relative mb-12 flex items-center justify-center"
           >
-            {/* Robot SVG - More detailed representation */}
+            {/* Magic Link SVG */}
             <svg width="280" height="380" viewBox="0 0 280 380" className="relative z-10">
-              {/* Robot Head - Rounded */}
-              <rect
-                x="90"
-                y="40"
-                width="100"
-                height="130"
-                rx="25"
-                fill="#11161f"
-                stroke="#062a16"
-                strokeWidth="2"
-              />
-              {/* Robot Eye - Glowing Green */}
-              <circle cx="140" cy="95" r="18" fill="#47e18c" opacity="0.95">
+              {/* Link Chain Icon */}
+              <g transform="translate(90, 120)">
+                {/* Chain Link 1 */}
+                <ellipse
+                  cx="50"
+                  cy="70"
+                  rx="45"
+                  ry="30"
+                  fill="#11161f"
+                  stroke="#47e18c"
+                  strokeWidth="4"
+                  opacity="0.9"
+                />
+                {/* Chain Link 2 */}
+                <ellipse
+                  cx="50"
+                  cy="130"
+                  rx="45"
+                  ry="30"
+                  fill="#11161f"
+                  stroke="#47e18c"
+                  strokeWidth="4"
+                  opacity="0.9"
+                />
+                {/* Connecting Links */}
+                <rect x="5" y="95" width="90" height="10" fill="#47e18c" opacity="0.8" />
+                {/* Sparkle/Star effects */}
+                <circle cx="20" cy="50" r="4" fill="#47e18c" opacity="0.8">
+                  <animate
+                    attributeName="opacity"
+                    values="0.4;1;0.4"
+                    dur="2s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <circle cx="80" cy="50" r="4" fill="#47e18c" opacity="0.8">
+                  <animate
+                    attributeName="opacity"
+                    values="0.4;1;0.4"
+                    dur="2s"
+                    begin="0.5s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <circle cx="20" cy="150" r="4" fill="#47e18c" opacity="0.8">
+                  <animate
+                    attributeName="opacity"
+                    values="0.4;1;0.4"
+                    dur="2s"
+                    begin="1s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <circle cx="80" cy="150" r="4" fill="#47e18c" opacity="0.8">
+                  <animate
+                    attributeName="opacity"
+                    values="0.4;1;0.4"
+                    dur="2s"
+                    begin="1.5s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+              </g>
+              {/* Glowing Green Accent - Magic Icon */}
+              <circle cx="140" cy="80" r="35" fill="#47e18c" opacity="0.2">
                 <animate
                   attributeName="opacity"
-                  values="0.8;1;0.8"
+                  values="0.1;0.3;0.1"
+                  dur="3s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+              <circle cx="140" cy="80" r="25" fill="#47e18c" opacity="0.4">
+                <animate
+                  attributeName="opacity"
+                  values="0.3;0.5;0.3"
                   dur="2s"
                   repeatCount="indefinite"
                 />
               </circle>
-              <circle cx="140" cy="95" r="12" fill="#6ae8a8" opacity="0.7" />
-              {/* Robot Body - Suit-like */}
-              <rect
-                x="70"
-                y="170"
-                width="140"
-                height="200"
-                rx="30"
-                fill="#11161f"
-                stroke="#062a16"
+              {/* Magic wand or link icon in circle */}
+              <path d="M 120 70 L 160 70 L 160 100 L 120 100 Z" fill="#47e18c" opacity="0.9" />
+              <path
+                d="M 130 75 L 150 75 M 130 85 L 150 85 M 130 95 L 150 95"
+                stroke="#11161f"
                 strokeWidth="2"
               />
-              {/* Robot Chest Details */}
-              <rect x="90" y="200" width="100" height="25" rx="6" fill="#2a2a2a" />
-              <rect x="90" y="245" width="100" height="25" rx="6" fill="#2a2a2a" />
-              {/* Glowing Green Accents */}
-              <path d="M 110 300 L 170 300" stroke="#47e18c" strokeWidth="4" opacity="0.8">
-                <animate
-                  attributeName="opacity"
-                  values="0.6;0.9;0.6"
-                  dur="3s"
-                  repeatCount="indefinite"
-                />
-              </path>
-              {/* Shoulder details */}
-              <circle cx="100" cy="190" r="8" fill="#2a2a2a" />
-              <circle cx="180" cy="190" r="8" fill="#2a2a2a" />
             </svg>
 
-            {/* Feature Card 1 - Battery Life */}
+            {/* Feature Card 1 - Passwordless */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -186,12 +205,12 @@ export default function LoginPage() {
               className="absolute -left-8 top-32 bg-[#11161f] border border-[#062a16] rounded-xl p-4 shadow-lg"
             >
               <div className="text-white">
-                <div className="text-2xl font-bold">+15 Hours</div>
-                <div className="text-sm text-gray-400">Battery life</div>
+                <div className="text-2xl font-bold">🔗</div>
+                <div className="text-sm text-gray-400">Passwordless</div>
               </div>
             </motion.div>
 
-            {/* Feature Card 2 - Users */}
+            {/* Feature Card 2 - Secure */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -199,8 +218,8 @@ export default function LoginPage() {
               className="absolute -right-8 top-48 bg-[#11161f] border border-[#062a16] rounded-xl p-4 shadow-lg"
             >
               <div className="text-white">
-                <div className="text-2xl font-bold">+ 2000</div>
-                <div className="text-sm text-gray-400">Users every day</div>
+                <div className="text-2xl font-bold">🔒</div>
+                <div className="text-sm text-gray-400">Secure</div>
               </div>
             </motion.div>
           </motion.div>
@@ -241,7 +260,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Section - Sign Up Form */}
+      {/* Right Section - Magic Link Form */}
       <div
         style={{
           backgroundImage: "radial-gradient(circle, rgba(0, 0, 0, 0.2) 1px, transparent 1px)",
@@ -251,7 +270,7 @@ export default function LoginPage() {
       >
         {/* Background Pattern */}
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute -z-10 inset-0 opacity-[0.03]"
           style={{
             backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 10px, #000 10px, #000 4px),
                               repeating-linear-gradient(90deg, transparent, transparent 10px, #000 10px, #000 4px)`,
@@ -266,20 +285,16 @@ export default function LoginPage() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-center mb-8 col-span-full"
         >
-          <h1 className="text-4xl lg:text-5xl font-black  mb-2 text-gradient leading-14 tracking-tight">
-            {/* Let's get you started */}
-            {/* Build Full-Stack Web & Mobile Apps in minutes */}
-            Analyze Legal Documents in minutes
+          <h1 className="text-4xl lg:text-5xl font-black mb-2 text-gradient leading-14 tracking-tight">
+            Sign in with Magic Link
           </h1>
 
           <p className="text-gray-600 font-medium">
-            Don&apos;t have an account?{" "}
-            <Link className="underline font-semibold" href="/auth/register">
-              Sign up
-            </Link>
+            We&apos;ll send you a secure link to sign in without a password
           </p>
         </motion.div>
-        <div className="col-span-full w-full max-w-[25rem] ">
+
+        <div className="col-span-full w-full max-w-[25rem]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               {/* Email */}
@@ -289,13 +304,13 @@ export default function LoginPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <div className="relative text-gray-400">
+                      <div className="relative text-primary-blue-dark">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2">
                           <MdEmail size={17} />
                         </div>
                         <Input
                           type="email"
-                          placeholder="E-mail"
+                          placeholder="Enter your email"
                           className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-12"
                           {...field}
                         />
@@ -306,79 +321,62 @@ export default function LoginPage() {
                 )}
               />
 
-              {/* Password */}
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <div className="relative text-gray-400">
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                          <FaLock size={15} />
-                        </div>
-                        <Input
-                          type="password"
-                          placeholder="Password"
-                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-12"
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {isSuccess && <SuccessFeedback message={"Sign in Successful "} />}
+              {/* Success/Error Feedback */}
+              {isSuccess && <SuccessFeedback message="Magic link sent! Check your email inbox." />}
               {isError && (
                 <ErrorFeedback
-                  message={error?.response?.data?.message || "Failed to create account"}
+                  message={
+                    error?.response?.data?.message || "Failed to send magic link. Please try again."
+                  }
                 />
               )}
 
-              {/* <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full mb-4"
-              > */}
+              {/* Submit Button */}
               <Button
                 isLoading={isPending}
                 showSpinner
                 type="submit"
-                // onClick={onSubmit}
                 variant="primary-green"
                 className="w-full rounded-full px-6 py-4 shadow-none"
               >
                 {!isPending && (
                   <>
-                    <span className="font-semibold text-base pr-2">Continue with Email</span>
+                    <FaLink className="text-black mr-2" />
+                    <span className="font-semibold text-base pr-2">Send Magic Link</span>
                     <FaArrowRightLong size={15} className="text-black" />
                   </>
                 )}
               </Button>
-              {/* </motion.div> */}
+
+              {/* Go Back Button */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full mb-8"
+                className="flex-1"
+                onClick={handleGoBack}
               >
                 <Button
                   type="button"
-                  onClick={() => router.push("/auth/magic-link")}
-                  variant="primary-green"
-                  className="w-full rounded-full px-6 py-4 shadow-none"
+                  className="w-full bg-primary-blue-dark border-none rounded-full px-4 py-4 hover:bg-gray-900 text-white"
                 >
-                  <FaLink className="text-black" />
-                  <span className="font-semibold text-base">Use Magic Link</span>
+                  <MdArrowBackIosNew size={15} className="text-white" />
+                  <span className="font-semibold text-base pl-2">Go back</span>
                 </Button>
               </motion.div>
+
+              {/* Alternative Login Options */}
+              <p className="text-gray-500 text-sm mt-6 text-center">
+                Prefer to use password?{" "}
+                <Link
+                  className="text-primary-green font-semibold hover:underline"
+                  href="/auth/login"
+                >
+                  Login here
+                </Link>
+              </p>
             </form>
           </Form>
         </div>

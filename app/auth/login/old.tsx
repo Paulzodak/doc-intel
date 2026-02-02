@@ -16,50 +16,44 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HiArrowLongRight } from "react-icons/hi2";
-import { IoIosArrowRoundForward, IoIosArrowRoundUp } from "react-icons/io";
+import { IoIosArrowRoundUp } from "react-icons/io";
 import { ErrorFeedback, SuccessFeedback } from "@/components/atoms/form/feedback";
-import { MdArrowBackIosNew, MdEmail, MdPassword } from "react-icons/md";
-import { TiUser } from "react-icons/ti";
-import Link from "next/link";
-import { FaArrowLeftLong, FaArrowRightLong, FaLink, FaLock, FaUser } from "react-icons/fa6";
-import { useRouter } from "next/navigation";
-import { useLogin, useSignUp } from "@/data/auth";
 
 const signUpSchema = z.object({
+  firstName: z.string().min(2, {
+    message: "First name must be at least 2 characters.",
+  }),
+  lastName: z.string().min(2, {
+    message: "Last name must be at least 2 characters.",
+  }),
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),
+  acceptTerms: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions.",
+  }),
 });
 
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export default function LoginPage() {
-  const router = useRouter();
-  const { mutateAsync: signIn, isPending, isSuccess, isError, error, data } = useLogin();
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
+      acceptTerms: false,
     },
   });
 
-  console.log(form.formState.errors);
   const onSubmit = async (data: SignUpFormValues) => {
-    signIn(data).then((res) => router.push("/doc/new"));
-    // if (isSuccs) {
-    //   router.push("/auth/login");
-    // }
-    // if (isError) {
-    //   console.error(error);
-    // }
-  };
-
-  const handleGoBack = () => {
-    router.push("/auth");
+    console.log("Form submitted:", data);
+    // TODO: Add API call here
   };
 
   const testimonials = [
@@ -82,9 +76,9 @@ export default function LoginPage() {
       avatar: "👨",
     },
   ];
-  console.log(error);
+
   return (
-    <div className=" min-h-screen flex dbg-[#0a0a0a] font-nunito relative overflow-hidden bg-gradient-to-br  from-[#11161f] via-100% via-primary-green to-[#11161f]">
+    <div className="min-h-screen flex dbg-[#0a0a0a] font-nunito relative overflow-hidden bg-gradient-to-br  from-[#11161f] via-100% via-primary-green to-[#11161f]">
       {/* Left Section - Branding */}
       <div className="hidden lg:flex w-1/2  relative overflow-hidden bg-[#11161fd9] backdrop-blur-3xl">
         <div
@@ -247,41 +241,61 @@ export default function LoginPage() {
           backgroundImage: "radial-gradient(circle, rgba(0, 0, 0, 0.2) 1px, transparent 1px)",
           backgroundSize: "30px 30px",
         }}
-        className="w-full lg:w-1/2 bg-white flex flex-col items-center justify-center p-6 md:p-12 relative overflow-hidden"
+        className="w-full lg:w-1/2 bg-white flex items-center justify-center p-6 md:p-12"
       >
-        {/* Background Pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 10px, #000 10px, #000 4px),
-                              repeating-linear-gradient(90deg, transparent, transparent 10px, #000 10px, #000 4px)`,
-            backgroundSize: "100px 100px",
-          }}
-        />
-
-        {/* Headline */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-center mb-8 col-span-full"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md  rounded-3xl p-8 md:p-12 borsder border-gray-200 sshadow-lg"
         >
-          <h1 className="text-4xl lg:text-5xl font-black  mb-2 text-gradient leading-14 tracking-tight">
-            {/* Let's get you started */}
-            {/* Build Full-Stack Web & Mobile Apps in minutes */}
-            Analyze Legal Documents in minutes
-          </h1>
+          <motion.h2
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="text-4xl font-black text-[#0a0a0a] mb-8"
+          >
+            Start Your Journey.
+          </motion.h2>
 
-          <p className="text-gray-600 font-medium">
-            Don&apos;t have an account?{" "}
-            <Link className="underline font-semibold" href="/auth/register">
-              Sign up
-            </Link>
-          </p>
-        </motion.div>
-        <div className="col-span-full w-full max-w-[25rem] ">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+              {/* First Name */}
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Omar"
+                        className="bg-white border-gray-300 text-[#0a0a0a] placeholder:text-gray-400 rounded-xl h-12 focus:border-primary-green"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Last Name */}
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Last name"
+                        className="bg-white border-gray-300 text-[#0a0a0a] placeholder:text-gray-400 rounded-xl h-12 focus:border-primary-green"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {/* Email */}
               <FormField
                 control={form.control}
@@ -289,17 +303,12 @@ export default function LoginPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <div className="relative text-gray-400">
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                          <MdEmail size={17} />
-                        </div>
-                        <Input
-                          type="email"
-                          placeholder="E-mail"
-                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-12"
-                          {...field}
-                        />
-                      </div>
+                      <Input
+                        type="email"
+                        placeholder="E-mail"
+                        className="bg-white border-gray-300 text-[#0a0a0a] placeholder:text-gray-400 rounded-xl h-12 focus:border-primary-green"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -313,75 +322,109 @@ export default function LoginPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <div className="relative text-gray-400">
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                          <FaLock size={15} />
-                        </div>
-                        <Input
-                          type="password"
-                          placeholder="Password"
-                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-12"
-                          {...field}
-                        />
-                      </div>
+                      <Input
+                        type="password"
+                        placeholder="Password"
+                        className="bg-white border-gray-300 text-[#0a0a0a] placeholder:text-gray-400 rounded-xl h-12 focus:border-primary-green"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              {isSuccess && <SuccessFeedback message={"Sign in Successful "} />}
-              {isError && (
-                <ErrorFeedback
-                  message={error?.response?.data?.message || "Failed to create account"}
-                />
-              )}
-
-              {/* <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full mb-4"
-              > */}
-              <Button
-                isLoading={isPending}
-                showSpinner
-                type="submit"
-                // onClick={onSubmit}
-                variant="primary-green"
-                className="w-full rounded-full px-6 py-4 shadow-none"
-              >
-                {!isPending && (
-                  <>
-                    <span className="font-semibold text-base pr-2">Continue with Email</span>
-                    <FaArrowRightLong size={15} className="text-black" />
-                  </>
+              {/* Terms Checkbox */}
+              <FormField
+                control={form.control}
+                name="acceptTerms"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        className="border-gray-300 data-[state=checked]:bg-primary-green data-[state=checked]:border-primary-green"
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel className="text-gray-600 text-sm font-normal cursor-pointer">
+                        Accept terms and conditions
+                      </FormLabel>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </Button>
-              {/* </motion.div> */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.7 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full mb-8"
-              >
-                <Button
+              />
+
+              <ErrorFeedback message="This is an error message" />
+              <SuccessFeedback message="This is a success message" />
+              {/* Or Separator */}
+              <div className="relative py-4">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-300"></div>
+                </div>
+                <div className="relative flex flex-col items-center">
+                  <span className="bg-white px-4 text-gray-600 text-sm">Or</span>
+                  <span className="bg-white px-4 text-gray-600 text-xs mt-1">Sign up with</span>
+                </div>
+              </div>
+
+              {/* Social Login Buttons */}
+              <div className="flex gap-4 justify-center">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   type="button"
-                  onClick={() => router.push("/auth/magic-link")}
-                  variant="primary-green"
-                  className="w-full rounded-full px-6 py-4 shadow-none"
+                  className="w-12 h-12 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:border-primary-green transition-colors"
                 >
-                  <FaLink className="text-black" />
-                  <span className="font-semibold text-base">Use Magic Link</span>
+                  <span className="text-[#0a0a0a] font-bold text-lg">G</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  type="button"
+                  className="w-12 h-12 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:border-primary-green transition-colors"
+                >
+                  <span className="text-[#0a0a0a] text-xl">🍎</span>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  type="button"
+                  className="w-12 h-12 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:border-primary-green transition-colors"
+                >
+                  <span className="text-[#0a0a0a] font-bold text-lg">f</span>
+                </motion.button>
+              </div>
+
+              {/* Login Link */}
+              <div className="text-center pt-2">
+                <span className="text-gray-600 text-sm">
+                  Already have an account?{" "}
+                  <a
+                    href="#"
+                    className="text-[#0a0a0a] hover:text-primary-green transition-colors font-medium"
+                  >
+                    Login
+                  </a>
+                </span>
+              </div>
+
+              {/* Sign Up Button */}
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button
+                  type="submit"
+                  variant="primary-green"
+                  className="w-full rounded-full shadow-none"
+                  // className="w-full bdg-[#0a0a0a] text-white rounded-xl h-12 font-bold text-base hover:bg-[#11161f] transition-colors"
+                >
+                  Sign <HiArrowLongRight size={"5rem"} />
                 </Button>
               </motion.div>
             </form>
           </Form>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

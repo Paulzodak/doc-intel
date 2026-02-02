@@ -8,11 +8,14 @@ import documentInputSlice from "./slices/document/input.slice";
 import type { IDocumentInputState } from "./slices/document/input.slice";
 import analysisPanelSlice from "./slices/dashboard/analysispanel.slice";
 import documentContentSlice from "./slices/document/documentContent.slice";
+import userSlice from "./slices/user/user.slice";
+import type { IUserState } from "./slices/user/user.slice";
 
 const rootReducer = combineReducers({
   documentInput: documentInputSlice,
   analysisPanel: analysisPanelSlice,
   documentContent: documentContentSlice,
+  user: userSlice,
 
   // add more reducers here
 });
@@ -39,14 +42,36 @@ const documentInputTransform = createTransform(
   { whitelist: ["documentInput"] }
 );
 
+// Transform to exclude loading state from user persistence
+// Only persist user data, not isLoading or error
+const userTransform = createTransform(
+  // Transform state being persisted (outbound)
+  (inboundState: IUserState) => {
+    return {
+      user: inboundState.user,
+      // Explicitly exclude isLoading and error
+    };
+  },
+  // Transform state being rehydrated (inbound)
+  (outboundState: Partial<IUserState>) => {
+    return {
+      user: outboundState.user || null,
+      isLoading: false, // Always start with loading false
+      error: null, // Always start with no error
+    };
+  },
+  { whitelist: ["user"] }
+);
+
 const persistConfig: PersistConfig<ReturnType<typeof rootReducer>> = {
   key: "root",
   storage,
   whitelist: [
     "documentInput", // ✅ Document input
     "analysisPanel", // ✅ Analysis panel
+    "user", // ✅ User data
   ],
-  transforms: [documentInputTransform],
+  transforms: [documentInputTransform, userTransform],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

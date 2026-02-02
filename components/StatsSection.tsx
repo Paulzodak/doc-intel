@@ -10,13 +10,13 @@ const StatsSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 mb-16 items-start">
           <div className="lg:pr-8">
             <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
-              Legal AI helps companies enhance the efficiency of their document review processes,
+              Lexoptia helps companies enhance the efficiency of their document review processes,
               providing ease in contract analysis and fostering growth in legal operations.
             </p>
           </div>
           <div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-[#121714] dark:text-white leading-tight">
-              Legal AI: revolutionizing document analysis, elevating legal performance.
+              Lexoptia: revolutionizing document analysis, elevating legal performance.
             </h2>
           </div>
         </div>
@@ -101,7 +101,7 @@ const StatsSection = () => {
             </div>
             {/* Descriptive Paragraph */}
             <p className="text-gray-700 leading-relaxed">
-              From bustling urban centers to remote rural areas, Legal AI extends its reach to over
+              From bustling urban centers to remote rural areas, Lexoptia extends its reach to over
               50 countries, making a global impact while maintaining local excellence in legal
               document analysis and compliance services.
             </p>

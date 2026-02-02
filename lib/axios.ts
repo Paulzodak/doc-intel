@@ -7,6 +7,7 @@ const API_BASE_URL = isProduction
   : "http://localhost:8000";
 
 export const apiClient = axios.create({
+  withCredentials: true,
   baseURL: API_BASE_URL,
   timeout: 30000, // 30 seconds
   headers: {
@@ -22,7 +23,7 @@ apiClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor (optional - for error handling)
@@ -33,7 +34,7 @@ apiClient.interceptors.response.use(
   (error) => {
     // Handle common errors here if needed
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;

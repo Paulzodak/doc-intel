@@ -5,4 +5,4 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const isProduction = process.env.NEXT_PUBLIC_ENV === "production";
+export const isProduction = process.env.NEXT_PUBLIC_ENV !== "production";

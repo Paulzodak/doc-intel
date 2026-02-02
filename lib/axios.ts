@@ -2,8 +2,8 @@ import axios from "axios";
 import { isProduction } from "./utils";
 
 // Configure axios instance with base URL
-const API_BASE_URL = isProduction
-  ? "https://doc-llm-server-production.up.railway.app/"
+export const API_BASE_URL = isProduction
+  ? "https://doc-llm-server.onrender.com/"
   : "http://localhost:8000";
 
 export const apiClient = axios.create({

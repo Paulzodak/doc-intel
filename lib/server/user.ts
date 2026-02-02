@@ -2,10 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { GetUserResponse, User } from "@/types/user";
 import { isProduction } from "@/lib/utils";
-
-const API_BASE_URL = isProduction
-  ? "https://doc-llm-server-production.up.railway.app/"
-  : "http://localhost:8000";
+import { API_BASE_URL } from "../axios";
 
 /**
  * Server-side function to get the current user

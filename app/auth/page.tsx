@@ -22,6 +22,7 @@ import { MdEmail } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import DecorativeDots from "@/components/DecorativeDots";
 import { FaLink } from "react-icons/fa6";
+import { isProduction } from "@/lib/utils";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -278,7 +279,11 @@ export default function LoginPage() {
             <Button
               type="button"
               className="w-full bg-primary-blue-dark border-none rounded-[40px] px-6 py-4 hover:border-gray-300 shadow-sm"
-              onClick={() => (window.location.href = "http://localhost:8000/api/auth/oauth/google")}
+              onClick={() =>
+                (window.location.href = isProduction
+                  ? "https://doc-llm-server.onrender.com/api/auth/oauth/google"
+                  : "http://localhost:8000/api/auth/oauth/google")
+              }
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -314,7 +319,9 @@ export default function LoginPage() {
                 type="button"
                 className="w-full bg-primary-blue-dark rounded-full px-4 py-4 hover:bg-gray-900 text-white"
                 onClick={() =>
-                  (window.location.href = "http://localhost:8000/api/auth/oauth/github")
+                  (window.location.href = isProduction
+                    ? "https://doc-llm-server.onrender.com/api/auth/oauth/github"
+                    : "http://localhost:8000/api/auth/oauth/github")
                 }
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -327,7 +334,9 @@ export default function LoginPage() {
                 type="button"
                 className="w-full bg-primary-blue-dark rounded-full px-4 py-4 hover:bg-gray-900 text-white"
                 onClick={() =>
-                  (window.location.href = "http://localhost:8000/api/auth/oauth/microsoft")
+                  (window.location.href = isProduction
+                    ? "https://doc-llm-server.onrender.com/api/auth/oauth/microsoft"
+                    : "http://localhost:8000/api/auth/oauth/microsoft")
                 }
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

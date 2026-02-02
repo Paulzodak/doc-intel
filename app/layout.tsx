@@ -25,8 +25,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log(isProduction, "isProduction");
-  console.log(process.env.NEXT_PUBLIC_ENV, "process.env.NEXT_PUBLIC_ENV");
   return (
     <html lang="en">
       <head>

@@ -25,6 +25,8 @@ import { FaLink } from "react-icons/fa6";
 import { isProduction } from "@/lib/utils";
 
 export default function LoginPage() {
+  console.log(isProduction, "isProduction");
+  console.log(process.env.NEXT_PUBLIC_ENV, "process.env.NEXT_PUBLIC_ENV");
   const router = useRouter();
 
   const testimonials = [

@@ -87,8 +87,8 @@ const InputMethodTemplate = ({
       onClick={onClick}
       className={`bg-white dark:bg-gray-800 rounded-4xl ${
         isExpanded
-          ? `border-2 ${colors.border} shadow-2xl scale-105`
-          : "border border-gray-300 dark:border-gray-700 shadow-sm"
+          ? `border-2 ${colors.border} shaddow-2xl scale-105`
+          : "border border-gray-300 dark:border-gray-700 shadsow-sm"
       } overflow-hidden cursor-pointer transition-all duration-300`}
     >
       <div

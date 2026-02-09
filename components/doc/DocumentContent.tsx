@@ -54,7 +54,7 @@ const DocumentContent: React.FC<DocumentContentProps> = ({
         parts.push(
           <span key={`text-${index}`} className="text-gray-800">
             {documentText.substring(lastIndex, highlight.start)}
-          </span>
+          </span>,
         );
       }
 
@@ -77,7 +77,7 @@ const DocumentContent: React.FC<DocumentContentProps> = ({
           whileTap={{ scale: 0.98 }}
         >
           {highlight.text}
-        </motion.span>
+        </motion.span>,
       );
 
       lastIndex = highlight.end;
@@ -88,7 +88,7 @@ const DocumentContent: React.FC<DocumentContentProps> = ({
       parts.push(
         <span key="text-end" className="text-gray-800">
           {documentText.substring(lastIndex)}
-        </span>
+        </span>,
       );
     }
 
@@ -99,14 +99,16 @@ const DocumentContent: React.FC<DocumentContentProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white/80 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-gray-200/50 shadow-sm"
+      className="bg-white rounded-2xl p-6 sm:p-8 border shasdow-sm"
     >
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-bold text-gray-900">Document Text</h2>
         <div className="flex gap-2 text-xs">
-          <span className="px-2 py-1 bg-red-100 text-red-700 rounded">Risks</span>
-          <span className="px-2 py-1 bg-green-100 text-green-700 rounded">Advantages</span>
-          <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded">Compliance</span>
+          <span className="px-2 py-1 bg-red-100 text-red-700 rounded-full">Risks</span>
+          <span className="px-2 py-1 bg-green-100 text-white rounded-full bg-linear-to-b from-[#124F35] to-[#1D734B]">
+            Advantages
+          </span>
+          <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full">Compliance</span>
         </div>
       </div>
       <div

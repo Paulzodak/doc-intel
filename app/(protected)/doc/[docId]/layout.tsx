@@ -8,5 +8,5 @@ export default function DocLayout({
   children: React.ReactNode;
 }>) {
   console.log("isProduction", isProduction);
-  return <DashboardLayout title="Document Analysis Dashboard">{children}</DashboardLayout>;
+  return <>{children}</>;
 }

@@ -36,9 +36,9 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis }) => {
   const activeTab = useSelector(selectActiveTab);
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-br from-gray-50 to-white">
+    <div className="h-fudll flex flex-col bg-white overflow-scroll border rounded-2xl">
       {/* Tabs */}
-      <div className="flex border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+      <div className="flex border-b border-gray-200 bg-white/80  sticsky tomp-0 z-10">
         {[
           { id: "grading", label: "Grading", icon: FiTrendingUp },
           { id: "chat", label: "AI Chat", icon: FiMessageCircle },
@@ -47,8 +47,8 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis }) => {
           <button
             key={tab.id}
             onClick={() => dispatch(setActiveTab(tab.id as AnalysisPanelTab))}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium transition-colors relative ${
-              activeTab === tab.id ? "text-blue-600" : "text-gray-600 hover:text-gray-900"
+            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium transitiodn-colors relative ${
+              activeTab === tab.id ? "text-green-800" : "text-gray-600 hover:text-gray-900"
             }`}
           >
             <tab.icon size={16} />
@@ -56,7 +56,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis }) => {
             {activeTab === tab.id && (
               <motion.div
                 layoutId="activeTab"
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-800"
               />
             )}
           </button>
@@ -136,7 +136,7 @@ const GradingPanel: React.FC<GradingPanelProps> = ({ analysis }) => {
         {/* Overall Score */}
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-primary-green to-[#47e18c] rounded-xl p-6 text-white shadow-lg"
+          className="bg-linear-to-b from-[#124F35] to-[#1D734B] rounded-xl p-6 text-white shadow-lg"
         >
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium opacity-90">Overall Score</span>

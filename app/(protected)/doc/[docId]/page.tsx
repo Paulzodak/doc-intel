@@ -65,7 +65,7 @@ export default function DocPage({ params }: DocPageProps) {
     (highlight: Highlight) => {
       dispatch(setSelectedHighlight(highlight));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Show loading state
@@ -164,7 +164,7 @@ export default function DocPage({ params }: DocPageProps) {
     ? (advantagesValue as typeof testAnalysis.advantages)
     : testAnalysis.advantages || [];
   const advantagesScore =
-    typeof advantagesValue === "number" ? advantagesValue : testAnalysis.grading?.advantages ?? 0;
+    typeof advantagesValue === "number" ? advantagesValue : (testAnalysis.grading?.advantages ?? 0);
 
   const analysis = {
     keyPoints: (grade?.keyPoints as typeof testAnalysis.keyPoints) || testAnalysis.keyPoints || [],
@@ -185,14 +185,14 @@ export default function DocPage({ params }: DocPageProps) {
       {/* <DocumentHeader title="Document Analysis Dashboard" /> */}
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6">
+      <div className="flex-1 overflow-y-auto h-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 h-full">
+          <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6 borjder border-blue-800 h-full">
             {/* Analysis Panel - First on mobile, right column on desktop */}
-            <div className="order-1 lg:order-2 lg:col-span-1">
-              <div className="lg:sticky lg:top-6 lg:h-[calc(100vh-3rem)]">
-                <AnalysisPanel analysis={analysis} />
-              </div>
+            <div className=" order-1 lg:order-2 lg:col-span-1 makx-h-full overdflow-scroll bsorder  border-green-800 rounde">
+              {/* <div className="lg:ssticky lg:top-6 max-h-full  rounded-2xl border border-red-800"> */}
+              <AnalysisPanel analysis={analysis} />
+              {/* </div> */}
             </div>
 
             {/* Document Text - Second on mobile, left column on desktop */}

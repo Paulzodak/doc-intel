@@ -96,7 +96,7 @@ export default function DashboardLayout({
         >
           <Sidebar />
         </motion.div>
-        <div className="flex  grow flex-col  gap-4 ">
+        <div className="flex  grow flex-col  gap-4 relative z-10 ">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

@@ -18,7 +18,7 @@ export default function NewDocumentPage() {
     <>
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-5xl mx-auto sm:px-4 lg:px-6 py-2">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -58,14 +58,14 @@ export default function NewDocumentPage() {
             </div>
 
             {/* Input Methods Section */}
-            <div className="bg-whikte/80 backdrop-blur-sm rousnded-xl px-6 borsder bordejr-gray-200/50 shadjow-sm flex justify-center items-center">
+            <div className="bg-whikte/80 backdrop-blur-sm rousnded-xl px-2 borsder bordejr-gray-200/50 shadjow-sm flex justify-center items-center">
               {/* <h2 className="text-xl font-bold text-gray-900 mb-6">Upload Document</h2> */}
               {/* <InputStack /> */}
               <DocumentInput />
             </div>
 
             {/* Instructions */}
-            <div className="bg-blue-50/50 backdrop-blur-sm rounded-xl p-6 border border-blue-200/50">
+            <div className="bg-blue-50/50 backdrop-blur-sm rounded-xl p-6 mx-2 border border-blue-200/50">
               <h3 className="text-sm font-semibold text-blue-900 mb-2">How it works</h3>
               <ul className="space-y-2 text-sm text-blue-800">
                 <li className="flex items-start gap-2">

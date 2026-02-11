@@ -357,9 +357,9 @@ const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentPr
       )}
 
       {files.length > 0 && (
-        <div className="mt-6 flex gap-3 items-center">
+        <div className="mt-6 flex flex-wrap gap-3 items-center">
           <Button
-            className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white flex-1"
+            className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white w-full sm:flex-1"
             size="analyze"
             disabled={!hasValidFiles}
             onClick={runExtractionAndShowPreview}
@@ -368,7 +368,7 @@ const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentPr
             <EyeIconFilled color="white" />
           </Button>
           <Button
-            className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white flex-1"
+            className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white w-full sm:flex-1"
             size="analyze"
             disabled={!hasValidFiles}
             onClick={handleAnalyzeDocument}

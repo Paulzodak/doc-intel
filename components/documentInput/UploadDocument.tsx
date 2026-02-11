@@ -18,6 +18,7 @@ interface UploadDocumentProps {
   isExpanded: boolean;
   onClick: () => void;
   onFilesChange?: (files: File[]) => void;
+  /** Selected AI engine from DocumentInput (for future API use). */
 }
 
 interface UploadedFile {
@@ -156,7 +157,8 @@ const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentPr
   };
 
   const handleAnalyzeDocument = () => {
-    processText(files.map((f) => f.extractedText).join("\n"));
+    const text = files.map((f) => f.extractedText).join("\n");
+    processText(text);
   };
 
   const runExtractionAndShowPreview = useCallback(async () => {

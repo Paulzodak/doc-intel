@@ -58,7 +58,7 @@ const PasteText = ({ isExpanded, onClick }: PasteTextProps) => {
           onClick={(e) => e.stopPropagation()}
         />
       </div>
-      <Button
+      {/* <Button
         className="mt-8 bg-purple-700 text-white border-none shadow-none"
         variant="primary-green"
         size="analyze"
@@ -71,6 +71,17 @@ const PasteText = ({ isExpanded, onClick }: PasteTextProps) => {
       >
         <span className="font-brockmann font-light">Analyze Document</span>
         <span className="material-symbols-outlined text-lg">bolt</span>
+      </Button> */}
+      <Button
+        className="bg-purple-700 shadow shadow-purple-700/30 border-none text-white w-full sm:flex-1 mt-8"
+        size="analyze"
+        disabled={isLoading}
+        onClick={handleSubmit}
+        isLoading={isLoading}
+        showSpinner
+      >
+        <span>Analyze Document</span>
+        <PlayIconFilled color="white" />
       </Button>
     </InputMethodTemplate>
   );

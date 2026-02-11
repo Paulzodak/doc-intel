@@ -10,16 +10,34 @@ import { DisplayIcon } from "@/assets/svg/DisplayIcon";
 import { PlayIcon } from "@/assets/svg/PlayIcon";
 import { PlayIconFilled } from "@/assets/svg/PlayIconFilled";
 import { VerifiedCheckedIcon } from "@/assets/svg/VerifiedCheckedIcon";
+import { CaretDownIcon } from "@/assets/svg/CaretDownIcon";
+import { AnimatePresence, motion } from "framer-motion";
+import { SettingsIcon } from "@/assets/svg/SettingsIcon";
+import { PowerIcon } from "@/assets/svg/PowerIcon";
+import { ArrowLeftIcon } from "@/assets/svg/ArrowLeftIcon";
 
 type MethodType = "upload" | "scan" | "paste" | null;
 
 const DocumentInput = () => {
   const [expandedMethod, setExpandedMethod] = useState<MethodType>("upload");
+  const [selectedModel, setSelectedModel] = useState<number>(4);
+  const [showModelOptions, setShowModelOptions] = useState<boolean>(false);
 
   const handleMethodClick = (method: MethodType) => {
     // If clicking the same method, collapse it; otherwise expand the new one
     setExpandedMethod(expandedMethod === method ? method : method);
   };
+
+  const modelOptions = [
+    { id: 1, pro: true, name: "Claude 3.5 Sonnet", description: "200k tokens" },
+    { id: 2, pro: true, name: "Claude 4.5 Opus", description: "Antropic's Advanced Model" },
+    { id: 3, pro: true, name: "Gemini 2.5 Pro", description: "Google's Advanced Model" },
+    { id: 4, pro: false, name: "GPT-4o", description: "OpenAI's Advanced Model" },
+    { id: 5, pro: true, name: "GPT-4o-mini", description: "OpenAI's Advanced Model" },
+    { id: 6, pro: true, name: "GPT-4o-mini", description: "OpenAI's Advanced Model" },
+  ];
+  const modelSelected = modelOptions.find((model) => model.id === selectedModel);
+
   return (
     <section className="relative py-12   max-w-full ">
       {/* Dotted Grid Background */}
@@ -32,7 +50,7 @@ const DocumentInput = () => {
       />
       <div className="relative max-w-[800px]  mx-auto">
         <div className=" grid gap-6 relative">
-          <div className="bg-[#1e2939] dasrk:bg-gray-900 rounded-4xl p-8 shadow-lg ">
+          <div className="bg-[#1e2939] dasrk:bg-gray-900 rounded-4xl px-8 py-6 shadow-lg ">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               {/* Left Side */}
               <div>
@@ -59,6 +77,67 @@ const DocumentInput = () => {
                 <PlayIconFilled />
               </Button> */}
               </div>
+            </div>
+            <div className="flex items-center relative mt-2 gap-1 text-gray-100">
+              <div className="flex items-center gap-2">
+                <PowerIcon color="white" className="w-3 h-3 text-gray-200" />
+                <div className="text-sm">Engine</div>
+                <ArrowLeftIcon color="white" className="w-3 h-3 text-gray-200 rotate-180" />
+              </div>
+              <div
+                onClick={() => setShowModelOptions(!showModelOptions)}
+                className="flex bg-white/5  rounded-full p-2 px-3 text-gray-200 cursor-pointer"
+              >
+                {modelSelected && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider">
+                      {modelSelected.name}
+                    </span>
+                    <CaretDownIcon
+                      className={`${showModelOptions ? "rotate-180" : ""} transition-all duration-300`}
+                      color="gray"
+                    />
+                  </div>
+                )}
+              </div>
+              <AnimatePresence>
+                {showModelOptions && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute top-14 left-0 bg-white border rounded-lg text-gray-500  p-2 grid shadow-lg"
+                  >
+                    {modelOptions.map((model) => {
+                      const isPro = model.pro;
+                      const handleModelClick = () => {
+                        if (isPro) return;
+                        setSelectedModel(model.id);
+                        setShowModelOptions(false);
+                      };
+                      return (
+                        <div
+                          onClick={handleModelClick}
+                          key={model.id}
+                          className={`hover:bg-gray-100 rounded-lg p-2 px-3 items-center gap-2  relative ${isPro ? "text-gray-400 cursor-not-allowed" : "cursor-pointer"}`}
+                        >
+                          {isPro && (
+                            <div className="absolute top-2 right-2 bg-green-500 text-white text-[7px] font-bold uppercase tracking-wider rounded-full  py-[2px] px-[4px]">
+                              Pro
+                            </div>
+                          )}
+                          <div className={`text-xs font-bold uppercase tracking-wider`}>
+                            {model.name}
+                          </div>
+                          <span className="text-[10px] font-bold uppercase tracking-wider">
+                            {model.description}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
           <div className=" border-2 border-gray-200 w-[70%]  h-full absolute -z-20 top-0 left-[15%]" />

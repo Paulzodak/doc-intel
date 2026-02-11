@@ -14,25 +14,25 @@ export default function Home() {
           <div className="bg-background-light dark:bg-background-dark font-display text-[#121714] dark:text-white">
             <section className="relative herso-gradient dark:hero-gradient overflow-hidden">
               <div className="absolute inset-0 grid-overlay opacity-50"></div>
-              <div className="relative masx-w-[1200px] md:mx-auto mx-6 md:px-20 lsg:px-40 py-20 lg:py-32 flex flex-col items-center text-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-8 bg-gradient-to-r from-blue-500/5 via-purple-500/5 bordser via-pink-500/5 via-orange-500/5 to-primary-green/5 backdrop-blur-[2px]">
+              <div className="relative masx-w-[1200px] md:mx-auto mx-6 md:px-20 lsg:px-40 py-20 lg:py-32 flex flex-col items-center ">
+                <div className="inline-flex items-center gap-2 px-3 text-center py-1 rounded-full border border-primary/20  text-primary text-xs font-bold uppercase tracking-widest mb-8 bg-gradient-to-r from-blue-500/5 via-purple-500/5 bordser via-pink-500/5 via-orange-500/5 to-primary-green/5 backdrop-blur-[2px]">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                   </span>
                   Next-Gen Document Intelligence
                 </div>
-                <h1 className="text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight mb-8 max-w-4xl text-gradient dark:text-white">
+                <h1 className="text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight mb-8 max-w-4xl text-gradient dark:text-white text-center">
                   Analyze legal documents instantly with AI-powered insights
                 </h1>
-                <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mb-12 leading-relaxed font-brockmann font-light">
+                <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mb-12 leading-relaxed font-brockmann font-light text-center">
                   Scale your legal expertise with precision-engineered AI that identifies risks,
                   ensures compliance, and streamlines contract review in seconds.
                 </p>
 
                 <DocumentInput />
 
-                <div className="mt-16 flex flex-wrap justify-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                <div className="mt-16 flex flex-wrap justify-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500 text-center">
                   <p className="w-full text-xs font-bold uppercase tracking-widest mb-4">
                     Trusted by industry leaders
                   </p>

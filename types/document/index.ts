@@ -22,6 +22,7 @@ export interface ProcessDocumentRequest {
     include_highlights?: boolean;
     include_grading?: boolean;
     analysis_type?: "full" | "quick";
+    engine?: string;
   };
 }
 

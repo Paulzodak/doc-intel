@@ -94,7 +94,7 @@ const InputMethodTemplate = ({
       <div
         className={`transition-all duration-500 ease-in-out ${
           isExpanded
-            ? "max-h-[1000px] opacity-100 p-8 grid grid-cols-1 lg:grid-cols-2 gap-8"
+            ? "max-h-[1000px] opacity-100 px-4 py-8 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8"
             : "max-h-0 opacity-0 overflow-hidden p-0"
         }`}
       >

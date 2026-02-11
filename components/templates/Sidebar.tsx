@@ -97,8 +97,13 @@ const Sidebar = () => {
       href: "/settings",
     },
   ];
+
+  const goToCreateNew = () => {
+    router.push("/doc/new");
+  };
+
   return (
-    <div className="bg-gray-100 rounded-2xl  sm:block min-h-[200px] flex flex-col  relative">
+    <div className=" rounded-2xl  sm:block min-h-[200px] flex flex-col  relative">
       <div className="flex flex-col py-4 flex-1">
         <div className="text-black font-semibold px-4">LOGO</div>
         <div className="mt-6 text-neutral-500 font-semibold text-xs px-4">DOCS</div>
@@ -211,10 +216,11 @@ const Sidebar = () => {
 
       <div className="px-4">
         <Button
+          onClick={goToCreateNew}
           variant="primary-green"
-          className="text-md w-full bg-linear-to-b from-[#124F35] to-[#1D734B] text-white font-semibold shadow-none rounded-full py-3 border-0 hover:opacity-90"
+          className=" bg-[#1e2939] bgs-black text-md w-full bg-linear-to-b frsom-[#124F35] tso-[#1D734B] text-white font-bold shadow-none rounded-full py-3 border-0 hover:opacity-90"
         >
-          <PlusIcon color="white" />
+          <PlusIcon color="white" size={20} />
           <span>Create New</span>
         </Button>
       </div>

@@ -12,7 +12,7 @@ export interface InputMethodTemplateProps {
   isExpanded: boolean;
   onClick: () => void;
   methodNumber: string;
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   description: string;
   featuresTitle: string;
@@ -87,9 +87,9 @@ const InputMethodTemplate = ({
       onClick={onClick}
       className={`bg-white dark:bg-gray-800 rounded-4xl ${
         isExpanded
-          ? `border-2 ${colors.border} shaddow-2xl scale-105`
+          ? `border ${colors.border} shaddow-2xl skcale-105`
           : "border border-gray-300 dark:border-gray-700 shadsow-sm"
-      } overflow-hidden cursor-pointer transition-all duration-300`}
+      } overflow-scroll cursor-pointer transition-all duration-300`}
     >
       <div
         className={`transition-all duration-500 ease-in-out ${

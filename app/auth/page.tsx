@@ -18,12 +18,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { HiArrowLongRight } from "react-icons/hi2";
 import { IoIosArrowRoundUp } from "react-icons/io";
 import { ErrorFeedback, SuccessFeedback } from "@/components/atoms/form/feedback";
+import { DotGridBackground } from "@/components/atoms/DotGridBackground";
 import { MdEmail } from "react-icons/md";
 import { useRouter, useSearchParams } from "next/navigation";
 import DecorativeDots from "@/components/DecorativeDots";
 import { FaLink } from "react-icons/fa6";
 import { isProduction } from "@/lib/utils";
 import { error } from "console";
+import { ArrowLeftIcon } from "@/assets/svg/ArrowLeftIcon";
 
 export default function LoginPage() {
   console.log(isProduction, "isProduction");
@@ -68,24 +70,17 @@ export default function LoginPage() {
     <div className="min-h-screen flex dbg-[#0a0a0a] font-nunito relative overflow-hidden bg-gradient-to-br  from-[#11161f] via-100% via-primary-green to-[#11161f]">
       {/* Left Section - Branding */}
       <div className="hidden lg:flex w-1/2  relative overflow-hidden bg-[#11161fd9] backdrop-blur-3xl">
-        <div
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px)",
-            backgroundSize: "30px 30px",
-          }}
-          className="absolute w-full h-full inset-0  "
-        ></div>
+        <DotGridBackground className="absolute w-full h-full inset-0" />
 
         {/* Back Button */}
         <motion.button
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3 }}
-          className="absolute top-8 left-8 z-20 bg-white text-[#0a0a0a] px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium hover:bg-gray-100 transition-colors"
+          className="absolute top-8 left-8 z-20 bg-white text-[#0a0a0a] px-4 py-2 rounded-full flex items-center gap-2 text-sm font-medium hover:bg-gray-100 transition-colors  cursor-pointer"
         >
-          <span className="material-symbols-outlined text-lg">arrow_back</span>
-          <span>Back to the webpage</span>
+          <ArrowLeftIcon className="w-5 h-5" />
+          <span>Back to Home</span>
         </motion.button>
 
         <div className="relative z-10 flex flex-col justify-center items-center px-12 py-20 w-full">

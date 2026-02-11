@@ -24,6 +24,7 @@ import { KeyIcon } from "@/assets/svg/KeyIcon";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@/assets/svg/PlusIcon";
 import Sidebar from "./Sidebar";
+import { DotGridBackground } from "../atoms/DotGridBackground";
 export default function DashboardLayout({
   children,
   title,
@@ -81,13 +82,17 @@ export default function DashboardLayout({
   console.log("recentDocuments", recentDocuments);
 
   return (
-    <div className="h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50 flex font-nunito">
-      <div className="w-screen h-screen max-h-screen border border-red-800 bjg-red-500 p-2 flex flex-row  sm:p-4 grsid grid-cols-1  sm:grid-cols-[18rem_auto] gap-4 min-[1500px]:p-8 min-[1500px]:gap-6 font-nunito">
+    <div className="h-screen w-screen overflow-hidden flex font-nunito relative">
+      <DotGridBackground
+        dotColor="#d1d5dc"
+        className="absolute w-screen h-screen inset-0 opacity-50 bg-gdray-300 "
+      />
+      <div className="w-screen h-screen max-h-screen  p-2 flex flex-row  sm:p-4 grsid grid-cols-1  sm:grid-cols-[18rem_auto] gap-4 min-[1500px]:p-8 min-[1500px]:gap-6 font-nunito">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
-          className="bg-gray-200/50 rounded-2xl hidden sm:flex border border-gray-200/50 "
+          className="bg-gray-50 rounded-2xl hidden sm:flex border border-gray-200/50 "
         >
           <Sidebar />
         </motion.div>
@@ -96,7 +101,7 @@ export default function DashboardLayout({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
-            className="bg-gray-200/50 rounded-2xl flex items-center justify-between px-4 py-4 border border-gray-200/50"
+            className="bg-gray-50 rounded-2xl flex items-center justify-between px-4 py-4 border border-gray-200/50"
           >
             <div className="relative hidden sm:block">
               <Input
@@ -130,7 +135,7 @@ export default function DashboardLayout({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-gray-200/50 rounded-2xl border border-gray-200/50 overflow-scroll h-full "
+            className="bg-gray-50 rounded-2xl border border-gray-200/50 overflow-scroll h-full relative z-10 "
           >
             {children}
           </motion.div>

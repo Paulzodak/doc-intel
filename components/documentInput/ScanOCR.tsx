@@ -3,6 +3,7 @@
 import React from "react";
 import InputMethodTemplate from "./InputMethodTemplate";
 import { Button } from "../ui/button";
+import { CameraIconFilled } from "@/assets/svg/CameraIconFilled";
 
 interface ScanOCRProps {
   isExpanded: boolean;
@@ -21,7 +22,7 @@ const ScanOCR = ({ isExpanded, onClick }: ScanOCRProps) => {
       isExpanded={isExpanded}
       onClick={onClick}
       methodNumber="METHOD 02"
-      icon="camera_alt"
+      icon={<CameraIconFilled className="" size={20} color="#008000" />}
       title="Scan via OCR"
       description="Snap or upload a photo for high-precision text recognition."
       featuresTitle="OCR Features"
@@ -32,9 +33,7 @@ const ScanOCR = ({ isExpanded, onClick }: ScanOCRProps) => {
       {/* Camera/Upload Area */}
       <div className="border-2 w-full border-dashed border-primary-green rounded-xl p-12 bg-gray-50 dark:bg-gray-900/50 flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-green-500 transition-colors">
         <div className="w-16 h-16 bg-primary-green dark:bg-primary-green rounded-full flex items-center justify-center">
-          <span className="material-symbols-outlined text-white dark:text-primary-green text-3xl">
-            camera_alt
-          </span>
+          <CameraIconFilled className="" size={20} color="white" />
         </div>
         <div className="text-center">
           <p className="text-sm md:text-base lg:text-lg font-semibold text-gray-900 dark:text-white">

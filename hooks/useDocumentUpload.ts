@@ -27,7 +27,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
   const [jobId, setJobId] = useState<string | null>(null);
   const socketRef = useRef<Socket | null>(null);
 
-  const text = useSelector((state: RootState) => state.documentInput.text);
+  // const text = useSelector((state: RootState) => state.documentInput.text);
   const isLoading = useSelector((state: RootState) => state.documentInput.isLoading);
 
   const setIsLoading = (loading: boolean) => {
@@ -112,7 +112,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
           socketRef.current = null;
           options?.onError?.(errorMessage);
         }
-      }
+      },
     );
 
     // Listen for analysis completion
@@ -158,7 +158,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
   };
 
   // Handle text processing
-  const processText = async () => {
+  const processText = async (text: string) => {
     if (isLoading || !text) return;
 
     setIsLoading(true);
@@ -166,7 +166,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
     setPercentage(0);
 
     processTextMutation({
-      text: text,
+      text: text || "",
       options: {
         include_highlights: true,
         include_grading: true,
@@ -206,7 +206,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
     percentage,
     jobId,
     isLoading,
-    text,
+    // text,
 
     // Actions
     processText,

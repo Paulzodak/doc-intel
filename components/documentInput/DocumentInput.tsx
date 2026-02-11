@@ -5,6 +5,11 @@ import UploadDocument from "./UploadDocument";
 import ScanOCR from "./ScanOCR";
 import PasteText from "./PasteText";
 import { Button } from "@/components/ui/button";
+import { LockIcon } from "@/assets/svg/LockIcon";
+import { DisplayIcon } from "@/assets/svg/DisplayIcon";
+import { PlayIcon } from "@/assets/svg/PlayIcon";
+import { PlayIconFilled } from "@/assets/svg/PlayIconFilled";
+import { VerifiedCheckedIcon } from "@/assets/svg/VerifiedCheckedIcon";
 
 type MethodType = "upload" | "scan" | "paste" | null;
 
@@ -15,7 +20,6 @@ const DocumentInput = () => {
     // If clicking the same method, collapse it; otherwise expand the new one
     setExpandedMethod(expandedMethod === method ? method : method);
   };
-
   return (
     <section className="relative py-12   max-w-full ">
       {/* Dotted Grid Background */}
@@ -28,25 +32,7 @@ const DocumentInput = () => {
       />
       <div className="relative max-w-[800px]  mx-auto">
         <div className=" grid gap-6 relative">
-          <div className=" border-2 border-gray-200 w-[70%]  h-full absolute -z-20 top-0 left-[15%]" />
-          {/* Main Input Section - Method 01 */}
-          <UploadDocument
-            isExpanded={expandedMethod === "upload"}
-            onClick={() => handleMethodClick("upload")}
-          />
-
-          {/* Method 02 - Scan via OCR */}
-          <ScanOCR
-            isExpanded={expandedMethod === "scan"}
-            onClick={() => handleMethodClick("scan")}
-          />
-
-          {/* Method 03 - Paste Text */}
-          <PasteText
-            isExpanded={expandedMethod === "paste"}
-            onClick={() => handleMethodClick("paste")}
-          />
-          <div className="bg-[#1e2939] dasrk:bg-gray-900 rounded-4xl p-8 shadow-lg mt-6">
+          <div className="bg-[#1e2939] dasrk:bg-gray-900 rounded-4xl p-8 shadow-lg ">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               {/* Left Side */}
               <div>
@@ -68,32 +54,49 @@ const DocumentInput = () => {
                   </div>
                 </div>
                 {/* Analyze Button */}
-                <Button variant="primary-green" size="analyze">
-                  <span>Analyze Document</span>
-                  <span className="material-symbols-outlined text-lg">bolt</span>
-                </Button>
+                {/* <Button variant="primary-green" size="analyze">
+                <span>Analyze Document</span>
+                <PlayIconFilled />
+              </Button> */}
               </div>
             </div>
           </div>
+          <div className=" border-2 border-gray-200 w-[70%]  h-full absolute -z-20 top-0 left-[15%]" />
+          {/* Main Input Section - Method 01 */}
+          <UploadDocument
+            isExpanded={expandedMethod === "upload"}
+            onClick={() => handleMethodClick("upload")}
+          />
+
+          {/* Method 02 - Scan via OCR */}
+          <ScanOCR
+            isExpanded={expandedMethod === "scan"}
+            onClick={() => handleMethodClick("scan")}
+          />
+
+          {/* Method 03 - Paste Text */}
+          <PasteText
+            isExpanded={expandedMethod === "paste"}
+            onClick={() => handleMethodClick("paste")}
+          />
         </div>
         {/* Call to Action Section */}
 
         {/* Footer - Global Features */}
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 py-6">
           <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            <span className="material-symbols-outlined text-lg">lock</span>
+            {/* <span className="material-symbols-outlined text-lg">lock</span> */}
+            <LockIcon className="" size={20} />
             <span className="text-xs font-bold uppercase tracking-wider">
               END-TO-END ENCRYPTION
             </span>
           </div>
           <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            <span className="material-symbols-outlined text-lg">language</span>
-            <span className="text-xs font-bold uppercase tracking-wider">
-              SUPPORTS 40+ LANGUAGES
-            </span>
+            <DisplayIcon className="" size={20} />
+            <span className="text-xs font-bold uppercase tracking-wider">AI INSIGHTS</span>
           </div>
           <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            <span className="material-symbols-outlined text-lg">balance</span>
+            <VerifiedCheckedIcon className="" size={20} />
             <span className="text-xs font-bold uppercase tracking-wider">
               LEGAL GRADE PRECISION
             </span>

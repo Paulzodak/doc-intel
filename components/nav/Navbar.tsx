@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
 import { useShowNav } from "@/hooks/layout/useShowNav";
+import { useRouter } from "next/navigation";
 
 interface DropdownColumn {
   heading: string;
@@ -23,7 +24,7 @@ interface NavItem {
 const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const router = useRouter();
   const isVisible = useShowNav();
   console.log(isVisible);
   const navItems: NavItem[] = [
@@ -193,6 +194,14 @@ const Navbar = () => {
     }
   };
 
+  const goToLogin = () => {
+    router.push("/auth");
+  };
+
+  const goToSignUp = () => {
+    router.push("/auth");
+  };
+
   return (
     <>
       <AnimatePresence>
@@ -298,10 +307,16 @@ const Navbar = () => {
 
                 {/* Action Buttons */}
                 <div className="flex items-center gap-4">
-                  <button className="hidden sm:block px-5 py-2 text-sm font-bold hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl transition-colors">
+                  <button
+                    onClick={goToLogin}
+                    className="hidden sm:block px-5 py-2 text-sm font-bold hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl transition-colors hover:text-primary-green cursor-pointer"
+                  >
                     Log In
                   </button>
-                  <button className="bg-primary-green text-legal-navy px-6 py-2.5 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95">
+                  <button
+                    onClick={goToSignUp}
+                    className="bg-primary-green text-legal-navy px-6 py-2.5 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer"
+                  >
                     Start Free Trial
                   </button>
 

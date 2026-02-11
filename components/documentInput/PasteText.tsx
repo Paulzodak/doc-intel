@@ -8,6 +8,8 @@ import { useDocumentUpload } from "@/hooks/useDocumentUpload";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { setTextInput } from "@/redux/slices/document/input.slice";
+import { FileIconFilled } from "@/assets/svg/FileIconFilled";
+import { PlayIconFilled } from "@/assets/svg/PlayIconFilled";
 
 interface PasteTextProps {
   isExpanded: boolean;
@@ -25,7 +27,7 @@ const PasteText = ({ isExpanded, onClick }: PasteTextProps) => {
   ];
 
   const handleSubmit = () => {
-    processText();
+    processText(text);
   };
   const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
     dispatch(setTextInput(e.target.value));
@@ -38,7 +40,7 @@ const PasteText = ({ isExpanded, onClick }: PasteTextProps) => {
       isExpanded={isExpanded}
       onClick={onClick}
       methodNumber="METHOD 03"
-      icon="content_paste"
+      icon={<FileIconFilled className="" size={20} color="#800080" />}
       title="Paste Text"
       description="Directly paste contract clauses or snippets from your clipboard."
       featuresTitle="Editor Features"

@@ -112,12 +112,20 @@ function stripXmlToText(xmlString: string): string {
   }
 }
 
-let jszipCache: Promise<unknown> | null = null;
+/** Minimal type for JSZip constructor (loadAsync) and zip instance (file, files). */
+interface JSZipStatic {
+  loadAsync(data: ArrayBuffer): Promise<{
+    file: (name: string) => { async(type: "text"): Promise<string> } | null;
+    files: Record<string, unknown>;
+  }>;
+}
 
-async function loadJSZip() {
+let jszipCache: Promise<JSZipStatic> | null = null;
+
+async function loadJSZip(): Promise<JSZipStatic> {
   if (!jszipCache) {
     jszipCache = import("jszip").then((mod) =>
-      "default" in mod ? mod.default : mod
+      ("default" in mod ? mod.default : mod) as JSZipStatic
     );
   }
   return jszipCache;

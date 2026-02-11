@@ -22,7 +22,7 @@ const UploadAction = () => {
           <RiResetLeftLine className="text-sm md:text-base" />
           <span className="hidden sm:inline">Reset</span>
         </Button>
-        <Button
+        {/* <Button
           variant="secondary"
           className="grow rounded-full font-semibold text-xs md:text-md"
           onClick={processText}
@@ -34,7 +34,7 @@ const UploadAction = () => {
         >
           <HiOutlineUpload size={"1rem"} />
           <span className="hidden sm:inline">{isLoading ? "Processing..." : "Process Text"}</span>
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

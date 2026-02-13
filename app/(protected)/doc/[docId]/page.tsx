@@ -179,6 +179,7 @@ export default function DocPage({ params }: DocPageProps) {
     },
   };
 
+  console.log(jobData);
   return (
     <>
       {/* Header */}
@@ -186,23 +187,23 @@ export default function DocPage({ params }: DocPageProps) {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto h-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 h-full">
-          <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6 borjder border-blue-800 h-full">
+        <div className="madx-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 h-full">
+          <div className="flex flex-col lg:grid lg:grid-cols-10 gap-6 borjder border-blue-800 h-full">
             {/* Analysis Panel - First on mobile, right column on desktop */}
-            <div className=" order-1 lg:order-2 lg:col-span-1 makx-h-full overdflow-scroll bsorder  border-green-800 rounde">
+            <div className=" order-1 lg:order-2 lg:col-span-3 makx-h-full overdflow-scroll bsorder  border-green-800 rounde">
               {/* <div className="lg:ssticky lg:top-6 max-h-full  rounded-2xl border border-red-800"> */}
               <AnalysisPanel analysis={analysis} />
               {/* </div> */}
             </div>
 
             {/* Document Text - Second on mobile, left column on desktop */}
-            <div className="order-2 lg:order-1 lg:col-span-2">
+            {/* <div className="order-2 lg:order-1 lg:col-span-7">
               <DocumentContent
                 documentText={documentText}
                 highlights={highlights}
                 onHighlightClick={handleHighlightClick}
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

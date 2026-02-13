@@ -24,7 +24,7 @@ const buttonVariants = cva(
           "bg-primary-green hover:bg-green-600 shadow-lg shadow-primary-green/30 text-black font-bold transition-colors",
       },
       size: {
-        default: "h-13 px-6 rounded-[20px]  py-2 has-[>svg]:px-3",
+        default: "h-12 px-6 rounded-[20px]  py-2 has-[>svg]:px-3",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-16 rounded-md px-10  rounded-[12px] has-[>svg]:px-4",
         analyze: "px-8 py-3 rounded-[20px] text-sm",
@@ -37,7 +37,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 interface ButtonProps extends React.ComponentProps<"button">, VariantProps<typeof buttonVariants> {
@@ -82,8 +82,8 @@ function Button({
             variant === "secondary"
               ? "bg-[#3767ea]"
               : variant === "destructive"
-              ? "bg-white"
-              : "bg-white"
+                ? "bg-white"
+                : "bg-white"
           }
         />
       )}

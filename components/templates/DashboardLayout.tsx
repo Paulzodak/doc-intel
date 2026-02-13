@@ -3,7 +3,7 @@
 import { useMemo, useState, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useDocumentNames } from "@/hooks/useDocumentNames";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import DocumentInput from "@/components/documentInput/DocumentInput";
 import { Input } from "@/components/ui/input";
 import { MdKeyboardCommandKey } from "react-icons/md";
@@ -32,6 +32,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
   title: string;
 }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = useCallback(() => {
+    setIsSidebarOpen((prev) => !prev);
+  }, []);
   const router = useRouter();
   const pathname = usePathname();
   const { getDocumentName, documents: allDocuments, deleteDocument } = useDocumentNames();
@@ -82,7 +86,7 @@ export default function DashboardLayout({
   console.log("recentDocuments", recentDocuments);
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex font-nunito relative">
+    <div className="h-screen w-screen overflow-hidden flex font-nunito relative max-w-[1800px] mx-auto bg-white">
       <DotGridBackground
         dotColor="#d1d5dc"
         className="absolute w-screen h-screen inset-0 opacity-50 bg-gdray-300 "
@@ -92,7 +96,7 @@ export default function DashboardLayout({
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
-          className="bg-gray-50 rounded-2xl hidden sm:flex border border-gray-200/50 "
+          className="bg-gray-100/50 rounded-2xl hidden lg:flex border border-gray-200/50 "
         >
           <Sidebar />
         </motion.div>
@@ -101,9 +105,9 @@ export default function DashboardLayout({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
-            className="bg-gray-50 rounded-2xl flex items-center justify-between px-4 py-4 border border-gray-200/50"
+            className="bg-gray-100/50 rounded-2xl flex items-center justify-between px-4 py-4 border border-gray-200/50"
           >
-            <div className="relative hidden sm:block">
+            <div className="relative hidden lg:block">
               <Input
                 placeholder="Search documents..."
                 className="bg-white rounded-full border-none shadow-none px-10 py-3"
@@ -118,9 +122,9 @@ export default function DashboardLayout({
                 <span className="text-xs ">F</span>
               </div>
             </div>
-            <div className="flex gap-4 sm:hidden">
-              <MenuIcon size={20} color="#101828" />
-              <div className="block sm:hidden text-black">LOGOO</div>
+            <div className="flex gap-4 lg:hidden">
+              <MenuIcon onClick={toggleSidebar} size={20} color="#101828" />
+              <div className="block lg:hidden text-black">LOGOO</div>
             </div>
             <div className="relative h-full flex gap-4 ">
               <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
@@ -135,12 +139,36 @@ export default function DashboardLayout({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-gray-50 rounded-2xl border border-gray-200/50 overflow-scroll h-full relative z-10 "
+            className="bg-gray-100/50 rounded-2xl border border-gray-200/50 overflow-scroll h-full relative z-10 "
           >
             {children}
           </motion.div>
         </div>
       </div>
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className=" h-full absolute top-0 left-0   w-full sm:flex  z-10 lg:hidden "
+          >
+            <div
+              onClick={() => setIsSidebarOpen(false)}
+              className="absolute h-full w-full top-0 left-0 bg-black/50 z-0"
+            />
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.2 }}
+              key={isSidebarOpen ? "sidebar-open" : "sidebar-closed"}
+              className="relative h-full w-full bg-white max-w-[15rem] "
+            >
+              <Sidebar />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Sidebar - Persists across navigation */}
       {/* <DocumentSidebar */}
       {/* currentDocumentName={currentDocumentName}

@@ -13,6 +13,7 @@ import { EyeIconFilled } from "@/assets/svg/EyeIconFilled";
 import { extractDocumentText } from "@/lib/extractDocumentText";
 import { DocumentPreviewPanel } from "./DocumentPreviewPanel";
 import { useDocumentUpload } from "@/hooks/useDocumentUpload";
+import { ErrorFeedback } from "../atoms/form/feedback";
 
 interface UploadDocumentProps {
   isExpanded: boolean;
@@ -66,9 +67,10 @@ const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentPr
   const [showPreviewPanel, setShowPreviewPanel] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  console.log(error, "eror");
   const features = [
-    { name: "Metadata Extraction" },
-    { name: "Table Detection" },
+    { name: "Full Data Extraction" },
+    { name: "Multi-File Processing" },
     { name: "Cross-reference Check" },
   ];
 
@@ -156,9 +158,47 @@ const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentPr
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleAnalyzeDocument = () => {
-    const text = files.map((f) => f.extractedText).join("\n");
-    processText(text);
+  const handleAnalyzeDocument = async () => {
+    const validFiles = files.filter((f) => f.status !== "error");
+    if (validFiles.length === 0) return;
+
+    const texts: string[] = [];
+    for (const uf of validFiles) {
+      if (uf.extractionStatus === "done" && uf.extractedText != null) {
+        texts.push(uf.extractedText);
+        continue;
+      }
+      setFiles((prev) =>
+        prev.map((f) =>
+          f.id === uf.id ? { ...f, extractionStatus: "extracting" as const } : f,
+        ),
+      );
+      try {
+        const text = await extractDocumentText(uf.file);
+        texts.push(text);
+        setFiles((prev) =>
+          prev.map((f) =>
+            f.id === uf.id
+              ? { ...f, extractedText: text, extractionStatus: "done" as const }
+              : f,
+          ),
+        );
+      } catch (e) {
+        setFiles((prev) =>
+          prev.map((f) =>
+            f.id === uf.id
+              ? {
+                  ...f,
+                  extractionError: String(e),
+                  extractionStatus: "error" as const,
+                }
+              : f,
+          ),
+        );
+      }
+    }
+    const combined = texts.join("\n");
+    if (combined) processText(combined);
   };
 
   const runExtractionAndShowPreview = useCallback(async () => {
@@ -261,7 +301,7 @@ const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentPr
             e.stopPropagation();
             fileInputRef.current?.click();
           }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3  font-semibold transition-colors rounded-full"
         >
           Browse Files
         </button>
@@ -357,13 +397,13 @@ const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentPr
           />
         </AnimatePresence>
       )}
-
+      {error && <ErrorFeedback className="mt-4" message={error} />}
       {files.length > 0 && (
         <div className="mt-6 flex flex-wrap gap-3 items-center">
           <Button
             className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white w-full sm:flex-1"
             size="analyze"
-            disabled={!hasValidFiles}
+            // disabled={!hasValidFiles}
             onClick={runExtractionAndShowPreview}
           >
             <span>Preview Document</span>
@@ -372,7 +412,7 @@ const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentPr
           <Button
             className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white w-full sm:flex-1"
             size="analyze"
-            disabled={!hasValidFiles}
+            // disabled={!hasValidFiles}
             onClick={handleAnalyzeDocument}
             isLoading={isLoading}
             showSpinner

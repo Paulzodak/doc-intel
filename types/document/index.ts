@@ -32,6 +32,16 @@ export interface ProcessDocumentResponse {
   prompt: string;
 }
 
+export interface CleanTextRequest {
+  text: string;
+}
+
+export interface CleanTextResponse {
+  success: boolean;
+  text?: string;
+  message?: string;
+}
+
 export interface JobResponse {
   jobId: string;
   message: string;

@@ -8,6 +8,8 @@ import {
 } from "@tanstack/react-query";
 import { apiClient } from "@/lib/axios";
 import type {
+  CleanTextRequest,
+  CleanTextResponse,
   JobResponse,
   ProcessDocumentRequest,
   ProcessDocumentResponse,
@@ -106,6 +108,27 @@ export function useProcessDocument(
   });
 }
 
+// Hook to clean text
+export function useCleanText(
+  options?: UseMutationOptions<CleanTextResponse, Error, CleanTextRequest>
+) {
+  return useMutation({
+    mutationFn: async (data: CleanTextRequest) => {
+      const response = await apiClient.post<CleanTextResponse>("/api/document/clean", {
+        text: data.text,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      ToastLogger.success("documents", "Text cleaned successfully");
+    },
+    onError: (error: Error) => {
+      ToastLogger.error("documents", `Failed to clean text: ${error.message}`);
+    },
+    ...options,
+  });
+}
+
 // Hook to get job by ID
 export function useJob(
   jobId: string,
@@ -121,3 +144,4 @@ export function useJob(
     ...options,
   });
 }
+

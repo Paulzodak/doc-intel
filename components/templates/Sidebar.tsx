@@ -23,6 +23,9 @@ import { SettingsIcon } from "@/assets/svg/SettingsIcon";
 import { KeyIcon } from "@/assets/svg/KeyIcon";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@/assets/svg/PlusIcon";
+import { AddFolderIcon } from "@/assets/svg/AddFolderIcon";
+import { AddFolderIcon2 } from "@/assets/svg/AddFolderIcon2";
+import { FileIcon } from "@/assets/svg/FileIcon";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -103,7 +106,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className=" rounded-2xl  sm:block min-h-[200px] flex flex-col  relative">
+    <div className=" rounded-2xl  block sm:block min-h-[200px]  flex-col  relative h-full">
       <div className="flex flex-col py-4 flex-1">
         <div className="text-black font-semibold px-4">LOGO</div>
         <div className="mt-6 text-neutral-500 font-semibold text-xs px-4">DOCS</div>
@@ -117,8 +120,8 @@ const Sidebar = () => {
                   key={doc.id}
                   className={`relative rounded-xl border transition-all duration-200 group ${
                     isActive
-                      ? "bg-primary-green/20 border-primary-green/50 hover:bg-primary-green/30"
-                      : "bg-white/60 border-gray-200 hover:bg-white hover:border-gray-300"
+                      ? "bg-gray-500/10 border-gray-300 hover:bg-gray-600/10"
+                      : " border-gray-200 hover:bg-white hover:border-gray-300 bg-gray-300/10"
                   }`}
                 >
                   {/* <div className="bg-primary-green w-4 h-4" /> */}
@@ -130,13 +133,13 @@ const Sidebar = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
                           {isActive && (
-                            <div className="w-2 h-2 bg-primary-green rounded-full shrink-0" />
+                            <div className="w-2 h-2 bg-gray-800 rounded-full shrink-0" />
                           )}
                           <p
                             className={`text-sm font-medium truncate transition-colors ${
                               isActive
-                                ? "text-primary-green group-hover:text-primary-green"
-                                : "text-gray-900 group-hover:text-primary-green"
+                                ? "text-gray-900 group-hover:text-gray-900"
+                                : "text-gray-500 group-hover:text-gray-900"
                             }`}
                           >
                             {doc.name}
@@ -144,13 +147,11 @@ const Sidebar = () => {
                         </div>
                         <div className="flex items-center gap-1 mt-1">
                           <FiClock
-                            className={isActive ? "text-primary-green/70" : "text-gray-500"}
+                            className={isActive ? " text-gray-500" : "text-gray-500"}
                             size={12}
                           />
                           <span
-                            className={
-                              isActive ? "text-primary-green/70 text-xs" : "text-gray-500 text-xs"
-                            }
+                            className={isActive ? "text-gray-500 text-xs" : "text-gray-500 text-xs"}
                           >
                             {doc.date}
                           </span>
@@ -160,8 +161,8 @@ const Sidebar = () => {
                         <FiChevronRight
                           className={`shrink-0 mt-0.5 transition-colors ${
                             isActive
-                              ? "text-primary-green group-hover:text-primary-green"
-                              : "text-gray-500 group-hover:text-primary-green"
+                              ? "text-gray-400 group-hover:text-gray-400"
+                              : "text-gray-500 group-hover:text-gray-400"
                           }`}
                           size={16}
                         />
@@ -173,7 +174,7 @@ const Sidebar = () => {
                           }`}
                         >
                           <FiMoreVertical
-                            className={isActive ? "text-primary-green" : "text-gray-400"}
+                            className={isActive ? "text-gray-500" : "text-gray-400"}
                             size={16}
                           />
                         </button>
@@ -208,7 +209,7 @@ const Sidebar = () => {
           </div>
         ) : (
           <div className="text-center py-8">
-            <FiFileText className="text-gray-600 mx-auto mb-2" size={32} />
+            <FileIcon className="text-gray-600 mx-auto mb-2" size={25} color="#6a7282" />
             <p className="text-gray-500 text-sm">No recent documents</p>
           </div>
         )}
@@ -218,9 +219,9 @@ const Sidebar = () => {
         <Button
           onClick={goToCreateNew}
           variant="primary-green"
-          className=" bg-[#1e2939] bgs-black text-md w-full bg-linear-to-b frsom-[#124F35] tso-[#1D734B] text-white font-bold shadow-none rounded-full py-3 border-0 hover:opacity-90"
+          className="bg-green-600  text-sm w-full  text-white font-bold shsadow-2xl shadsow-black/50 shadow-none rounded-full py-3 border-0 hover:opacity-90"
         >
-          <PlusIcon color="white" size={20} />
+          <AddFolderIcon2 color="white" size={20} />
           <span>Create New</span>
         </Button>
       </div>

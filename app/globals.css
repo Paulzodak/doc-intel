@@ -6,7 +6,8 @@
 /* Brockmann Font */
 @font-face {
   font-family: "Brockmann";
-  src: url("/assets/fonts/brockmann-medium-webfont.woff") format("woff"),
+  src:
+    url("/assets/fonts/brockmann-medium-webfont.woff") format("woff"),
     url("/assets/fonts/brockmann-medium.otf") format("opentype"),
     url("/assets/fonts/brockmann-medium-webfont.ttf") format("truetype");
   font-weight: 500;
@@ -24,6 +25,7 @@
   --color-primary-blue-dark: #11161f;
   --font-sans: var(--font-geist-sans);
   --font-nunito: "Nunito Sans", sans-serif;
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-brockmann: "Brockmann", sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -190,7 +192,9 @@ body {
   background-size: 32px 32px;
 }
 .bento-card {
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 .bento-card:hover {
   transform: translateY(-4px);

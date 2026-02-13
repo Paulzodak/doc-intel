@@ -5,12 +5,14 @@ export interface IDocumentInputState {
   text: string;
   isLoading: boolean;
   error: string | null;
+  language: string; // OCR language code (e.g., 'eng', 'fra', 'spa', etc.)
 }
 
 const initialState: IDocumentInputState = {
   text: "",
   isLoading: false,
   error: null,
+  language: "eng", // Default to English
 };
 
 const documentInputSlice = createSlice({
@@ -33,12 +35,16 @@ const documentInputSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    setLanguage: (state, action: PayloadAction<string>) => {
+      state.language = action.payload;
+    },
   },
 });
 
-export const { setLoading, setTextInput, clearTextInput, setError, clearError } =
+export const { setLoading, setTextInput, clearTextInput, setError, clearError, setLanguage } =
   documentInputSlice.actions;
 export const selectText = (state: RootState) => state.documentInput.text;
 export const selectIsLoading = (state: RootState) => state.documentInput.isLoading;
 export const selectError = (state: RootState) => state.documentInput.error;
+export const selectLanguage = (state: RootState) => state.documentInput.language;
 export default documentInputSlice.reducer;

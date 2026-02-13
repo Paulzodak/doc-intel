@@ -20,11 +20,7 @@ const PasteText = ({ isExpanded, onClick }: PasteTextProps) => {
   const dispatch = useDispatch();
   const text = useSelector((state: RootState) => state.documentInput.text);
   const { processText, isLoading, reset, error, percentage } = useDocumentUpload();
-  const features = [
-    { name: "Syntax Highlighting" },
-    { name: "Auto-formatting" },
-    { name: "Real-time Analysis" },
-  ];
+  const features = [{ name: "Syntax Highlighting" }, { name: "Real-time Analysis" }];
 
   const handleSubmit = () => {
     processText(text);

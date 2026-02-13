@@ -1,12 +1,16 @@
 import clsx from "clsx";
-import React from "react";
+import React, { useCallback } from "react";
 
 interface MenuIconProps {
   className?: string;
   size?: number;
   color?: string;
+  onClick?: () => void;
 }
-export const MenuIcon = ({ className, size = 24, color = "#05091C" }: MenuIconProps) => {
+export const MenuIcon = ({ className, size = 24, color = "#05091C", onClick }: MenuIconProps) => {
+  const handleClick = useCallback(() => {
+    onClick?.();
+  }, [onClick]);
   return (
     <svg
       width={size ?? "24"}
@@ -15,6 +19,7 @@ export const MenuIcon = ({ className, size = 24, color = "#05091C" }: MenuIconPr
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      onClick={onClick}
     >
       <path
         d="M6 12C6 13.1046 5.10457 14 4 14C2.89543 14 2 13.1046 2 12C2 10.8954 2.89543 10 4 10C5.10457 10 6 10.8954 6 12Z"

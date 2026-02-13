@@ -36,7 +36,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis }) => {
   const activeTab = useSelector(selectActiveTab);
 
   return (
-    <div className="h-fudll flex flex-col bg-white overflow-scroll border rounded-2xl">
+    <div className="h-fudll flex flex-col bg-white overflow-scroll border rounded-3xl">
       {/* Tabs */}
       <div className="flex border-b border-gray-200 bg-white/80  sticsky tomp-0 z-10">
         {[

@@ -37,9 +37,10 @@ const documentInputTransform = createTransform(
       text: outboundState.text || "",
       error: outboundState.error || null,
       isLoading: false, // Always start with loading false
+      language: outboundState.language || "eng",
     };
   },
-  { whitelist: ["documentInput"] }
+  { whitelist: ["documentInput"] },
 );
 
 // Transform to exclude loading state from user persistence
@@ -60,7 +61,7 @@ const userTransform = createTransform(
       error: null, // Always start with no error
     };
   },
-  { whitelist: ["user"] }
+  { whitelist: ["user"] },
 );
 
 const persistConfig: PersistConfig<ReturnType<typeof rootReducer>> = {

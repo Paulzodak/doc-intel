@@ -197,13 +197,13 @@ export default function DocPage({ params }: DocPageProps) {
             </div>
 
             {/* Document Text - Second on mobile, left column on desktop */}
-            {/* <div className="order-2 lg:order-1 lg:col-span-7">
+            <div className="order-2 lg:order-1 lg:col-span-7">
               <DocumentContent
                 documentText={documentText}
                 highlights={highlights}
                 onHighlightClick={handleHighlightClick}
               />
-            </div> */}
+            </div>
           </div>
         </div>
       </div>

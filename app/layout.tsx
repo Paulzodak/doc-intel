@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Lexoptia",
-  description: "Lexoptia - AI-powered legal document analysis",
+  title: "Qlarety",
+  description: "Qlarety - AI-powered legal document analysis",
 };
 
 export default function RootLayout({

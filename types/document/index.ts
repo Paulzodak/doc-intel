@@ -15,6 +15,37 @@ export interface DocumentAttachmentResponse {
   };
 }
 
+import type { Highlight } from "@/types/analysis";
+
+export interface DocumentResult {
+  legalAnalysis: {
+    confidence: number;
+    isLegalDocument: boolean;
+  };
+  analyzeChunkResults: Array<{ highlights: Highlight[] }>;
+}
+
+export interface Document {
+  id: string;
+  jobId: string;
+  userId: string | null;
+  guestId: string | null;
+  status: string;
+  inputText: string;
+  result: DocumentResult;
+  chunkResults: Array<{ highlights: Highlight[] }>;
+  createdAt: string;
+  updatedAt: string;
+  completedAt: string;
+  documentName: string;
+}
+
+export interface ListDocumentsResponse {
+  success: boolean;
+  data?: Document[];
+  message?: string;
+}
+
 export interface ProcessDocumentRequest {
   text?: string;
   file?: File;

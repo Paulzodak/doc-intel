@@ -107,26 +107,51 @@ const DocumentContent: React.FC<DocumentContentProps> = ({
       animate={{ opacity: 1, y: 0 }}
       className="bg-white rounded-3xl overflow-hidden border shasdow-sm relative"
     >
-      <div className="flex items-center justify-between border-b-[1px] py-4 font-jakarta px-4 sm:px-8">
-        <div className="flex gap-2 items-center">
-          <DocumentTextIcon size={20} className="" color="#6a7282" />
-          <h2 className="text-lg sm:text-xl font-bold text-gray-900 font-jakarta">Document</h2>
+      <div className="border-b-[1px] py-4 font-jakarta px-4 sm:px-8">
+        <div className="flex items-center justify-between  font-jakarta ">
+          <div className="flex gap-2 items-center">
+            <DocumentTextIcon size={20} className="" color="#6a7282" />
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 font-jakarta">Document</h2>
+          </div>
+          <div className="flex gap-2">
+            <div className="flex gap-2 text-[10px] sm:text-xs leading-5 hidden sm:flex">
+              <span className="px-2 py-1 bg-red-100 text-red-700 rounded-full">Risks</span>
+              <span className="px-2 py-1 bg-green-100 text-primary-blue-dark rounded-full bg-lidnear-to-b frdom-[#124F35] to-[d#1D734B]">
+                Advantages
+              </span>
+              <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full">
+                Compliance
+              </span>
+              <div className="border-l-[1px] border-gray-200 my-1" />
+              <div className="gap-2 hidden md:flex">
+                <div
+                  // onClick={handleCopy}
+                  className="flex border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2  py-1 rounded-full"
+                >
+                  <Copy size={15} className="" />
+                  <span>Copy</span>
+                </div>
+                <div
+                  // onClick={handleCopy}
+                  className="flex border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2  py-1 rounded-full"
+                >
+                  <ShareIcon size={15} className="" color="#6a7282" />
+                  <span>Share</span>
+                </div>
+              </div>
+            </div>
+            <MobileMenu />
+          </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 mt-2 ">
           <div className="flex gap-2 text-[10px] sm:text-xs leading-5 hidden sm:flex">
-            <span className="px-2 py-1 bg-red-100 text-red-700 rounded-full">Risks</span>
-            <span className="px-2 py-1 bg-green-100 text-primary-blue-dark rounded-full bg-lidnear-to-b frdom-[#124F35] to-[d#1D734B]">
-              Advantages
-            </span>
-            <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full">Compliance</span>
-            <div className="border-l-[1px] border-gray-200 my-1" />
             <div className="gap-2 hidden md:flex">
               <div
                 // onClick={handleCopy}
                 className="flex border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2  py-1 rounded-full"
               >
                 <Copy size={15} className="" />
-                <span>Copy</span>
+                <span>Public</span>
               </div>
               <div
                 // onClick={handleCopy}

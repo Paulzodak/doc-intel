@@ -1,10 +1,25 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { persistor, store } from "@/redux/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import { selectGuestId, setGuestId } from "@/redux/slices/auth/auth.slice";
+
+function GuestIdInitializer({ children }: { children: React.ReactNode }) {
+  const guestId = useSelector(selectGuestId);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!guestId && typeof crypto !== "undefined" && crypto.randomUUID) {
+      dispatch(setGuestId(crypto.randomUUID()));
+    }
+  }, [guestId, dispatch]);
+
+  return <>{children}</>;
+}
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -26,7 +41,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        <GuestIdInitializer>
+          <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        </GuestIdInitializer>
       </PersistGate>
     </Provider>
   );

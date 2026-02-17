@@ -83,7 +83,7 @@ export default function ContactPage() {
                   Get in Touch
                 </div>
                 <h1 className="text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight mb-8 max-w-4xl text-gradient dark:text-white">
-                  Let&apos;s discuss how Lexoptia can transform your workflow
+                  Let&apos;s discuss how Qlarety can transform your workflow
                 </h1>
                 <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mb-12 leading-relaxed">
                   Have questions? We&apos;re here to help. Reach out to our team and discover how
@@ -104,7 +104,7 @@ export default function ContactPage() {
                       </h2>
                       <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
                         Choose the best way to reach us. Our team is ready to assist you with any
-                        questions about Lexoptia.
+                        questions about Qlarety.
                       </p>
                     </div>
 
@@ -361,7 +361,7 @@ export default function ContactPage() {
                     Frequently Asked Questions
                   </h2>
                   <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                    Find answers to common questions about Lexoptia
+                    Find answers to common questions about Qlarety
                   </p>
                 </div>
 
@@ -369,10 +369,10 @@ export default function ContactPage() {
                   {/* FAQ Item 1 */}
                   <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
                     <h3 className="text-xl font-black text-gray-900 dark:text-white mb-3">
-                      How does Lexoptia work?
+                      How does Qlarety work?
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                      Lexoptia uses advanced machine learning algorithms to analyze legal documents,
+                      Qlarety uses advanced machine learning algorithms to analyze legal documents,
                       extract key information, identify risks, and provide actionable insights in
                       seconds.
                     </p>
@@ -404,7 +404,7 @@ export default function ContactPage() {
                   {/* FAQ Item 4 */}
                   <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
                     <h3 className="text-xl font-black text-gray-900 dark:text-white mb-3">
-                      Can I try Lexoptia for free?
+                      Can I try Qlarety for free?
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                       Yes! We offer a free trial that allows you to analyze up to 5 documents. No
@@ -421,7 +421,7 @@ export default function ContactPage() {
                 <h2 className="text-4xl font-black mb-6">Ready to get started?</h2>
                 <p className="text-gray-400 text-lg mb-10">
                   Join thousands of legal professionals who are transforming their workflow with
-                  Lexoptia.
+                  Qlarety.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button className="w-full sm:w-auto bg-primary-green text-primary px-10 py-4 rounded-xl font-extrabold text-lg hover:scale-105 transition-transform">
@@ -441,10 +441,10 @@ export default function ContactPage() {
                   <div className="size-6 bg-legal-navy dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-legal-navy">
                     <span className="material-symbols-outlined text-[16px]">gavel</span>
                   </div>
-                  <h2 className="text-lg font-extrabold tracking-tight">Lexoptia</h2>
+                  <h2 className="text-lg font-extrabold tracking-tight">Qlarety</h2>
                 </div>
                 <p className="text-gray-400 text-sm">
-                  © 2024 Lexoptia. All rights reserved.
+                  © 2024 Qlarety. All rights reserved.
                 </p>
                 <div className="flex gap-6 text-sm font-medium text-gray-400">
                   <a className="hover:text-primary transition-colors" href="#">

@@ -11,4 +11,5 @@ export interface GetUserResponse {
   success: boolean;
   message?: string;
   data?: User;
+  user: User;
 }

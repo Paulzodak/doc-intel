@@ -11,12 +11,18 @@ import type {
   CleanTextRequest,
   CleanTextResponse,
   JobResponse,
+  ListDocumentsResponse,
   ProcessDocumentRequest,
   ProcessDocumentResponse,
   // ProcessTextRequest,
 } from "@/types/document";
 import { clearError } from "@/redux/slices/document/input.slice";
+import { selectGuestId } from "@/redux/slices/auth/auth.slice";
+import { selectUser } from "@/redux/slices/user/user.slice";
+import { store } from "@/redux/store";
 import { useDispatch } from "react-redux";
+import { AxiosError } from "axios";
+import type { Document } from "@/types/document";
 
 // Query keys factory
 export const documentsKeys = {
@@ -79,21 +85,28 @@ export const documentsKeys = {
 
 // Hook to process text input for analysis
 export function useProcessDocument(
-  options?: UseMutationOptions<ProcessDocumentResponse, Error, ProcessDocumentRequest>
+  options?: UseMutationOptions<ProcessDocumentResponse, Error, ProcessDocumentRequest>,
 ) {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
   return useMutation({
     mutationFn: async (data: ProcessDocumentRequest) => {
       dispatch(clearError());
-      const response = await apiClient.post<ProcessDocumentResponse>("/api/document/process", {
+      const state = store.getState();
+      const user = selectUser(state);
+      const guestId = selectGuestId(state);
+      const body: Record<string, unknown> = {
         text: data.text,
         options: data.options || {
           include_highlights: true,
           include_grading: true,
           analysis_type: "full",
         },
-      });
+      };
+      if (!user && guestId) {
+        body.guestId = guestId;
+      }
+      const response = await apiClient.post<ProcessDocumentResponse>("/api/document/process", body);
       return response.data;
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -110,7 +123,7 @@ export function useProcessDocument(
 
 // Hook to clean text
 export function useCleanText(
-  options?: UseMutationOptions<CleanTextResponse, Error, CleanTextRequest>
+  options?: UseMutationOptions<CleanTextResponse, Error, CleanTextRequest>,
 ) {
   return useMutation({
     mutationFn: async (data: CleanTextRequest) => {
@@ -129,10 +142,46 @@ export function useCleanText(
   });
 }
 
+// Hook to fetch document list
+export function useDocumentsList(
+  options?: Omit<
+    UseQueryOptions<ListDocumentsResponse, AxiosError<ListDocumentsResponse>>,
+    "queryKey" | "queryFn"
+  >,
+) {
+  return useQuery({
+    queryKey: documentsKeys.lists(),
+    queryFn: async () => {
+      const response = await apiClient.get<ListDocumentsResponse>("/api/documents");
+      return response.data;
+    },
+    ...options,
+  });
+}
+
+// Hook to delete a document
+export function useDeleteDocument(
+  options?: UseMutationOptions<{ success: boolean; message?: string }, Error, string>,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (documentId: string) => {
+      const response = await apiClient.delete<{ success: boolean; message?: string }>(
+        `/api/documents/${documentId}`,
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+    },
+    ...options,
+  });
+}
+
 // Hook to get job by ID
 export function useJob(
   jobId: string,
-  options?: Omit<UseQueryOptions<JobResponse, Error>, "queryKey" | "queryFn">
+  options?: Omit<UseQueryOptions<JobResponse, AxiosError<JobResponse>>, "queryKey" | "queryFn">,
 ) {
   return useQuery({
     queryKey: documentsKeys.job(jobId),
@@ -144,4 +193,18 @@ export function useJob(
     ...options,
   });
 }
-
+// Hook to get job by ID
+export function useDoc(
+  docId: string,
+  options?: Omit<UseQueryOptions<Document, AxiosError<Document>>, "queryKey" | "queryFn">,
+) {
+  return useQuery({
+    queryKey: documentsKeys.detail(docId),
+    queryFn: async () => {
+      const response = await apiClient.get<Document>(`/api/document/${docId}`);
+      return response.data;
+    },
+    enabled: !!docId,
+    ...options,
+  });
+}

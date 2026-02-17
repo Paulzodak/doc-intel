@@ -6629,7 +6629,7 @@
       "id": "9zMsh",
       "x": 0,
       "y": 8,
-      "name": "Donezo Dashboard",
+      "name": "Qlarety Dashboard",
       "width": 1801,
       "height": 1276,
       "fill": "$--background",
@@ -6642,7 +6642,7 @@
           "name": "sidebar",
           "descendants": {
             "MIpaj": {
-              "content": "Donezo"
+              "content": "Qlarety"
             },
             "NvL81": {
               "children": [

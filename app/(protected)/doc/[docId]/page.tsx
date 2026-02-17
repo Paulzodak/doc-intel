@@ -6,7 +6,7 @@ import AnalysisPanel from "@/components/doc/AnalysisPanel";
 import DocumentContent from "@/components/doc/DocumentContent";
 import HighlightDetailsModal from "@/components/doc/HighlightDetailsModal";
 import { testDocumentText, testAnalysis } from "@/data/testAnalysis";
-import { useJob } from "@/data/document";
+import { useDoc, useJob } from "@/data/document";
 import { useDocumentNames } from "@/hooks/useDocumentNames";
 import {
   setSelectedHighlight,
@@ -27,16 +27,7 @@ export default function DocPage({ params }: DocPageProps) {
   const hasInitializedName = useRef<string | null>(null);
 
   // Fetch job data
-  const {
-    data: jobData,
-    isLoading,
-    error,
-  } = useJob(docId, {
-    refetchInterval: (query) => {
-      const status = query.state.data?.statusText;
-      return status === "processing" ? 2000 : false;
-    },
-  });
+  const { data: jobData, isLoading, error } = useDoc(docId, {});
 
   // Auto-name document with jobId if it doesn't have a name yet (only once per docId)
   useEffect(() => {
@@ -87,29 +78,8 @@ export default function DocPage({ params }: DocPageProps) {
         <div className="text-center max-w-md mx-4">
           <p className="text-red-600 text-lg mb-2 font-semibold">Error loading document</p>
           <p className="text-gray-600">
-            {error?.message || jobData?.message || "Failed to fetch document"}
+            {error?.response?.data?.status || "Failed to fetch document"}
           </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Show processing state
-  if (jobData?.statusText === "processing") {
-    const progress = jobData.percentage || 0;
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="text-center max-w-md mx-4">
-          <div className="mb-4">
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div
-                className="bg-gradient-to-r from-blue-600 to-purple-600 h-2.5 rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-            <p className="text-sm text-gray-600 mt-2">{progress}% complete</p>
-          </div>
-          <p className="text-gray-600">Processing document...</p>
         </div>
       </div>
     );
@@ -118,7 +88,7 @@ export default function DocPage({ params }: DocPageProps) {
   console.log(jobData);
 
   // Process document data
-  const documentText = jobData?.inputText || testDocumentText;
+  const documentText = jobData?.inputText || "";
 
   const highlights: Highlight[] = [];
   // Handle result as array or object

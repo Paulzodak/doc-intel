@@ -105,7 +105,7 @@ const Navbar = () => {
           heading: "EXPLORE",
           items: [
             {
-              title: "Lexoptia Blog",
+              title: "Qlarety Blog",
               description: "Read the latest industry tips and trends.",
             },
             {
@@ -220,7 +220,7 @@ const Navbar = () => {
                     <span className="material-symbols-outlined font-bold">gavel</span>
                   </div>
                   <h2 className="text-xl font-extrabold tracking-tight hidden sm:block">
-                    Lexoptia
+                    Qlarety
                   </h2>
                 </div>
 

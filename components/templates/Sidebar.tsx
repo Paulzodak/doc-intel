@@ -2,8 +2,8 @@
 
 import { useMemo, useState, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useDocumentNames } from "@/hooks/useDocumentNames";
-import { motion } from "framer-motion";
+import { useDocumentsList, useDeleteDocument } from "@/data/document";
+import type { Document } from "@/types/document";
 import DocumentInput from "@/components/documentInput/DocumentInput";
 import { Input } from "@/components/ui/input";
 import { MdKeyboardCommandKey } from "react-icons/md";
@@ -30,7 +30,8 @@ import { FileIcon } from "@/assets/svg/FileIcon";
 const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { documents: allDocuments, deleteDocument } = useDocumentNames();
+  const { data: documentsData } = useDocumentsList();
+  const { mutateAsync: deleteDocument } = useDeleteDocument();
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   const docId = useMemo(() => {
@@ -38,11 +39,18 @@ const Sidebar = () => {
     return match ? match[1] : null;
   }, [pathname]);
 
+  // const allDocuments = useMemo(
+  //   (): Document[] => (documentsData && documentsData?.data ? documentsData.data : []),
+  //   [documentsData],
+  // );
+  const allDocuments = documentsData?.data || [];
+
   const recentDocuments = useMemo(
     () =>
-      allDocuments.slice(0, 10).map((doc) => ({
+      allDocuments.slice(0, 10).map((doc: Document) => ({
         id: doc.id,
-        name: doc.name,
+        jobId: doc.jobId,
+        name: doc.documentName,
         date: new Date(doc.updatedAt).toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
@@ -77,8 +85,7 @@ const Sidebar = () => {
   const handleDeleteClick = useCallback(
     (id: string, e: React.MouseEvent) => {
       e.stopPropagation();
-      deleteDocument(id);
-      setOpenDropdownId(null);
+      deleteDocument(id).finally(() => setOpenDropdownId(null));
     },
     [deleteDocument],
   );
@@ -108,7 +115,7 @@ const Sidebar = () => {
   return (
     <div className=" rounded-2xl  block sm:block min-h-[200px]  flex-col  relative h-full">
       <div className="flex flex-col py-4 flex-1">
-        <div className="text-black font-semibold px-4">LOGO</div>
+        <div className="text-black font-semibold px-4">Qlarety</div>
         <div className="mt-6 text-neutral-500 font-semibold text-xs px-4">DOCS</div>
         {recentDocuments.length > 0 ? (
           <div className="space-y-2 mt-3  px-4 max-h-[22rem] overflow-scroll">
@@ -126,7 +133,7 @@ const Sidebar = () => {
                 >
                   {/* <div className="bg-primary-green w-4 h-4" /> */}
                   <button
-                    onClick={() => handleDocumentClick(doc.id)}
+                    onClick={() => handleDocumentClick(doc.jobId)}
                     className="w-full text-left p-3"
                   >
                     <div className="flex items-start justify-between gap-2">

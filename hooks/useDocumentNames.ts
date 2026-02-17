@@ -9,7 +9,7 @@ interface DocumentInfo {
   updatedAt: string;
 }
 
-const STORAGE_KEY = "lexoptia-documents";
+const STORAGE_KEY = "qlarety-documents";
 
 export function useDocumentNames() {
   const [documents, setDocuments] = useState<DocumentInfo[]>([]);

@@ -64,7 +64,7 @@ export default function Home() {
                 </h2>
                 <p className="text-gray-400 text-lg mb-10">
                   Join thousands of legal professionals who are reclaiming their time and reducing
-                  risk with Lexoptia.
+                  risk with Qlarety.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button className="w-full sm:w-auto bg-primary-green text-primary px-10 py-4 rounded-xl font-extrabold text-lg hover:scale-105 transition-transform">
@@ -82,9 +82,9 @@ export default function Home() {
                   <div className="size-6 bg-legal-navy dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-legal-navy">
                     <span className="material-symbols-outlined text-[16px]">gavel</span>
                   </div>
-                  <h2 className="text-lg font-extrabold tracking-tight">Lexoptia</h2>
+                  <h2 className="text-lg font-extrabold tracking-tight">Qlarety</h2>
                 </div>
-                <p className="text-gray-400 text-sm">© 2024 Lexoptia. All rights reserved.</p>
+                <p className="text-gray-400 text-sm">© 2024 Qlarety. All rights reserved.</p>
                 <div className="flex gap-6 text-sm font-medium text-gray-400">
                   <a className="hover:text-primary transition-colors" href="#">
                     Privacy

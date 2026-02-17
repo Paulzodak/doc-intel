@@ -141,7 +141,7 @@ export const OCRResult: React.FC<OCRResultProps> = ({
 
       <div className="mt-6 flex flex-wrap gap-3 items-center">
         <Button
-          className="bg-primary-green shadow shadow-primary-green/30 border-none text-white w-full sm:flex-1"
+          className="bg-primarys-green bg-green-600 shadow shadow-primary-green/30 border-none text-white w-full sm:flex-1"
           size="analyze"
           onClick={onReset}
           disabled={isLoading || !extractedText.trim()}
@@ -150,7 +150,7 @@ export const OCRResult: React.FC<OCRResultProps> = ({
           <EyeIconFilled color="white" />
         </Button>
         <Button
-          className="bg-primary-green  shadow shadow-primary-green/30 border-none text-white w-full sm:flex-1"
+          className="bg-primarys-green bg-green-600  shadow shadow-primary-green/30 border-none text-white w-full sm:flex-1"
           size="analyze"
           onClick={handleProcess}
           disabled={isLoading}

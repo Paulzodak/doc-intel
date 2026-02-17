@@ -169,18 +169,14 @@ const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentPr
         continue;
       }
       setFiles((prev) =>
-        prev.map((f) =>
-          f.id === uf.id ? { ...f, extractionStatus: "extracting" as const } : f,
-        ),
+        prev.map((f) => (f.id === uf.id ? { ...f, extractionStatus: "extracting" as const } : f)),
       );
       try {
         const text = await extractDocumentText(uf.file);
         texts.push(text);
         setFiles((prev) =>
           prev.map((f) =>
-            f.id === uf.id
-              ? { ...f, extractedText: text, extractionStatus: "done" as const }
-              : f,
+            f.id === uf.id ? { ...f, extractedText: text, extractionStatus: "done" as const } : f,
           ),
         );
       } catch (e) {

@@ -34,7 +34,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
     dispatch(setLoading(loading));
   };
 
-  const { mutate: processTextMutation } = useProcessDocument({
+  const { mutateAsync: processTextMutation } = useProcessDocument({
     onSuccess: (response: ProcessDocumentResponse) => {
       const responseJobId = response?.jobId;
       setJobId(responseJobId);
@@ -44,6 +44,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
     onError: (error) => {
       dispatch(setLoading(false));
       setPercentage(0);
+      console.log(error);
       const errorMessage = error instanceof Error ? error.message : "An error occurred";
       setErrorState(errorMessage);
       options?.onError?.(errorMessage);
@@ -85,11 +86,6 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
           setPercentage(100);
           disconnectSocket(socket);
           socketRef.current = null;
-
-          // Auto-name document with jobId when processing completes
-          if (jobId) {
-            setDocumentName(jobId, `Document ${jobId.slice(0, 8)}`);
-          }
 
           router.push(`/doc/${jobId}`);
         }
@@ -159,7 +155,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
 
   // Handle text processing
   const processText = async (text: string) => {
-    if (isLoading || !text) return;
+    // if (isLoading || !text) return;
 
     setIsLoading(true);
     setErrorState(null);
@@ -172,7 +168,13 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
         include_grading: true,
         analysis_type: "full",
       },
-    });
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        setErrorState(error?.response?.data?.message || "An error occurred");
+      });
   };
 
   // Handle reset

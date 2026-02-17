@@ -10,12 +10,14 @@ import analysisPanelSlice from "./slices/dashboard/analysispanel.slice";
 import documentContentSlice from "./slices/document/documentContent.slice";
 import userSlice from "./slices/user/user.slice";
 import type { IUserState } from "./slices/user/user.slice";
+import authSlice from "./slices/auth/auth.slice";
 
 const rootReducer = combineReducers({
   documentInput: documentInputSlice,
   analysisPanel: analysisPanelSlice,
   documentContent: documentContentSlice,
   user: userSlice,
+  auth: authSlice,
 
   // add more reducers here
 });
@@ -71,6 +73,7 @@ const persistConfig: PersistConfig<ReturnType<typeof rootReducer>> = {
     "documentInput", // ✅ Document input
     "analysisPanel", // ✅ Analysis panel
     "user", // ✅ User data
+    "auth", // ✅ Guest ID for unauthenticated users
   ],
   transforms: [documentInputTransform, userTransform],
 };

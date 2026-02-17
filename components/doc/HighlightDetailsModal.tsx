@@ -4,6 +4,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiX, FiInfo } from "react-icons/fi";
 import type { Highlight } from "@/types/analysis";
+import { Button } from "../ui/button";
 
 interface HighlightDetailsModalProps {
   highlight: Highlight | null;
@@ -45,24 +46,22 @@ const HighlightDetailsModal: React.FC<HighlightDetailsModalProps> = ({
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="lg:hidden fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
-          />
-
           {/* Modal - Centered */}
-          <div className="lg:hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="lg:hidden  fixed inset-0 z-50 flex items-center justify-center p-4 font-jakarta">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onClose}
+              className="lg:hidden fixed inset-0 bg-black/50 z-10 backdrop-blur-sm "
+            />
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", damping: 20, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden"
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col overflow-hidden z-20"
             >
               {/* Header */}
               <div className={`${colors.bg} ${colors.border} border-b-2 p-4`}>
@@ -129,12 +128,12 @@ const HighlightDetailsModal: React.FC<HighlightDetailsModalProps> = ({
 
               {/* Footer */}
               <div className="p-4 border-t border-gray-200 bg-gray-50">
-                <button
+                <Button
                   onClick={onClose}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold shadow-lg hover:from-blue-700 hover:to-purple-700 transition-all"
+                  className="w-full py-3 px-4 text-sm bg-white rounded-full border-gray-300 shadow-none text-gray-500 font-semibold   transition-all"
                 >
                   Close
-                </button>
+                </Button>
               </div>
             </motion.div>
           </div>

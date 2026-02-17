@@ -124,7 +124,7 @@ export default function DashboardLayout({
             </div>
             <div className="flex gap-4 lg:hidden">
               <MenuIcon onClick={toggleSidebar} size={20} color="#101828" />
-              <div className="block lg:hidden text-black">LOGOO</div>
+              <div className="block lg:hidden text-black">Qlarety</div>
             </div>
             <div className="relative h-full flex gap-4 ">
               <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">

@@ -30,7 +30,7 @@ export async function getServerUser(): Promise<User | null> {
     console.log(response, "response");
     // Handle 401 Unauthorized - redirect to login
     if (response.status === 401) {
-      redirect("/auth/login");
+      redirect("/auth");
       return null;
     }
 
@@ -50,6 +50,6 @@ export async function getServerUser(): Promise<User | null> {
   } catch (error) {
     console.error("Error fetching user:", error);
     // On error, redirect to login for safety
-    redirect("/auth/login");
+    redirect("/auth");
   }
 }

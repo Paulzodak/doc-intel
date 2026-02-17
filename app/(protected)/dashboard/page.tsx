@@ -64,7 +64,7 @@ export default function DashboardPage() {
           </div>
           <div className="flex gap-4 sm:hidden">
             <MenuIcon size={20} color="#101828" />
-            <div className="block sm:hidden text-black">LOGOO</div>
+            <div className="block sm:hidden text-black">Qlarety</div>
           </div>
           <div className="relative h-full flex gap-4 ">
             <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
@@ -215,7 +215,7 @@ const Sidebar = () => {
   return (
     <div className="bg-gray-100 rounded-2xl  sm:block min-h-[200px] flex flex-col  relative">
       <div className="flex flex-col py-4 flex-1">
-        <div className="text-black font-semibold px-4">LOGO</div>
+        <div className="text-black font-semibold px-4">Qlarety</div>
         <div className="mt-6 text-neutral-500 font-semibold text-xs px-4">DOCS</div>
         {recentDocuments.length > 0 ? (
           <div className="space-y-2 mt-3  px-4 max-h-[22rem] overflow-scroll">

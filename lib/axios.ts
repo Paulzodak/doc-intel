@@ -1,4 +1,7 @@
 import axios from "axios";
+import { store } from "@/redux/store";
+import { selectUser } from "@/redux/slices/user/user.slice";
+import type { User } from "@/types/user";
 import { isProduction } from "./utils";
 
 // Configure axios instance with base URL
@@ -15,10 +18,38 @@ export const apiClient = axios.create({
   },
 });
 
-// Request interceptor (optional - for adding auth tokens, etc.)
+/** Get current user from Redux (null if not logged in or not in storage). */
+export function getUserFromRedux(): User | null {
+  try {
+    return selectUser(store.getState());
+  } catch {
+    return null;
+  }
+}
+
+function getGuestIdFromStorage(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem("persist:root");
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { auth?: string };
+    if (!parsed.auth) return null;
+    const auth = JSON.parse(parsed.auth) as { guestId?: string | null };
+    return auth.guestId ?? null;
+  } catch {
+    return null;
+  }
+}
+
 apiClient.interceptors.request.use(
   (config) => {
-    // Add any request modifications here (e.g., auth tokens)
+    const user = getUserFromRedux();
+    if (!user) {
+      const guestId = getGuestIdFromStorage();
+      if (guestId) {
+        config.headers.set("x-guest-id", guestId);
+      }
+    }
     return config;
   },
   (error) => {
@@ -26,13 +57,15 @@ apiClient.interceptors.request.use(
   },
 );
 
-// Response interceptor (optional - for error handling)
+// Response interceptor - redirect to /auth on 401 only when user exists in Redux (session expired)
 apiClient.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Handle common errors here if needed
+    if (error.response?.status === 401 && typeof window !== "undefined" && getUserFromRedux()) {
+      window.location.href = "/auth";
+    }
     return Promise.reject(error);
   },
 );

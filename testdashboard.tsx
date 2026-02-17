@@ -57,7 +57,7 @@ export default function TestDashboard() {
             <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
               <Plus className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg font-bold text-gray-900">Donezo</span>
+            <span className="text-lg font-bold text-gray-900">Qlarety</span>
           </div>
         </div>
 

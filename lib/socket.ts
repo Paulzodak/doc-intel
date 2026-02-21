@@ -3,9 +3,7 @@ import { isProduction } from "./utils";
 
 // Get socket server URL from environment or use API base URL
 const getSocketUrl = (): string => {
-  const apiBaseUrl = isProduction
-    ? "https://doc-llm-server.onrender.com/"
-    : "http://localhost:8000";
+  const apiBaseUrl = isProduction ? "https://server.qlarety.com/" : "http://localhost:8000";
   // Extract host from API URL (socket.io typically uses the same host)
   try {
     const url = new URL(apiBaseUrl);

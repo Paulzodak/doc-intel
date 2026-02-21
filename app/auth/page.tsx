@@ -285,7 +285,7 @@ export default function LoginPage() {
               className="w-full bg-primary-blue-dark border-none rounded-[40px] px-6 py-4 hover:border-gray-300 shadow-sm"
               onClick={() =>
                 (window.location.href = isProduction
-                  ? "https://doc-llm-server.onrender.com/api/auth/oauth/google"
+                  ? "https://server.qlarety.com/api/auth/oauth/google"
                   : "http://localhost:8000/api/auth/oauth/google")
               }
             >
@@ -324,7 +324,7 @@ export default function LoginPage() {
                 className="w-full bg-primary-blue-dark rounded-full px-4 py-4 hover:bg-gray-900 text-white"
                 onClick={() =>
                   (window.location.href = isProduction
-                    ? "https://doc-llm-server.onrender.com/api/auth/oauth/github"
+                    ? "https://server.qlarety.com/api/auth/oauth/github"
                     : "http://localhost:8000/api/auth/oauth/github")
                 }
               >
@@ -339,7 +339,7 @@ export default function LoginPage() {
                 className="w-full bg-primary-blue-dark rounded-full px-4 py-4 hover:bg-gray-900 text-white"
                 onClick={() =>
                   (window.location.href = isProduction
-                    ? "https://doc-llm-server.onrender.com/api/auth/oauth/microsoft"
+                    ? "https://server.qlarety.com/api/auth/oauth/microsoft"
                     : "http://localhost:8000/api/auth/oauth/microsoft")
                 }
               >

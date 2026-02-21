@@ -1,3 +1,4 @@
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 import UseCasesSection from "@/components/UseCasesSection";
 import MarketingSection from "@/components/MarketingSection";
 import StatsSection from "@/components/StatsSection";
@@ -79,9 +80,7 @@ export default function Home() {
             <footer className="py-12 px-6 md:px-20 lg:px-40 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-background-dark">
               <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
                 <div className="flex items-center gap-3 grayscale opacity-60">
-                  <div className="size-6 bg-legal-navy dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-legal-navy">
-                    <span className="material-symbols-outlined text-[16px]">gavel</span>
-                  </div>
+                  <QlaretyLogo size={24} className="shrink-0" />
                   <h2 className="text-lg font-extrabold tracking-tight">Qlarety</h2>
                 </div>
                 <p className="text-gray-400 text-sm">© 2024 Qlarety. All rights reserved.</p>

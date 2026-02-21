@@ -13,3 +13,9 @@ export interface GetUserResponse {
   data?: User;
   user: User;
 }
+
+export interface ListUsersResponse {
+  success?: boolean;
+  data?: User[];
+  message?: string;
+}

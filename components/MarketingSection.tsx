@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 
 const MarketingSection = () => {
   return (
@@ -25,9 +26,7 @@ const MarketingSection = () => {
                     <h3 className="text-sm font-bold text-gray-800 mb-1">Qlarety</h3>
                     <p className="text-xs text-gray-500">2 Hours Ago</p>
                   </div>
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                    <span className="material-symbols-outlined text-white text-lg">gavel</span>
-                  </div>
+                  <QlaretyLogo size={48} className="shrink-0" />
                 </div>
                 <h4 className="text-sm font-semibold text-gray-900 mb-2">
                   Contract Analysis: 5 key risk factors identified
@@ -246,9 +245,7 @@ const MarketingSection = () => {
                 </div>
                 <div className="bg-gray-100 rounded-lg h-32 flex items-center justify-center mb-3 relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-b from-primary/20 to-primary/10"></div>
-                  <div className="relative z-10 w-12 h-16 bg-primary rounded-lg flex items-center justify-center">
-                    <span className="material-symbols-outlined text-white text-2xl">gavel</span>
-                  </div>
+                  <QlaretyLogo size={48} className="relative z-10 shrink-0" />
                 </div>
                 <div className="flex items-center gap-2 mb-2">
                   <svg className="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">

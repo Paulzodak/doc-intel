@@ -45,7 +45,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
       dispatch(setLoading(false));
       setPercentage(0);
       console.log(error);
-      const errorMessage = error instanceof Error ? error.message : "An error occurred";
+      const errorMessage = error.response?.data?.message ?? "An error occurred";
       setErrorState(errorMessage);
       options?.onError?.(errorMessage);
 

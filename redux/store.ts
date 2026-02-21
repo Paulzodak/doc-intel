@@ -11,6 +11,8 @@ import documentContentSlice from "./slices/document/documentContent.slice";
 import userSlice from "./slices/user/user.slice";
 import type { IUserState } from "./slices/user/user.slice";
 import authSlice from "./slices/auth/auth.slice";
+import documentsListSlice from "./slices/document/documentsList.slice";
+import type { IDocumentsListState } from "./slices/document/documentsList.slice";
 
 const rootReducer = combineReducers({
   documentInput: documentInputSlice,
@@ -18,6 +20,7 @@ const rootReducer = combineReducers({
   documentContent: documentContentSlice,
   user: userSlice,
   auth: authSlice,
+  documentsList: documentsListSlice,
 
   // add more reducers here
 });
@@ -66,6 +69,18 @@ const userTransform = createTransform(
   { whitelist: ["user"] },
 );
 
+const documentsListTransform = createTransform(
+  (inboundState: IDocumentsListState) => ({
+    documents: inboundState.documents,
+  }),
+  (outboundState: Partial<IDocumentsListState>) => ({
+    documents: outboundState.documents || [],
+    isLoading: false,
+    error: null,
+  }),
+  { whitelist: ["documentsList"] },
+);
+
 const persistConfig: PersistConfig<ReturnType<typeof rootReducer>> = {
   key: "root",
   storage,
@@ -74,8 +89,9 @@ const persistConfig: PersistConfig<ReturnType<typeof rootReducer>> = {
     "analysisPanel", // ✅ Analysis panel
     "user", // ✅ User data
     "auth", // ✅ Guest ID for unauthenticated users
+    "documentsList", // ✅ Cached document list
   ],
-  transforms: [documentInputTransform, userTransform],
+  transforms: [documentInputTransform, userTransform, documentsListTransform],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

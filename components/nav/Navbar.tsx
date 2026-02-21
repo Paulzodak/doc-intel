@@ -6,6 +6,7 @@ import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
 import { useShowNav } from "@/hooks/layout/useShowNav";
 import { useRouter } from "next/navigation";
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 
 interface DropdownColumn {
   heading: string;
@@ -216,12 +217,8 @@ const Navbar = () => {
             <div className="max-w-[1400px] mx-auto !p-0 !rounded-full bg-white/80">
               <div className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 bordser via-pink-500/10 via-orange-500/10 to-primary-green/10 backdrop-blur-[2px] border border-zinc-200 shasdow-sm px-6 md:px-20 py-4 flex items-center justify-between rounded-full">
                 <div className="flex items-center gap-3">
-                  <div className="size-8 bg-primary-green rounded-lg flex items-center justify-center text-legal-navy">
-                    <span className="material-symbols-outlined font-bold">gavel</span>
-                  </div>
-                  <h2 className="text-xl font-extrabold tracking-tight hidden sm:block">
-                    Qlarety
-                  </h2>
+                  <QlaretyLogo size={32} className="shrink-0" />
+                  <h2 className="text-xl font-extrabold tracking-tight hidden sm:block">Qlarety</h2>
                 </div>
 
                 {/* Desktop Navigation */}

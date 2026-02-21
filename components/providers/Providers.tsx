@@ -13,6 +13,7 @@ function GuestIdInitializer({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("settings guest Id ");
     if (!guestId && typeof crypto !== "undefined" && crypto.randomUUID) {
       dispatch(setGuestId(crypto.randomUUID()));
     }
@@ -35,7 +36,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             retry: 1,
           },
         },
-      })
+      }),
   );
 
   return (

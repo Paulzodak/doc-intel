@@ -38,11 +38,36 @@ export interface Document {
   updatedAt: string;
   completedAt: string;
   documentName: string;
+  permission: false | string[];
+  externalDocId: string;
 }
 
 export interface ListDocumentsResponse {
   success: boolean;
   data?: Document[];
+  message?: string;
+}
+
+export interface UpdateDocumentRequest {
+  documentName?: string;
+  /** User IDs with access to the document */
+  permission?: string[];
+  /** Visibility: "public" | "anyone-with-link" | "me-only" */
+  visibility?: 1 | 2 | 3;
+}
+
+export interface UpdateDocumentResponse {
+  success: boolean;
+  data?: Document;
+  message?: string;
+}
+
+export interface SaveAllowedUsersRequest {
+  userIds: string[];
+}
+
+export interface SaveAllowedUsersResponse {
+  success: boolean;
   message?: string;
 }
 
@@ -61,6 +86,7 @@ export interface ProcessDocumentResponse {
   success: boolean;
   jobId: string;
   prompt: string;
+  message?: string;
 }
 
 export interface CleanTextRequest {
@@ -90,4 +116,23 @@ export interface JobResponse {
   status: "boolean";
   statusText: string;
   timestamp: number;
+}
+
+/** Response from GET /api/document/share?id= */
+export interface ShareDocumentResponse {
+  id: string;
+  jobId: string;
+  userId: string | null;
+  guestId: string | null;
+  status: string;
+  inputText: string | null;
+  result: DocumentResult | null;
+  chunkResults: Array<{ highlights: Highlight[] }> | null;
+  createdAt: string;
+  updatedAt: string;
+  completedAt: string | null;
+  documentName: string;
+  permission: boolean;
+  visibility: number;
+  externalDocId: string;
 }

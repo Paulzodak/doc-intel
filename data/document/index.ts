@@ -1,4 +1,5 @@
 import { ToastLogger } from "@/utils/toastUtils";
+import { useEffect } from "react";
 import {
   useMutation,
   UseMutationOptions,
@@ -14,11 +15,22 @@ import type {
   ListDocumentsResponse,
   ProcessDocumentRequest,
   ProcessDocumentResponse,
+  SaveAllowedUsersRequest,
+  SaveAllowedUsersResponse,
+  ShareDocumentResponse,
+  UpdateDocumentRequest,
+  UpdateDocumentResponse,
   // ProcessTextRequest,
 } from "@/types/document";
 import { clearError } from "@/redux/slices/document/input.slice";
 import { selectGuestId } from "@/redux/slices/auth/auth.slice";
 import { selectUser } from "@/redux/slices/user/user.slice";
+import {
+  setDocuments,
+  setDocumentsLoading,
+  setDocumentsError,
+  removeDocument,
+} from "@/redux/slices/document/documentsList.slice";
 import { store } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { AxiosError } from "axios";
@@ -85,7 +97,11 @@ export const documentsKeys = {
 
 // Hook to process text input for analysis
 export function useProcessDocument(
-  options?: UseMutationOptions<ProcessDocumentResponse, Error, ProcessDocumentRequest>,
+  options?: UseMutationOptions<
+    ProcessDocumentResponse,
+    AxiosError<ProcessDocumentResponse>,
+    ProcessDocumentRequest
+  >,
 ) {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
@@ -114,7 +130,7 @@ export function useProcessDocument(
       queryClient.invalidateQueries({ queryKey: documentsKeys.processing() });
       ToastLogger.success("documents", "Text processing started successfully");
     },
-    onError: (error: Error) => {
+    onError: (error: AxiosError<ProcessDocumentResponse>) => {
       ToastLogger.error("documents", `Failed to process text: ${error.message}`);
     },
     ...options,
@@ -142,14 +158,16 @@ export function useCleanText(
   });
 }
 
-// Hook to fetch document list
+// Hook to fetch document list and sync to Redux
 export function useDocumentsList(
   options?: Omit<
     UseQueryOptions<ListDocumentsResponse, AxiosError<ListDocumentsResponse>>,
     "queryKey" | "queryFn"
   >,
 ) {
-  return useQuery({
+  const dispatch = useDispatch();
+
+  const query = useQuery({
     queryKey: documentsKeys.lists(),
     queryFn: async () => {
       const response = await apiClient.get<ListDocumentsResponse>("/api/documents");
@@ -157,6 +175,24 @@ export function useDocumentsList(
     },
     ...options,
   });
+
+  useEffect(() => {
+    dispatch(setDocumentsLoading(query.isLoading));
+  }, [dispatch, query.isLoading]);
+
+  useEffect(() => {
+    if (query.data?.data) {
+      dispatch(setDocuments(query.data.data));
+    }
+  }, [dispatch, query.data]);
+
+  useEffect(() => {
+    if (query.error) {
+      dispatch(setDocumentsError(query.error.message ?? "Failed to fetch documents"));
+    }
+  }, [dispatch, query.error]);
+
+  return query;
 }
 
 // Hook to delete a document
@@ -164,6 +200,7 @@ export function useDeleteDocument(
   options?: UseMutationOptions<{ success: boolean; message?: string }, Error, string>,
 ) {
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
   return useMutation({
     mutationFn: async (documentId: string) => {
       const response = await apiClient.delete<{ success: boolean; message?: string }>(
@@ -171,8 +208,46 @@ export function useDeleteDocument(
       );
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (_data, documentId) => {
+      dispatch(removeDocument(documentId));
       queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+    },
+    ...options,
+  });
+}
+
+// Hook to update a document (name, permission, etc.)
+export function useUpdateDocument(
+  options?: UseMutationOptions<
+    UpdateDocumentResponse,
+    AxiosError<UpdateDocumentResponse>,
+    { documentId: string; data: UpdateDocumentRequest }
+  >,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      documentId,
+      data,
+    }: {
+      documentId: string;
+      data: UpdateDocumentRequest;
+    }) => {
+      const response = await apiClient.patch<UpdateDocumentResponse>(
+        `/api/document/${documentId}`,
+        data,
+      );
+      return response.data;
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: documentsKeys.detail(variables.documentId) });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+    },
+    onError: (error: AxiosError<UpdateDocumentResponse>) => {
+      ToastLogger.error(
+        "documents",
+        `Failed to update document: ${error.response?.data?.message ?? error.message}`,
+      );
     },
     ...options,
   });
@@ -205,6 +280,60 @@ export function useDoc(
       return response.data;
     },
     enabled: !!docId,
+    ...options,
+  });
+}
+
+export function useSaveDocumentAllowedUsers(
+  documentId: string,
+  options?: UseMutationOptions<
+    SaveAllowedUsersResponse,
+    AxiosError<SaveAllowedUsersResponse>,
+    SaveAllowedUsersRequest
+  >,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: SaveAllowedUsersRequest) => {
+      const response = await apiClient.post<SaveAllowedUsersResponse>(
+        `/api/document/${documentId}/allowed-users`,
+        data,
+      );
+      return response.data;
+    },
+    onSuccess: (_data, _variables, context) => {
+      queryClient.invalidateQueries({ queryKey: documentsKeys.detail(documentId) });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+      ToastLogger.success("documents", "Allowed users updated");
+    },
+    onError: (error: AxiosError<SaveAllowedUsersResponse>) => {
+      ToastLogger.error(
+        "documents",
+        error.response?.data?.message ?? error.message ?? "Failed to update allowed users",
+      );
+    },
+    ...options,
+  });
+}
+
+const shareKey = (id: string) => [...documentsKeys.all, "share", id] as const;
+
+export function useShareDocument(
+  shareId: string | null,
+  options?: Omit<
+    UseQueryOptions<ShareDocumentResponse, AxiosError<{ message?: string }>>,
+    "queryKey" | "queryFn"
+  >,
+) {
+  return useQuery({
+    queryKey: shareKey(shareId ?? ""),
+    queryFn: async () => {
+      const response = await apiClient.post<ShareDocumentResponse>("/api/document/share", {
+        sourceDocumentId: shareId,
+      });
+      return response.data;
+    },
+    enabled: !!shareId,
     ...options,
   });
 }

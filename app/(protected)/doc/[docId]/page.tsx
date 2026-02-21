@@ -27,7 +27,7 @@ export default function DocPage({ params }: DocPageProps) {
   const hasInitializedName = useRef<string | null>(null);
 
   // Fetch job data
-  const { data: jobData, isLoading, error } = useDoc(docId, {});
+  const { data: docData, isLoading, error } = useDoc(docId, {});
 
   // Auto-name document with jobId if it doesn't have a name yet (only once per docId)
   useEffect(() => {
@@ -85,16 +85,16 @@ export default function DocPage({ params }: DocPageProps) {
     );
   }
 
-  console.log(jobData);
+  console.log(docData);
 
   // Process document data
-  const documentText = jobData?.inputText || "";
+  const documentText = docData?.inputText || "";
 
   const highlights: Highlight[] = [];
   // Handle result as array or object
-  if (jobData?.result) {
-    if (Array.isArray(jobData.result?.analyzeChunkResults)) {
-      jobData.result?.analyzeChunkResults?.forEach((item: { highlights?: Highlight[] }) => {
+  if (docData?.result) {
+    if (Array.isArray(docData.result?.analyzeChunkResults)) {
+      docData.result?.analyzeChunkResults?.forEach((item: { highlights?: Highlight[] }) => {
         if (item.highlights && Array.isArray(item.highlights)) {
           highlights.push(...item.highlights);
         }
@@ -119,7 +119,7 @@ export default function DocPage({ params }: DocPageProps) {
     | Array<{ grade?: ResultGrade; highlights?: Highlight[] }>
     | undefined;
 
-  const result = jobData?.result as ResultType;
+  const result = docData?.result as ResultType;
   let grade: ResultGrade | undefined;
 
   if (Array.isArray(result)) {
@@ -149,7 +149,7 @@ export default function DocPage({ params }: DocPageProps) {
     },
   };
 
-  console.log(jobData);
+  console.log(docData);
   return (
     <>
       {/* Header */}
@@ -167,13 +167,18 @@ export default function DocPage({ params }: DocPageProps) {
             </div>
 
             {/* Document Text - Second on mobile, left column on desktop */}
-            <div className="order-2 lg:order-1 lg:col-span-7">
-              <DocumentContent
-                documentText={documentText}
-                highlights={highlights}
-                onHighlightClick={handleHighlightClick}
-              />
-            </div>
+            {docData && (
+              <div className="order-2 lg:order-1 lg:col-span-7">
+                <DocumentContent
+                  docId={docId}
+                  docData={docData}
+                  documentName={docData?.documentName ?? `Document ${docId.slice(0, 8)}`}
+                  documentText={documentText}
+                  highlights={highlights}
+                  onHighlightClick={handleHighlightClick}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

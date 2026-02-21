@@ -26,11 +26,16 @@ import { PlusIcon } from "@/assets/svg/PlusIcon";
 import { AddFolderIcon } from "@/assets/svg/AddFolderIcon";
 import { AddFolderIcon2 } from "@/assets/svg/AddFolderIcon2";
 import { FileIcon } from "@/assets/svg/FileIcon";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { RefreshIcon } from "@/assets/svg/RefreshIcon";
+import { LockIcon } from "@/assets/svg/LockIcon";
 
 const Sidebar = () => {
+  useDocumentsList();
   const pathname = usePathname();
   const router = useRouter();
-  const { data: documentsData } = useDocumentsList();
+  const documents = useSelector((state: RootState) => state.documentsList.documents);
   const { mutateAsync: deleteDocument } = useDeleteDocument();
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
@@ -43,7 +48,7 @@ const Sidebar = () => {
   //   (): Document[] => (documentsData && documentsData?.data ? documentsData.data : []),
   //   [documentsData],
   // );
-  const allDocuments = documentsData?.data || [];
+  const allDocuments = documents || [];
 
   const recentDocuments = useMemo(
     () =>
@@ -51,6 +56,7 @@ const Sidebar = () => {
         id: doc.id,
         jobId: doc.jobId,
         name: doc.documentName,
+        externalDocId: doc.externalDocId,
         date: new Date(doc.updatedAt).toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
@@ -116,12 +122,18 @@ const Sidebar = () => {
     <div className=" rounded-2xl  block sm:block min-h-[200px]  flex-col  relative h-full">
       <div className="flex flex-col py-4 flex-1">
         <div className="text-black font-semibold px-4">Qlarety</div>
-        <div className="mt-6 text-neutral-500 font-semibold text-xs px-4">DOCS</div>
+        <div className="mt-6 text-neutral-500 font-semibold text-xs px-4 flex items-center gap-2">
+          RECENT DOCUMENTS
+          <button type="button">
+            <RefreshIcon size={12} color="#737373" />
+          </button>
+        </div>
         {recentDocuments.length > 0 ? (
           <div className="space-y-2 mt-3  px-4 max-h-[22rem] overflow-scroll">
             {recentDocuments.map((doc) => {
-              const isActive = doc.id === docId;
+              const isActive = doc.jobId === docId;
               const isDropdownOpen = openDropdownId === doc.id;
+              const isExternal = doc.externalDocId;
               return (
                 <div
                   key={doc.id}
@@ -162,6 +174,12 @@ const Sidebar = () => {
                           >
                             {doc.date}
                           </span>
+                          {isExternal && (
+                            <span className="rounded-full border flex gap-1 items-center px-2 py-1 text-xs text-gray-500">
+                              <LockIcon size={12} color="#737373" />
+                              <span>External</span>
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className="flex items-center gap-1">

@@ -25,6 +25,10 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@/assets/svg/PlusIcon";
 import Sidebar from "./Sidebar";
 import { DotGridBackground } from "../atoms/DotGridBackground";
+import { UserMemojiOne } from "@/assets/svg/UserMemojiOne";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/redux/slices/user/user.slice";
+import staticData from "@/lib/staticData";
 export default function DashboardLayout({
   children,
   title,
@@ -32,59 +36,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
   title: string;
 }) {
+  const user = useSelector(selectUser);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const toggleSidebar = useCallback(() => {
     setIsSidebarOpen((prev) => !prev);
   }, []);
-  const router = useRouter();
-  const pathname = usePathname();
-  const { getDocumentName, documents: allDocuments, deleteDocument } = useDocumentNames();
 
-  // Extract docId from pathname
-  const docId = useMemo(() => {
-    const match = pathname?.match(/\/doc\/([^/]+)/);
-    return match ? match[1] : null;
-  }, [pathname]);
-
-  // Get current document name
-  const currentDocumentName = useMemo(() => {
-    if (pathname === "/doc/new") return "New Document";
-    if (docId) return getDocumentName(docId);
-    return "Untitled Document";
-  }, [pathname, docId, getDocumentName]);
-
-  const handleDocumentSelect = useCallback(
-    (docId: string) => {
-      router.push(`/doc/${docId}`);
-    },
-    [router],
-  );
-
-  const handleDocumentDelete = useCallback(
-    (deletedDocId: string) => {
-      deleteDocument(deletedDocId);
-      // If we're on the deleted document, redirect to new document page
-      if (deletedDocId === docId) {
-        router.push("/doc/new");
-      }
-    },
-    [deleteDocument, docId, router],
-  );
-
-  const recentDocuments = allDocuments.slice(0, 10).map((doc) => ({
-    id: doc.id,
-    name: doc.name,
-    date: new Date(doc.updatedAt).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    }),
-  }));
-
-  // Determine if we should show create new button
-  const showCreateNew = pathname !== "/doc/new";
-  console.log("recentDocuments", recentDocuments);
-
+  const Memoji = staticData.memoji[user?.memoji ? user.memoji : 1];
+  console.log(Memoji);
   return (
     <div className="h-screen w-screen overflow-hidden flex font-nunito relative max-w-[1800px] mx-auto bg-white">
       <DotGridBackground
@@ -133,6 +92,7 @@ export default function DashboardLayout({
               <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
                 <BellIcon className="" color="#101828" size={20} />
               </div>
+              <Memoji size="50" className="m-sauto shadow-gray-200 shadow-md rounded-full" />
             </div>
           </motion.div>
           <motion.div

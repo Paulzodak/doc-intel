@@ -162,7 +162,7 @@ export default function DashboardLayout({
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.2 }}
               key={isSidebarOpen ? "sidebar-open" : "sidebar-closed"}
-              className="relative h-full w-full bg-white max-w-[15rem] "
+              className="relative h-full w-full bg-white max-w-[20rem] "
             >
               <Sidebar />
             </motion.div>

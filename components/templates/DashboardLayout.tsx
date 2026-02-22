@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, JSX } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useDocumentNames } from "@/hooks/useDocumentNames";
 import { AnimatePresence, motion } from "framer-motion";
@@ -42,8 +42,9 @@ export default function DashboardLayout({
     setIsSidebarOpen((prev) => !prev);
   }, []);
 
-  const Memoji = staticData.memoji[user?.memoji ? user.memoji : 1];
-  console.log(Memoji);
+  const MemojiComponent =
+    staticData.memoji[user?.memoji ?? 1] ?? staticData.memoji[1];
+
   return (
     <div className="h-screen w-screen overflow-hidden flex font-nunito relative max-w-[1800px] mx-auto bg-white">
       <DotGridBackground
@@ -92,7 +93,12 @@ export default function DashboardLayout({
               <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
                 <BellIcon className="" color="#101828" size={20} />
               </div>
-              <Memoji size="50" className="m-sauto shadow-gray-200 shadow-md rounded-full" />
+              {MemojiComponent ? (
+                <MemojiComponent
+                  size="50"
+                  className="m-sauto shadow-gray-200 shadow-md rounded-full"
+                />
+              ) : null}
             </div>
           </motion.div>
           <motion.div

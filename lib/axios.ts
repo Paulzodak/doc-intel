@@ -2,10 +2,9 @@ import axios from "axios";
 import { store } from "@/redux/store";
 import { selectUser } from "@/redux/slices/user/user.slice";
 import type { User } from "@/types/user";
-import { isProduction } from "./utils";
 
 // Configure axios instance with base URL
-export const API_BASE_URL = isProduction ? "https://server.qlarety.com/" : "http://localhost:8000";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
 export const apiClient = axios.create({
   withCredentials: true,

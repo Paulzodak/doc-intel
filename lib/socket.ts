@@ -1,15 +1,14 @@
 import { io, Socket } from "socket.io-client";
-import { isProduction } from "./utils";
+import { API_BASE_URL } from "./axios";
 
 // Get socket server URL from environment or use API base URL
 const getSocketUrl = (): string => {
-  const apiBaseUrl = isProduction ? "https://server.qlarety.com/" : "http://localhost:8000";
   // Extract host from API URL (socket.io typically uses the same host)
   try {
-    const url = new URL(apiBaseUrl);
+    const url = new URL(API_BASE_URL);
     return url.origin;
   } catch {
-    return apiBaseUrl;
+    return API_BASE_URL;
   }
 };
 

@@ -42,8 +42,7 @@ export default function DashboardLayout({
     setIsSidebarOpen((prev) => !prev);
   }, []);
 
-  const MemojiComponent =
-    staticData.memoji[user?.memoji ?? 1] ?? staticData.memoji[1];
+  const MemojiComponent = staticData.memoji[user?.memoji ?? 1] ?? staticData.memoji[1];
 
   return (
     <div className="h-screen w-screen overflow-hidden flex font-nunito relative max-w-[1800px] mx-auto bg-white">
@@ -86,19 +85,21 @@ export default function DashboardLayout({
               <MenuIcon onClick={toggleSidebar} size={20} color="#101828" />
               <div className="block lg:hidden text-black">Qlarety</div>
             </div>
-            <div className="relative h-full flex gap-4 ">
+            <div className="relative h-full flex gap-4 px-2">
               <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
                 <MailIcon className="" color="#101828" size={20} />
               </div>
               <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
                 <BellIcon className="" color="#101828" size={20} />
               </div>
-              {MemojiComponent ? (
-                <MemojiComponent
-                  size="50"
-                  className="m-sauto shadow-gray-200 shadow-md rounded-full"
-                />
-              ) : null}
+              <div>
+                {MemojiComponent ? (
+                  <MemojiComponent
+                    size="50"
+                    className="m-auto shadow-gray-200 shadow-md rounded-full cursor-pointer hover:scale-95 transition-all duration-200"
+                  />
+                ) : null}
+              </div>
             </div>
           </motion.div>
           <motion.div

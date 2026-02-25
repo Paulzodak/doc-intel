@@ -38,6 +38,7 @@ export interface Document {
   updatedAt: string;
   completedAt: string;
   documentName: string;
+  documentSummary: string;
   permission: false | string[];
   externalDocId: string;
 }
@@ -116,6 +117,21 @@ export interface JobResponse {
   status: "boolean";
   statusText: string;
   timestamp: number;
+}
+
+/** Chat message from document chat API (GET /api/document/chat/:jobId) */
+export interface DocumentChatMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  createdAt: string;
+}
+
+/** Response from GET /api/document/chat/:jobId */
+export interface DocumentChatResponse {
+  success?: boolean;
+  data?: DocumentChatMessage[];
+  messages?: string;
 }
 
 /** Response from GET /api/document/share?id= */

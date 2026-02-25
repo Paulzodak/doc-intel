@@ -88,7 +88,7 @@ export const VisibilityButton: React.FC<VisibilityButtonProps> = ({
       <button
         type="button"
         onClick={() => setShowDropdown((v) => !v)}
-        className="flex border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
+        className="flex bg-neutral-50 border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
       >
         <LockIcon size={15} />
         <span>{displayLabel}</span>

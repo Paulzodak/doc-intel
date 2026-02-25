@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
 
-export type AnalysisPanelTab = "grading" | "chat" | "details";
+export type AnalysisPanelTab = "grading" | "chat" | "details" | "summary";
 
 export interface IAnalysisPanelState {
   activeTab: AnalysisPanelTab;

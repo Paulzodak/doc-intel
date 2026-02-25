@@ -4,13 +4,8 @@ import { useMemo, useState, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useDocumentsList, useDeleteDocument } from "@/data/document";
 import type { Document } from "@/types/document";
-import DocumentInput from "@/components/documentInput/DocumentInput";
-import { Input } from "@/components/ui/input";
-import { MdKeyboardCommandKey } from "react-icons/md";
-import { SearchIcon } from "@/assets/svg/SearchIcon";
-import { MailIcon } from "@/assets/svg/MailIcon";
-import { BellIcon } from "@/assets/svg/BellIcon";
-import { MenuIcon } from "@/assets/svg/MenuIcon";
+import { BsLayoutSidebar } from "react-icons/bs";
+import { TbLayoutSidebar, TbLayoutSidebarFilled } from "react-icons/tb";
 import {
   FiFileText,
   FiClock,
@@ -121,7 +116,12 @@ const Sidebar = () => {
   return (
     <div className=" rounded-2xl  block sm:block min-h-[200px]  flex-col  relative h-full">
       <div className="flex flex-col py-4 flex-1">
-        <div className="text-black font-semibold px-4">Qlarety</div>
+        <div className="flex justify-between px-4 items-center">
+          <div className="text-black font-semibold ">Qlarety</div>
+          {/* <button className="hover:bg-neutral-200/50 p-2 rounded-sm cursor-pointer">
+            <TbLayoutSidebar size={18} className="text-neutral-600" />
+          </button> */}
+        </div>
         <div className="mt-6 text-neutral-500 font-semibold text-xs px-4 flex items-center gap-2">
           RECENT DOCUMENTS
           <button type="button">

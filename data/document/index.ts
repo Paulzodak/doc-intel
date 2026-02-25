@@ -337,3 +337,5 @@ export function useShareDocument(
     ...options,
   });
 }
+
+// export { useDocumentChat, documentChatKeys } from "./chat";

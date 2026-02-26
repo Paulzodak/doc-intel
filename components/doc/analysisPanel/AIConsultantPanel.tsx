@@ -8,10 +8,7 @@ import { SpeechToTextInput } from "./SpeechToTextInput";
 import { useDocumentChat } from "@/data/document/chat";
 import type { Document, DocumentChatMessage } from "@/types/document";
 import { apiClient } from "@/lib/axios";
-import {
-  selectMessagesForJob,
-  setMessages,
-} from "@/redux/slices/document/documentChat.slice";
+import { selectMessagesForJob, setMessages } from "@/redux/slices/document/documentChat.slice";
 import type { RootState } from "@/redux/store";
 
 export interface AIConsultantPanelProps {
@@ -63,7 +60,7 @@ export const AIConsultantPanel: React.FC<AIConsultantPanelProps> = ({ docData })
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="h-full flex flex-col"
+      className="h-full flex flex-col sm:max-h-[calc(100vh-20rem)]"
     >
       <div className="flex-1 overflow-y-auto space-y-4 mb-4 min-h-0">
         {chatMessages.length === 0 ? (

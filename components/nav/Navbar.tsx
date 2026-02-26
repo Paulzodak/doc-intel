@@ -6,7 +6,7 @@ import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
 import { useShowNav } from "@/hooks/layout/useShowNav";
 import { useRouter } from "next/navigation";
-import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
+import { QllaretyLogo } from "@/assets/svg/QllaretyLogo";
 import { useGetSession } from "@/data/auth";
 
 interface DropdownColumn {
@@ -71,7 +71,7 @@ const Navbar = () => {
             },
             {
               title: "Help & FAQ",
-              description: "Find answers to common questions about Qlarety.",
+              description: "Find answers to common questions about Qllarety.",
               href: "/contact",
             },
           ],
@@ -145,11 +145,11 @@ const Navbar = () => {
             className="fixed top-0 z-50 w-full px-4 md:px-6 pt-4 bg-transparent text-[#121714] font-jakarta"
           >
             <div className="max-w-[1400px] mx-auto !p-0 !rounded-full bg-white/80">
-              <div className="shadsow-sm bg-gradient-to-r from-blue-300/10 via-purple-300/10 bordser via-pink-300/10 via-orange-300/10 to-primary-green/10 backdrop-blur-[2px] border border-zinc-100 shasdow-sm px-6 md:px-20 py-4 flex items-center justify-between rounded-full">
+              <div className="shadsow-sm bg-gradient-to-r from-blue-300/10 via-purple-300/10 bordser via-pink-300/10 via-orange-300/10 to-primary-green/10 backdrop-blur-[2px] border border-zinc-100 shasdow-sm px-6 md:px-20 py-2 flex items-center justify-between rounded-full">
                 <div className="flex items-center gap-3">
-                  <QlaretyLogo size={32} className="shrink-0" />
+                  <QllaretyLogo width={60} height={60} className="p-0" />
                   <h2 className="text-2xl font-[1000] font-jakarta tracking-tight hidden sm:block">
-                    Qlarety
+                    Qllarety
                   </h2>
                 </div>
 

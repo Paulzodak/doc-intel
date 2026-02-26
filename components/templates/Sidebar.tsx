@@ -26,6 +26,7 @@ import { RootState } from "@/redux/store";
 import { RefreshIcon } from "@/assets/svg/RefreshIcon";
 import { LockIcon } from "@/assets/svg/LockIcon";
 import { setMobileSidebarOpen } from "@/redux/slices/dashboard/layout.slice";
+import { QllaretyLogo } from "@/assets/svg/QllaretyLogo";
 
 const Sidebar = () => {
   useDocumentsList();
@@ -114,13 +115,17 @@ const Sidebar = () => {
 
   const goToCreateNew = () => {
     router.push("/doc/new");
+    dispatch(setMobileSidebarOpen(false));
   };
 
   return (
     <div className=" rounded-2xl  block sm:block min-h-[200px]  flex-col  relative h-full">
       <div className="flex flex-col py-4 flex-1">
         <div className="flex justify-between px-4 items-center">
-          <div className="text-black font-semibold ">Qlarety</div>
+          <div className="text-black font-semibold ">
+            <QllaretyLogo width={80} height={80} />
+            {/* Qlarety */}
+          </div>
           {/* <button className="hover:bg-neutral-200/50 p-2 rounded-sm cursor-pointer">
             <TbLayoutSidebar size={18} className="text-neutral-600" />
           </button> */}

@@ -1,31 +1,14 @@
 "use client";
 
 import { useCallback } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { useDocumentNames } from "@/hooks/useDocumentNames";
 import { AnimatePresence, motion } from "framer-motion";
-import DocumentInput from "@/components/documentInput/DocumentInput";
 import { Input } from "@/components/ui/input";
 import { MdKeyboardCommandKey } from "react-icons/md";
 import { SearchIcon } from "@/assets/svg/SearchIcon";
 import { MailIcon } from "@/assets/svg/MailIcon";
 import { BellIcon } from "@/assets/svg/BellIcon";
-import { MenuIcon } from "@/assets/svg/MenuIcon";
-import {
-  FiFileText,
-  FiClock,
-  FiChevronRight,
-  FiMoreVertical,
-  FiTrash2,
-  FiCheck,
-} from "react-icons/fi";
-import { SettingsIcon } from "@/assets/svg/SettingsIcon";
-import { KeyIcon } from "@/assets/svg/KeyIcon";
-import { Button } from "@/components/ui/button";
-import { PlusIcon } from "@/assets/svg/PlusIcon";
 import Sidebar from "./Sidebar";
 import { DotGridBackground } from "../atoms/DotGridBackground";
-import { UserMemojiOne } from "@/assets/svg/UserMemojiOne";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "@/redux/slices/user/user.slice";
 import {
@@ -36,6 +19,7 @@ import {
 } from "@/redux/slices/dashboard/layout.slice";
 import staticData from "@/lib/staticData";
 import { TbLayoutSidebar } from "react-icons/tb";
+import { QllaretyLogo } from "@/assets/svg/QllaretyLogo";
 export default function DashboardLayout({
   children,
   title,
@@ -93,6 +77,7 @@ export default function DashboardLayout({
                 >
                   <TbLayoutSidebar size={18} className="text-neutral-600" />
                 </button>
+                <QllaretyLogo width={30} height={30} />
                 <button
                   type="button"
                   onClick={handleToggleDesktopSidebar}
@@ -105,10 +90,10 @@ export default function DashboardLayout({
               <div className="relative hidden lg:block">
                 <Input
                   placeholder="Search documents..."
-                  className="bg-white rounded-full border-none shadow-none px-10 py-3"
+                  className="bg-white rounded-full border shadow-none px-10 py-3"
                 />
                 <SearchIcon
-                  //   color="black"
+                  color="#4a5565"
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"
                   size={18}
                 />

@@ -27,6 +27,7 @@ import { isProduction } from "@/lib/utils";
 import { error } from "console";
 import { ArrowLeftIcon } from "@/assets/svg/ArrowLeftIcon";
 import { API_BASE_URL } from "@/lib/axios";
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 
 export default function LoginPage() {
   console.log(isProduction, "isProduction");
@@ -238,6 +239,14 @@ export default function LoginPage() {
         /> */}
 
         {/* Headline */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-center mb-8 col-span-full"
+        >
+          <QlaretyLogo width={100} height={100} />
+        </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

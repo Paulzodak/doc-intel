@@ -14,6 +14,8 @@ import {
   selectSelectedHighlight,
 } from "@/redux/slices/document/documentContent.slice";
 import type { Highlight } from "@/types/analysis";
+import LogoLoading from "@/components/atoms/LogoLoading";
+import { ErrorFeedback } from "@/components/atoms/form/feedback";
 
 interface DocPageProps {
   params: Promise<{ docId: string }>;
@@ -62,26 +64,26 @@ export default function DocPage({ params }: DocPageProps) {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading document...</p>
-        </div>
-      </div>
+      <LogoLoading>
+        <p className="text-sm text-gray-600 mt-4">Opening document…</p>
+      </LogoLoading>
     );
   }
 
   // Show error state
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="text-center max-w-md mx-4">
-          <p className="text-red-600 text-lg mb-2 font-semibold">Error loading document</p>
-          <p className="text-gray-600">
-            {error?.response?.data?.status || "Failed to fetch document"}
-          </p>
-        </div>
+      <div className="flex h-full w-full flex-col items-center justify-center px-4 font-jakarta ">
+        <ErrorFeedback message={error?.response?.data?.status || "Failed to fetch document"} />
       </div>
+      // <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+      //   <div className="text-center max-w-md mx-4">
+      //     <p className="text-red-600 text-lg mb-2 font-semibold">Error loading document</p>
+      //     <p className="text-gray-600">
+      //       {error?.response?.data?.status || "Failed to fetch document"}
+      //     </p>
+      //   </div>
+      // </div>
     );
   }
 

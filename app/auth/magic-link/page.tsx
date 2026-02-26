@@ -14,6 +14,7 @@ import Link from "next/link";
 import { FaArrowRightLong, FaLink } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { useMagicLink } from "@/data/auth";
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 
 const magicLinkSchema = z.object({
   email: z.string().email({
@@ -278,6 +279,14 @@ export default function MagicLinkPage() {
           }}
         />
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-center mb-8 col-span-full"
+        >
+          <QlaretyLogo width={100} height={100} />
+        </motion.div>
         {/* Headline */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

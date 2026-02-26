@@ -19,7 +19,7 @@ import {
 } from "@/redux/slices/dashboard/layout.slice";
 import staticData from "@/lib/staticData";
 import { TbLayoutSidebar } from "react-icons/tb";
-import { QllaretyLogo } from "@/assets/svg/QllaretyLogo";
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 export default function DashboardLayout({
   children,
   title,
@@ -77,7 +77,6 @@ export default function DashboardLayout({
                 >
                   <TbLayoutSidebar size={18} className="text-neutral-600" />
                 </button>
-                <QllaretyLogo width={30} height={30} />
                 <button
                   type="button"
                   onClick={handleToggleDesktopSidebar}
@@ -102,6 +101,10 @@ export default function DashboardLayout({
                   <span className="text-xs ">F</span>
                 </div>
               </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <QlaretyLogo className="hidden lg:block" width={30} height={30} />
+              <div className="hidden  lg:block text-gray-600 font-bold text-sm ">Qlarety</div>
             </div>
             {/* <div className="flex gap-4 lg:hidden">
               <MenuIcon onClick={handleToggleSidebar} size={18} color="#101828" />

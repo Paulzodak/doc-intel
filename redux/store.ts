@@ -14,6 +14,8 @@ import type { IUserState } from "./slices/user/user.slice";
 import authSlice from "./slices/auth/auth.slice";
 import documentsListSlice from "./slices/document/documentsList.slice";
 import type { IDocumentsListState } from "./slices/document/documentsList.slice";
+import documentAnalysisSlice from "./slices/document/documentAnalysis.slice";
+import documentChatSlice from "./slices/document/documentChat.slice";
 
 const rootReducer = combineReducers({
   documentInput: documentInputSlice,
@@ -22,6 +24,8 @@ const rootReducer = combineReducers({
   user: userSlice,
   auth: authSlice,
   documentsList: documentsListSlice,
+  documentAnalysis: documentAnalysisSlice,
+  documentChat: documentChatSlice,
   layout: layoutSlice,
 
   // add more reducers here

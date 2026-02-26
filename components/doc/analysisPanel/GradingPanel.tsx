@@ -1,9 +1,18 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
-import { FiTrendingUp, FiAlertTriangle, FiCheckCircle, FiInfo } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { FiAlertTriangle, FiCheckCircle, FiInfo } from "react-icons/fi";
 import type { DocumentAnalysis } from "@/types/analysis";
+import {
+  selectIsGradingExpanded,
+  selectIsKeyPointsExpanded,
+  selectIsSummaryExpanded,
+  setGradingExpanded,
+  setKeyPointsExpanded,
+  setSummaryExpanded,
+} from "@/redux/slices/document/documentAnalysis.slice";
 import { CollapsiblePanel } from "./CollapsiblePanel";
 import { GradingCard } from "./GradingCard";
 
@@ -13,9 +22,10 @@ export interface GradingPanelProps {
 }
 
 export const GradingPanel: React.FC<GradingPanelProps> = ({ analysis, documentSummary }) => {
-  const [isGradingExpanded, setIsGradingExpanded] = useState(false);
-  const [isKeyPointsExpanded, setIsKeyPointsExpanded] = useState(false);
-  const [isSummaryExpanded, setIsSummaryExpanded] = useState(true);
+  const dispatch = useDispatch();
+  const isGradingExpanded = useSelector(selectIsGradingExpanded);
+  const isKeyPointsExpanded = useSelector(selectIsKeyPointsExpanded);
+  const isSummaryExpanded = useSelector(selectIsSummaryExpanded);
 
   const calculatedScores = useMemo(() => {
     const totalHighlights = analysis.highlights.length;
@@ -55,7 +65,7 @@ export const GradingPanel: React.FC<GradingPanelProps> = ({ analysis, documentSu
       <CollapsiblePanel
         title="Summary"
         isExpanded={isSummaryExpanded}
-        onToggle={() => setIsSummaryExpanded(!isSummaryExpanded)}
+        onToggle={() => dispatch(setSummaryExpanded(!isSummaryExpanded))}
       >
         {documentSummary ? (
           <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">
@@ -69,7 +79,7 @@ export const GradingPanel: React.FC<GradingPanelProps> = ({ analysis, documentSu
       <CollapsiblePanel
         title="Grading Scores"
         isExpanded={isGradingExpanded}
-        onToggle={() => setIsGradingExpanded(!isGradingExpanded)}
+        onToggle={() => dispatch(setGradingExpanded(!isGradingExpanded))}
       >
         <GradingCard label="Risk Score" score={calculatedScores.risk} icon={FiAlertTriangle} />
         <GradingCard label="Advantages" score={calculatedScores.advantages} icon={FiCheckCircle} />
@@ -98,7 +108,7 @@ export const GradingPanel: React.FC<GradingPanelProps> = ({ analysis, documentSu
         <CollapsiblePanel
           title="Key Points"
           isExpanded={isKeyPointsExpanded}
-          onToggle={() => setIsKeyPointsExpanded(!isKeyPointsExpanded)}
+          onToggle={() => dispatch(setKeyPointsExpanded(!isKeyPointsExpanded))}
         >
           <ul className="space-y-2">
             {analysis.highlights.map((highlight, index) => (

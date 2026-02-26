@@ -28,7 +28,12 @@ import { DotGridBackground } from "../atoms/DotGridBackground";
 import { UserMemojiOne } from "@/assets/svg/UserMemojiOne";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "@/redux/slices/user/user.slice";
-import { selectSidebarVisible, toggleSidebar, setSidebarVisible } from "@/redux/slices/dashboard/layout.slice";
+import {
+  selectMobileSidebarOpen,
+  selectDesktopSidebarOpen,
+  setMobileSidebarOpen,
+  toggleDesktopSidebar,
+} from "@/redux/slices/dashboard/layout.slice";
 import staticData from "@/lib/staticData";
 import { TbLayoutSidebar } from "react-icons/tb";
 export default function DashboardLayout({
@@ -40,12 +45,16 @@ export default function DashboardLayout({
 }) {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  const sidebarVisible = useSelector(selectSidebarVisible);
-  const handleToggleSidebar = useCallback(() => {
-    dispatch(toggleSidebar());
+  const mobileSidebarOpen = useSelector(selectMobileSidebarOpen);
+  const desktopSidebarOpen = useSelector(selectDesktopSidebarOpen);
+  const handleToggleDesktopSidebar = useCallback(() => {
+    dispatch(toggleDesktopSidebar());
   }, [dispatch]);
-  const handleCloseSidebar = useCallback(() => {
-    dispatch(setSidebarVisible(false));
+  const handleOpenMobileSidebar = useCallback(() => {
+    dispatch(setMobileSidebarOpen(true));
+  }, [dispatch]);
+  const handleCloseMobileSidebar = useCallback(() => {
+    dispatch(setMobileSidebarOpen(false));
   }, [dispatch]);
 
   const MemojiComponent = staticData.memoji[user?.memoji ?? 1] ?? staticData.memoji[1];
@@ -57,12 +66,12 @@ export default function DashboardLayout({
         className="absolute w-screen h-screen inset-0 opacity-50 bg-gdray-300 "
       />
       <div className="w-screen h-screen max-h-screen  p-2 flex flex-row  sm:p-4 grsid grid-cols-1  sm:grid-cols-[18rem_auto] gap-4 min-[1500px]:p-8 min-[1500px]:gap-6 font-nunito">
-        {sidebarVisible && (
+        {desktopSidebarOpen && (
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            className="bg-gray-100/50 rounded-2xl hidden lg:flex border border-gray-200/50 "
+            transition={{ duration: 0.2 }}
+            className="bg-gray-100/50 rounded-2xl hidden lg:flex border border-gray-200/50 shrink-0"
           >
             <Sidebar />
           </motion.div>
@@ -75,12 +84,20 @@ export default function DashboardLayout({
             className="bg-gray-100/50 rounded-2xl flex items-center justify-between px-3 py-3 border border-gray-200/50"
           >
             <div className="flex gap-4">
-              <div className="flex items-center ">
+              <div className="flex items-center">
                 <button
                   type="button"
-                  onClick={handleToggleSidebar}
-                  className="hover:bg-neutral-200/50 p-2 rounded-sm cursor-pointer"
-                  aria-label={sidebarVisible ? "Hide sidebar" : "Show sidebar"}
+                  onClick={handleOpenMobileSidebar}
+                  className="hover:bg-neutral-200/50 p-2 rounded-sm cursor-pointer lg:hidden"
+                  aria-label="Open menu"
+                >
+                  <TbLayoutSidebar size={18} className="text-neutral-600" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleToggleDesktopSidebar}
+                  className="hover:bg-neutral-200/50 p-2 rounded-sm cursor-pointer hidden lg:block"
+                  aria-label={desktopSidebarOpen ? "Hide sidebar" : "Show sidebar"}
                 >
                   <TbLayoutSidebar size={18} className="text-neutral-600" />
                 </button>
@@ -101,10 +118,10 @@ export default function DashboardLayout({
                 </div>
               </div>
             </div>
-            <div className="flex gap-4 lg:hidden">
+            {/* <div className="flex gap-4 lg:hidden">
               <MenuIcon onClick={handleToggleSidebar} size={18} color="#101828" />
               <div className="block lg:hidden text-black">Qlarety</div>
-            </div>
+            </div> */}
             <div className="relative h-full flex gap-4 px-2">
               <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
                 <MailIcon className="" color="#101828" size={18} />
@@ -133,24 +150,25 @@ export default function DashboardLayout({
         </div>
       </div>
       <AnimatePresence>
-        {sidebarVisible && (
+        {mobileSidebarOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className=" h-full absolute top-0 left-0   w-full sm:flex  z-10 lg:hidden "
+            className="h-full absolute top-0 left-0 w-full z-50 lg:hidden"
           >
             <div
-              onClick={handleCloseSidebar}
+              onClick={handleCloseMobileSidebar}
               className="absolute h-full w-full top-0 left-0 bg-black/50 z-0"
               aria-hidden
             />
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
               transition={{ duration: 0.2 }}
-              key={sidebarVisible ? "sidebar-open" : "sidebar-closed"}
-              className="relative h-full w-full bg-white max-w-[20rem] "
+              className="relative h-full w-full bg-white max-w-[20rem] shadow-xl z-10"
             >
               <Sidebar />
             </motion.div>

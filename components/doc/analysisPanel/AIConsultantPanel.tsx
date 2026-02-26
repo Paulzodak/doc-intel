@@ -1,81 +1,64 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
 import { FiMessageCircle } from "react-icons/fi";
 import { SpeechToTextInput } from "./SpeechToTextInput";
 import { useDocumentChat } from "@/data/document/chat";
-import { Document, DocumentChatMessage, DocumentChatResponse } from "@/types/document";
+import type { Document, DocumentChatMessage } from "@/types/document";
 import { apiClient } from "@/lib/axios";
-
-export interface ChatMessage {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
-  timestamp: Date;
-}
+import {
+  selectMessagesForJob,
+  setMessages,
+} from "@/redux/slices/document/documentChat.slice";
+import type { RootState } from "@/redux/store";
 
 export interface AIConsultantPanelProps {
   docData: Document;
 }
 
 export const AIConsultantPanel: React.FC<AIConsultantPanelProps> = ({ docData }) => {
-  const { data, isPending, error } = useDocumentChat(docData.jobId);
-  console.log(data, error);
-  const [chatMessages, setChatMessages] = useState<DocumentChatMessage[]>(data?.data ?? []);
+  const dispatch = useDispatch();
+  const { data, isPending } = useDocumentChat(docData.jobId);
+  const chatMessages = useSelector((state: RootState) =>
+    selectMessagesForJob(state, docData.jobId),
+  );
   const [chatInput, setChatInput] = useState("");
-  const [isLoading, setIsLoading] = useState(isPending);
+  const [isSending, setIsSending] = useState(false);
+  const isLoading = isPending || isSending;
+
+  useEffect(() => {
+    if (data?.data) {
+      dispatch(setMessages({ jobId: docData.jobId, messages: data.data }));
+    }
+  }, [data, docData.jobId, dispatch]);
 
   const handleSendMessage = () => {
     if (!chatInput.trim() || isLoading) return;
 
-    const userMessage: ChatMessage = {
-      id: Date.now().toString(),
-      role: "user",
-      content: chatInput.trim(),
-      timestamp: new Date(),
-    };
-
-    setChatMessages((prev) => [
-      ...prev,
-      {
-        id: Date.now().toString(),
-        role: "user",
-        content: chatInput.trim(),
-        createdAt: new Date().toISOString(),
-      },
-    ]);
+    const text = chatInput.trim();
     setChatInput("");
-    setIsLoading(true);
+    setIsSending(true);
 
     apiClient
-      .post("/api/document/chat", {
+      .post<{ chatHistory?: DocumentChatMessage[] }>("/api/document/chat", {
         jobId: docData.jobId,
-        inputText: chatInput.trim(),
+        inputText: text,
       })
       .then((res) => {
-        console.log(res);
-        setChatMessages(res.data.chatHistory);
+        const history = res.data?.chatHistory;
+        if (Array.isArray(history)) {
+          dispatch(setMessages({ jobId: docData.jobId, messages: history }));
+        }
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        setIsSending(false);
       });
-
-    // setTimeout(() => {
-    //   const assistantMessage: ChatMessage = {
-    //     id: (Date.now() + 1).toString(),
-    //     role: "assistant",
-    //     content: `I understand you're asking about "${userMessage.content}". Based on the document analysis, I can provide insights about the risks, advantages, and compliance aspects. Would you like me to elaborate on any specific area?`,
-    //     timestamp: new Date(),
-    //   };
-    //   setChatMessages((prev) => [...prev, assistantMessage]);
-    //   setIsLoading(false);
-    // }, 1000);
   };
-
-  React.useEffect(() => {
-    setChatMessages(data?.data ?? []);
-  }, [data]);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

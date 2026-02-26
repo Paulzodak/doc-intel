@@ -21,14 +21,16 @@ import { PlusIcon } from "@/assets/svg/PlusIcon";
 import { AddFolderIcon } from "@/assets/svg/AddFolderIcon";
 import { AddFolderIcon2 } from "@/assets/svg/AddFolderIcon2";
 import { FileIcon } from "@/assets/svg/FileIcon";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import { RefreshIcon } from "@/assets/svg/RefreshIcon";
 import { LockIcon } from "@/assets/svg/LockIcon";
+import { setMobileSidebarOpen } from "@/redux/slices/dashboard/layout.slice";
 
 const Sidebar = () => {
   useDocumentsList();
   const pathname = usePathname();
+  const dispatch = useDispatch();
   const router = useRouter();
   const documents = useSelector((state: RootState) => state.documentsList.documents);
   const { mutateAsync: deleteDocument } = useDeleteDocument();
@@ -65,8 +67,9 @@ const Sidebar = () => {
     (id: string) => {
       setOpenDropdownId(null);
       router.push(`/doc/${id}`);
+      dispatch(setMobileSidebarOpen(false));
     },
-    [router],
+    [router, dispatch],
   );
 
   const toggleDropdown = useCallback((id: string, e: React.MouseEvent) => {

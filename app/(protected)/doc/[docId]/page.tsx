@@ -160,16 +160,16 @@ export default function DocPage({ params }: DocPageProps) {
       {docData && (
         <div className="flex-1 overflow-y-auto h-full">
           <div className="madx-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 h-full">
-            <div className="flex flex-col lg:grid lg:grid-cols-10 gap-6 borjder border-blue-800 h-full">
+            <div className="flex flex-col lg:grid lg:grid-cols-10 gap-6 bosrder border-blue-800 h-full md:overflow-hidden">
               {/* Analysis Panel - First on mobile, right column on desktop */}
-              <div className=" order-1 lg:order-2 lg:col-span-3 makx-h-full overdflow-scroll bsorder  border-green-800 rounde">
+              <div className=" order-1 lg:order-2 lg:col-span-3  md:overflow-scroll borsder  border-green-800 rounde">
                 {/* <div className="lg:ssticky lg:top-6 max-h-full  rounded-2xl border border-red-800"> */}
                 <AnalysisPanel analysis={analysis} docData={docData} />
-                {/* </div> */}
               </div>
+              {/* </div> */}
 
               {/* Document Text - Second on mobile, left column on desktop */}
-              <div className="order-2 lg:order-1 lg:col-span-7">
+              <div className="order-2 lg:order-1 lg:col-span-7 md:overflow-scroll h-full bodrder border-red-800">
                 <DocumentContent
                   docId={docId}
                   docData={docData}

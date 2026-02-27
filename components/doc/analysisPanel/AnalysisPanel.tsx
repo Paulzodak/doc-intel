@@ -26,7 +26,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
   const activeTab = useSelector(selectActiveTab);
 
   return (
-    <div className="h-fudll sticky top-4 flex flex-col bg-white overflow-scroll border rounded-3xl">
+    <div className="hs-full sticky top-4 flekx flkex-col bg-white overflow-scroll border bordesr-red-700 max-h-full rounded-3xl">
       <div className="flex border-b border-gray-200 bg-white/80 sticsky tomp-0 z-10">
         {[
           { id: "grading", label: "Grading", icon: FiTrendingUp },
@@ -52,7 +52,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
         ))}
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+      <div className="flex-1 overflow-hidden p-4 sm:p-6">
         {activeTab === "grading" && (
           <GradingPanel analysis={analysis} documentSummary={docData.documentSummary} />
         )}

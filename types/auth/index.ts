@@ -56,6 +56,17 @@ export interface VerifyEmailResponse {
   };
 }
 
+export interface SessionResponse {
+  success: boolean;
+  message?: string;
+  user?: {
+    id: string;
+    username: string;
+    email: string;
+    email_verified?: boolean;
+  };
+}
+
 export type OAuthProvider = "google" | "apple" | "github";
 
 export interface OAuthRedirectRequest {

@@ -38,7 +38,7 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
             <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full">Compliance</span>
             <div className="border-l border-gray-200 my-1" />
             <div className="gap-2 hidden md:flex">
-              <div className="flex border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full">
+              <div className="flex border bg-neutral-50 text-sm border-neutral-300 gap-2 text-gray-500 items-center px-2 py-1 rounded-full">
                 <Copy color="black" size={14} />
                 <span>Copy</span>
               </div>
@@ -59,7 +59,7 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
               <button
                 type="button"
                 onClick={() => setShareModalOpen(true)}
-                className="flex border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
+                className="flex bg-neutral-50 border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
               >
                 <ShareIcon size={15} />
                 <span>Share</span>

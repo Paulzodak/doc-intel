@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
 import { useShowNav } from "@/hooks/layout/useShowNav";
 import { useRouter } from "next/navigation";
 import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
+import { useGetSession } from "@/data/auth";
 
 interface DropdownColumn {
   heading: string;
@@ -23,77 +24,35 @@ interface NavItem {
 }
 
 const Navbar = () => {
+  const { data: session, isLoading: isSessionLoading } = useGetSession();
+  const isAuthenticated = session?.user;
+  const user = session?.user;
+
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const router = useRouter();
   const isVisible = useShowNav();
-  console.log(isVisible);
   const navItems: NavItem[] = [
     {
       label: "Product",
       columns: [
         {
-          heading: "EXPLORE",
+          heading: "CAPABILITIES",
           items: [
             {
               title: "Document Analysis",
               description: "AI-powered analysis for contracts and legal documents.",
+              href: "/doc/new",
             },
             {
               title: "Risk Assessment",
               description: "Identify potential risks and compliance issues automatically.",
-            },
-            {
-              title: "Contract Review",
-              description: "Review contracts with intelligent insights and recommendations.",
-            },
-          ],
-        },
-        {
-          heading: "FEATURES",
-          items: [
-            {
-              title: "AI Insights",
-              description: "Get instant AI-powered insights on your documents.",
+              href: "/doc/new",
             },
             {
               title: "Compliance Checking",
               description: "Ensure documents meet regulatory requirements.",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      label: "Solutions",
-      columns: [
-        {
-          heading: "BY INDUSTRY",
-          items: [
-            {
-              title: "Legal Firms",
-              description: "Streamline document review for law practices.",
-            },
-            {
-              title: "Corporate Legal",
-              description: "Enterprise solutions for in-house legal teams.",
-            },
-            {
-              title: "Compliance Teams",
-              description: "Automate compliance checks and reporting.",
-            },
-          ],
-        },
-        {
-          heading: "BY USE CASE",
-          items: [
-            {
-              title: "Contract Management",
-              description: "Manage and analyze contracts at scale.",
-            },
-            {
-              title: "Due Diligence",
-              description: "Accelerate M&A and transaction reviews.",
+              href: "/doc/new",
             },
           ],
         },
@@ -103,49 +62,17 @@ const Navbar = () => {
       label: "Resources",
       columns: [
         {
-          heading: "EXPLORE",
-          items: [
-            {
-              title: "Qlarety Blog",
-              description: "Read the latest industry tips and trends.",
-            },
-            {
-              title: "AI Features",
-              description: "Discover all the ways to create and grow with AI.",
-            },
-            {
-              title: "Document Inspiration",
-              description: "Explore document templates by other users.",
-            },
-          ],
-        },
-        {
           heading: "SUPPORT",
           items: [
             {
-              title: "Help Center",
-              description: "Find the answers and support you need.",
+              title: "Contact Us",
+              description: "Get in touch with our team for any inquiries.",
+              href: "/contact",
             },
             {
-              title: "Hire a Professional",
-              description: "Get expert help with your documents & business.",
-            },
-          ],
-        },
-        {
-          heading: "TOOLS",
-          items: [
-            {
-              title: "Document Templates",
-              description: "Create custom templates for your documents.",
-            },
-            {
-              title: "Compliance Checker",
-              description: "Check documents against regulatory standards.",
-            },
-            {
-              title: "Free Legal Tools",
-              description: "Explore tools to help you manage & grow your business.",
+              title: "Help & FAQ",
+              description: "Find answers to common questions about Qlarety.",
+              href: "/contact",
             },
           ],
         },
@@ -160,14 +87,17 @@ const Navbar = () => {
             {
               title: "Basic Plan",
               description: "Perfect for individuals and small teams.",
+              href: "/contact",
             },
             {
               title: "Pro Plan",
               description: "Advanced features for growing businesses.",
+              href: "/contact",
             },
             {
               title: "Enterprise Plan",
               description: "Custom solutions for large organizations.",
+              href: "/contact",
             },
           ],
         },
@@ -212,13 +142,16 @@ const Navbar = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed top-0 z-50 w-full px-4 md:px-6 pt-4 bg-transparent text-[#121714]"
+            className="fixed top-0 z-50 w-full px-4 md:px-6 pt-4 bg-transparent text-[#121714] font-jakarta"
           >
             <div className="max-w-[1400px] mx-auto !p-0 !rounded-full bg-white/80">
-              <div className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 bordser via-pink-500/10 via-orange-500/10 to-primary-green/10 backdrop-blur-[2px] border border-zinc-200 shasdow-sm px-6 md:px-20 py-4 flex items-center justify-between rounded-full">
+              <div className="shadsow-sm bg-gradient-to-r from-blue-300/10 via-purple-300/10 bordser via-pink-300/10 via-orange-300/10 to-primary-green/10 backdrop-blur-[2px] border border-zinc-100 shasdow-sm px-6 md:px-20 py-2 flex items-center justify-between rounded-full">
                 <div className="flex items-center gap-3">
-                  <QlaretyLogo size={32} className="shrink-0" />
-                  <h2 className="text-xl font-extrabold tracking-tight hidden sm:block">Qlarety</h2>
+                  <QlaretyLogo width={70} height={70} className="p-0 hidden md:block" />
+                  <QlaretyLogo width={60} height={60} className="p-0 block md:hidden" />
+                  <h2 className="text-2xl font-[1000] font-jakarta tracking-tight hidden sm:block">
+                    Qlarety
+                  </h2>
                 </div>
 
                 {/* Desktop Navigation */}
@@ -231,7 +164,7 @@ const Navbar = () => {
                       onMouseLeave={handleMouseLeave}
                     >
                       <button className="text-sm font-semibold hover:text-primary-green transition-colors flex items-center gap-1">
-                        <span className=" text-[16px] text-gradient">{item.label}</span>
+                        <span className=" text-[14px] text-gradient uppercase">{item.label}</span>
                         <motion.svg
                           width="12"
                           height="12"
@@ -304,23 +237,39 @@ const Navbar = () => {
 
                 {/* Action Buttons */}
                 <div className="flex items-center gap-4">
-                  <button
-                    onClick={goToLogin}
-                    className="hidden sm:block px-5 py-2 text-sm font-bold hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl transition-colors hover:text-primary-green cursor-pointer"
-                  >
-                    Log In
-                  </button>
-                  <button
-                    onClick={goToSignUp}
-                    className="bg-primary-green text-legal-navy px-6 py-2.5 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer"
-                  >
-                    Start Free Trial
-                  </button>
+                  {isAuthenticated ? (
+                    <>
+                      <button
+                        onClick={() => router.push("/doc/new")}
+                        className="bg-primary-green text-legal-navy px-4 py-2 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer flex items-center gap-2"
+                      >
+                        <span className="w-6 h-6 rounded-full bg-white/30 flex items-center justify-center text-xs font-black uppercase">
+                          {user?.username?.charAt(0) || user?.email?.charAt(0) || "U"}
+                        </span>
+                        <span className="hidden sm:inline">{"Dashboard"}</span>
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={goToLogin}
+                        className="hidden sm:block px-5 py-2 text-sm font-bold hover:bg-gray-100 rounded-xl transition-colors hover:text-primary-green cursor-pointer"
+                      >
+                        Log In
+                      </button>
+                      <button
+                        onClick={goToSignUp}
+                        className="bg-primary-green text-legal-navy px-6 py-2.5 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer"
+                      >
+                        Start Free Trial
+                      </button>
+                    </>
+                  )}
 
                   {/* Mobile Menu Button */}
                   <button
                     onClick={toggleMobileMenu}
-                    className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                    className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
                     aria-label="Toggle menu"
                   >
                     <motion.div
@@ -428,19 +377,39 @@ const Navbar = () => {
                     </AnimatePresence>
                   </div>
                 ))}
-                <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-2 mt-4">
-                  <button
-                    className="w-full px-4 py-3 text-sm font-bold hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl transition-colors text-left"
-                    onClick={toggleMobileMenu}
-                  >
-                    Log In
-                  </button>
-                  <button
-                    className="w-full bg-primary-green text-legal-navy px-4 py-3 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/20 hover:scale-105 transition-transform active:scale-95"
-                    onClick={toggleMobileMenu}
-                  >
-                    Start Free Trial
-                  </button>
+                <div className="pt-4 border-t border-gray-200 space-y-2 mt-4">
+                  {isAuthenticated ? (
+                    <button
+                      className="w-full bg-primary-green text-legal-navy px-4 py-3 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/20 hover:scale-105 transition-transform active:scale-95"
+                      onClick={() => {
+                        toggleMobileMenu();
+                        router.push("/doc/new");
+                      }}
+                    >
+                      Go to Dashboard
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        className="w-full px-4 py-3 text-sm font-bold hover:bg-gray-100 rounded-xl transition-colors text-left"
+                        onClick={() => {
+                          toggleMobileMenu();
+                          goToLogin();
+                        }}
+                      >
+                        Log In
+                      </button>
+                      <button
+                        className="w-full bg-primary-green text-legal-navy px-4 py-3 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/20 hover:scale-105 transition-transform active:scale-95"
+                        onClick={() => {
+                          toggleMobileMenu();
+                          goToSignUp();
+                        }}
+                      >
+                        Start Free Trial
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>

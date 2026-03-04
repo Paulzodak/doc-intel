@@ -4,13 +4,8 @@ import { useMemo, useState, useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useDocumentsList, useDeleteDocument } from "@/data/document";
 import type { Document } from "@/types/document";
-import DocumentInput from "@/components/documentInput/DocumentInput";
-import { Input } from "@/components/ui/input";
-import { MdKeyboardCommandKey } from "react-icons/md";
-import { SearchIcon } from "@/assets/svg/SearchIcon";
-import { MailIcon } from "@/assets/svg/MailIcon";
-import { BellIcon } from "@/assets/svg/BellIcon";
-import { MenuIcon } from "@/assets/svg/MenuIcon";
+import { BsLayoutSidebar } from "react-icons/bs";
+import { TbLayoutSidebar, TbLayoutSidebarFilled } from "react-icons/tb";
 import {
   FiFileText,
   FiClock,
@@ -26,14 +21,17 @@ import { PlusIcon } from "@/assets/svg/PlusIcon";
 import { AddFolderIcon } from "@/assets/svg/AddFolderIcon";
 import { AddFolderIcon2 } from "@/assets/svg/AddFolderIcon2";
 import { FileIcon } from "@/assets/svg/FileIcon";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import { RefreshIcon } from "@/assets/svg/RefreshIcon";
 import { LockIcon } from "@/assets/svg/LockIcon";
+import { setMobileSidebarOpen } from "@/redux/slices/dashboard/layout.slice";
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 
 const Sidebar = () => {
   useDocumentsList();
   const pathname = usePathname();
+  const dispatch = useDispatch();
   const router = useRouter();
   const documents = useSelector((state: RootState) => state.documentsList.documents);
   const { mutateAsync: deleteDocument } = useDeleteDocument();
@@ -70,8 +68,9 @@ const Sidebar = () => {
     (id: string) => {
       setOpenDropdownId(null);
       router.push(`/doc/${id}`);
+      dispatch(setMobileSidebarOpen(false));
     },
-    [router],
+    [router, dispatch],
   );
 
   const toggleDropdown = useCallback((id: string, e: React.MouseEvent) => {
@@ -116,12 +115,21 @@ const Sidebar = () => {
 
   const goToCreateNew = () => {
     router.push("/doc/new");
+    dispatch(setMobileSidebarOpen(false));
   };
 
   return (
     <div className=" rounded-2xl  block sm:block min-h-[200px]  flex-col  relative h-full">
       <div className="flex flex-col py-4 flex-1">
-        <div className="text-black font-semibold px-4">Qlarety</div>
+        <div className="flex justify-between px-4 items-center">
+          <div className="text-black font-semibold ">
+            <QlaretyLogo width={80} height={80} />
+            {/* Qlarety */}
+          </div>
+          {/* <button className="hover:bg-neutral-200/50 p-2 rounded-sm cursor-pointer">
+            <TbLayoutSidebar size={18} className="text-neutral-600" />
+          </button> */}
+        </div>
         <div className="mt-6 text-neutral-500 font-semibold text-xs px-4 flex items-center gap-2">
           RECENT DOCUMENTS
           <button type="button">

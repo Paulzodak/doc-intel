@@ -54,7 +54,7 @@ const EditableDocumentName: React.FC<EditableDocumentNameProps> = ({ docData }) 
   return (
     <div className="flex gap-2 items-center min-w-0">
       <DocumentTextIcon size={20} className="shrink-0" color="#6a7282" />
-      {isEditing && docData.permission ? (
+      {isEditing && !docData.externalDocId ? (
         <div className="flex items-center gap-1.5 min-w-0">
           <input
             ref={inputRef}
@@ -88,10 +88,10 @@ const EditableDocumentName: React.FC<EditableDocumentNameProps> = ({ docData }) 
           onClick={() => setIsEditing(true)}
           className="group flex items-center gap-1.5 min-w-0"
         >
-          <h2 className="text-lg sm:text-xl font-bold text-gray-900 font-jakarta truncate">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 font-jakarta truncate min-w-0 flex-1 max-w-[15ch] sm:max-w-none">
             {docData.documentName}
           </h2>
-          {docData.permission && (
+          {!docData.externalDocId && (
             <Pencil
               size={14}
               className="shrink-0 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity"

@@ -15,9 +15,46 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://qlarety.com";
+
 export const metadata: Metadata = {
-  title: "Qlarety",
-  description: "Qlarety - AI-powered legal document analysis",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Qlarety | AI-Powered Legal Document Analysis",
+    template: "%s | Qlarety",
+  },
+  description:
+    "Analyze legal documents instantly with AI. Qlarety delivers precision-engineered document intelligence for risk assessment, compliance checking, and contract review.",
+  keywords: [
+    "legal document analysis",
+    "AI contract review",
+    "compliance checking",
+    "risk assessment",
+    "legal tech",
+    "document intelligence",
+    "contract analysis",
+  ],
+  authors: [{ name: "Qlarety", url: siteUrl }],
+  creator: "Qlarety",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: "Qlarety",
+    title: "Qlarety | AI-Powered Legal Document Analysis",
+    description:
+      "Analyze legal documents instantly with AI. Risk assessment, compliance checking, and contract review in seconds.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Qlarety | AI-Powered Legal Document Analysis",
+    description:
+      "Analyze legal documents instantly with AI. Risk assessment, compliance checking, and contract review in seconds.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

@@ -24,6 +24,7 @@ import Link from "next/link";
 import { FaArrowLeftLong, FaArrowRightLong, FaLock, FaUser } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { useSignUp } from "@/data/auth";
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 
 const signUpSchema = z.object({
   username: z.string().min(2, {
@@ -262,6 +263,14 @@ export default function LoginPage() {
           }}
         />
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-center mb-8 col-span-full"
+        >
+          <QlaretyLogo width={100} height={100} />
+        </motion.div>
         {/* Headline */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -2,7 +2,7 @@
 
 import { use, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AnalysisPanel from "@/components/doc/AnalysisPanel";
+import AnalysisPanel from "@/components/doc/analysisPanel";
 import DocumentContent from "@/components/doc/DocumentContent";
 import HighlightDetailsModal from "@/components/doc/HighlightDetailsModal";
 import { testDocumentText, testAnalysis } from "@/data/testAnalysis";
@@ -14,6 +14,8 @@ import {
   selectSelectedHighlight,
 } from "@/redux/slices/document/documentContent.slice";
 import type { Highlight } from "@/types/analysis";
+import LogoLoading from "@/components/atoms/LogoLoading";
+import { ErrorFeedback } from "@/components/atoms/form/feedback";
 
 interface DocPageProps {
   params: Promise<{ docId: string }>;
@@ -62,26 +64,26 @@ export default function DocPage({ params }: DocPageProps) {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading document...</p>
-        </div>
-      </div>
+      <LogoLoading>
+        <p className="text-sm text-gray-600 mt-4">Opening document…</p>
+      </LogoLoading>
     );
   }
 
   // Show error state
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="text-center max-w-md mx-4">
-          <p className="text-red-600 text-lg mb-2 font-semibold">Error loading document</p>
-          <p className="text-gray-600">
-            {error?.response?.data?.status || "Failed to fetch document"}
-          </p>
-        </div>
+      <div className="flex h-full w-full flex-col items-center justify-center px-4 font-jakarta ">
+        <ErrorFeedback message={error?.response?.data?.status || "Failed to fetch document"} />
       </div>
+      // <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+      //   <div className="text-center max-w-md mx-4">
+      //     <p className="text-red-600 text-lg mb-2 font-semibold">Error loading document</p>
+      //     <p className="text-gray-600">
+      //       {error?.response?.data?.status || "Failed to fetch document"}
+      //     </p>
+      //   </div>
+      // </div>
     );
   }
 
@@ -149,26 +151,25 @@ export default function DocPage({ params }: DocPageProps) {
     },
   };
 
-  console.log(docData);
   return (
     <>
       {/* Header */}
       {/* <DocumentHeader title="Document Analysis Dashboard" /> */}
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto h-full">
-        <div className="madx-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 h-full">
-          <div className="flex flex-col lg:grid lg:grid-cols-10 gap-6 borjder border-blue-800 h-full">
-            {/* Analysis Panel - First on mobile, right column on desktop */}
-            <div className=" order-1 lg:order-2 lg:col-span-3 makx-h-full overdflow-scroll bsorder  border-green-800 rounde">
-              {/* <div className="lg:ssticky lg:top-6 max-h-full  rounded-2xl border border-red-800"> */}
-              <AnalysisPanel analysis={analysis} />
+      {docData && (
+        <div className="flex-1 overflow-y-auto h-full">
+          <div className="madx-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 h-full">
+            <div className="flex flex-col lg:grid lg:grid-cols-10 gap-6 bosrder border-blue-800 h-full md:overflow-hidden">
+              {/* Analysis Panel - First on mobile, right column on desktop */}
+              <div className=" order-1 lg:order-2 lg:col-span-3  md:overflow-scroll borsder  border-green-800 rounde">
+                {/* <div className="lg:ssticky lg:top-6 max-h-full  rounded-2xl border border-red-800"> */}
+                <AnalysisPanel analysis={analysis} docData={docData} />
+              </div>
               {/* </div> */}
-            </div>
 
-            {/* Document Text - Second on mobile, left column on desktop */}
-            {docData && (
-              <div className="order-2 lg:order-1 lg:col-span-7">
+              {/* Document Text - Second on mobile, left column on desktop */}
+              <div className="order-2 lg:order-1 lg:col-span-7 md:overflow-scroll h-full bodrder border-red-800">
                 <DocumentContent
                   docId={docId}
                   docData={docData}
@@ -178,10 +179,10 @@ export default function DocPage({ params }: DocPageProps) {
                   onHighlightClick={handleHighlightClick}
                 />
               </div>
-            )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Mobile Modal for Highlight Details */}
       <HighlightDetailsModal

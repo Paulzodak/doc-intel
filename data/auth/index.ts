@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { ToastLogger } from "@/utils/toastUtils";
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { apiClient } from "@/lib/axios";
 import type {
   SignUpRequest,
@@ -10,19 +11,62 @@ import type {
   MagicLinkResponse,
   VerifyEmailRequest,
   VerifyEmailResponse,
+  SessionResponse,
   OAuthProvider,
 } from "@/types/auth";
+import { setUser, clearUser } from "@/redux/slices/user/user.slice";
+import { useDispatch } from "react-redux";
 import { AxiosError } from "axios";
 
 // Query keys factory
 export const authKeys = {
   all: ["auth"] as const,
+  session: () => [...authKeys.all, "session"] as const,
   signUp: () => [...authKeys.all, "signup"] as const,
   login: () => [...authKeys.all, "login"] as const,
   magicLink: () => [...authKeys.all, "magic-link"] as const,
   verifyEmail: () => [...authKeys.all, "verify-email"] as const,
   oauth: (provider: OAuthProvider) => [...authKeys.all, "oauth", provider] as const,
 };
+
+// Hook to get current session
+export function useGetSession(
+  options?: Omit<
+    UseQueryOptions<SessionResponse, AxiosError<SessionResponse>>,
+    "queryKey" | "queryFn"
+  >,
+) {
+  const dispatch = useDispatch();
+
+  const query = useQuery({
+    queryKey: authKeys.session(),
+    queryFn: async () => {
+      const response = await apiClient.get<SessionResponse>("/api/auth/session");
+      return response.data;
+    },
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+    ...options,
+  });
+
+  // useEffect(() => {
+  //   if (query.data?.success && query.data.data) {
+  //     dispatch(
+  //       setUser({
+  //         id: query.data.data.id,
+  //         username: query.data.data.username,
+  //         email: query.data.data.email,
+  //         email_verified: query.data.data.email_verified,
+  //       }),
+  //     );
+  //   }
+  //   if (query.error || (query.data && !query.data.success)) {
+  //     dispatch(clearUser());
+  //   }
+  // }, [dispatch, query.data, query.error]);
+
+  return query;
+}
 
 // Hook to sign up
 export function useSignUp(
@@ -71,11 +115,7 @@ export function useLogin(
 
 // Hook to send magic link
 export function useMagicLink(
-  options?: UseMutationOptions<
-    MagicLinkResponse,
-    AxiosError<MagicLinkResponse>,
-    MagicLinkRequest
-  >,
+  options?: UseMutationOptions<MagicLinkResponse, AxiosError<MagicLinkResponse>, MagicLinkRequest>,
 ) {
   return useMutation({
     mutationFn: async (data: MagicLinkRequest) => {

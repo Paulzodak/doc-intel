@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useShareDocument } from "@/data/document";
 import { RefreshIcon } from "@/assets/svg/RefreshIcon";
+import LogoLoading from "@/components/atoms/LogoLoading";
 
 export default function SharePage() {
   const router = useRouter();
@@ -34,12 +35,15 @@ export default function SharePage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 font-jakarta">
-        <div className="flex flex-col items-center gap-4">
-          <div className="h-10 w-10 animate-spin rounded-full border-2 border-gray-300 border-t-primary-blue-dark" />
-          <p className="text-sm text-gray-600">Opening shared document…</p>
-        </div>
-      </div>
+      <LogoLoading className="w-screen h-screen">
+        <p className="text-sm text-gray-600 mt-4">Opening shared document…</p>
+      </LogoLoading>
+      // <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 font-jakarta">
+      //   <div className="flex flex-col items-center gap-4">
+      //     <div className="h-10 w-10 animate-spin rounded-full border-2 border-gray-300 border-t-primary-blue-dark" />
+      //     <p className="text-sm text-gray-600">Opening shared document…</p>
+      //   </div>
+      // </div>
     );
   }
 
@@ -50,7 +54,7 @@ export default function SharePage() {
       "This link may be invalid or expired.";
 
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 font-jakarta">
+      <div className="flex h-screen flex-col items-center justify-center px-4 font-jakarta">
         <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-center shadow-sm max-w-md">
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
             <span className="text-xl font-bold text-red-600" aria-hidden>

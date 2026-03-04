@@ -33,7 +33,7 @@ export default function Home() {
 
                 <DocumentInput />
 
-                <div className="mt-16 flex flex-wrap justify-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500 text-center">
+                {/* <div className="mt-16 flex flex-wrap justify-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500 text-center">
                   <p className="w-full text-xs font-bold uppercase tracking-widest mb-4">
                     Trusted by industry leaders
                   </p>
@@ -49,7 +49,7 @@ export default function Home() {
                   <div className="flex items-center gap-2 text-xl font-bold">
                     <span className="material-symbols-outlined">auto_awesome</span> FUTURE LAW
                   </div>
-                </div>
+                </div> */}
               </div>
             </section>
             {/* <!-- Use Cases Section --> */}
@@ -58,7 +58,7 @@ export default function Home() {
             <MarketingSection />
             {/* <!-- Stats Section --> */}
             <StatsSection />
-            <section className="py-20 px-6 md:px-20 lg:px-40 bg-primary text-white text-center">
+            {/* <section className="py-20 px-6 md:px-20 lg:px-40 bg-primary text-white text-center">
               <div className="max-w-[800px] mx-auto">
                 <h2 className="text-4xl font-black mb-6">
                   Ready to transform your legal workflow?
@@ -76,11 +76,11 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-            </section>
-            <footer className="py-12 px-6 md:px-20 lg:px-40 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-background-dark">
+            </section> */}
+            <footer className="py-4 px-6 md:px-20 lg:px-40 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-background-dark">
               <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-                <div className="flex items-center gap-3 grayscale opacity-60">
-                  <QlaretyLogo size={24} className="shrink-0" />
+                <div className="flex items-center gap-3 grayscsale opacity-60">
+                  <QlaretyLogo width={24} height={24} className="shrsink-0" />
                   <h2 className="text-lg font-extrabold tracking-tight">Qlarety</h2>
                 </div>
                 <p className="text-gray-400 text-sm">© 2024 Qlarety. All rights reserved.</p>

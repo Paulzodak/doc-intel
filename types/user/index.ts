@@ -5,6 +5,8 @@ export interface User {
   email_verified?: boolean;
   created_at?: string;
   updated_at?: string;
+  memoji?: number;
+  gender: number;
 }
 
 export interface GetUserResponse {

@@ -5,6 +5,8 @@ import { CameraIconFilled } from "@/assets/svg/CameraIconFilled";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { GalleryIcon } from "@/assets/svg/GalleryIcon";
+import { GalleryIconFilled } from "@/assets/svg/GalleryIconFilled";
 
 export interface ImageFile {
   id: string;
@@ -203,21 +205,22 @@ export const ImageCapture: React.FC<ImageCaptureProps> = ({
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm items-center justify-center">
-              <Button
+              {/* <Button
                 type="button"
                 disabled={disabled}
                 onClick={handleCameraClick}
                 className="bg-green-600 hover:bg-green-600 text-white border-none px-6 py-3 rounded-full font-semibold transition-colors disabled:opacity-50 w-fusll"
               >
                 Open Camera
-              </Button>
+              </Button> */}
               <Button
                 type="button"
                 disabled={disabled}
                 onClick={handleSelectImageClick}
                 className="bg-green-600 text-white border border-green-200 hover:border-green-300 px-6 py-3 rounded-full font-semibold transition-colors disabled:opacity-50 ws-full"
               >
-                Select Image
+                Upload
+                <GalleryIconFilled color="white" />
               </Button>
             </div>
           </motion.div>

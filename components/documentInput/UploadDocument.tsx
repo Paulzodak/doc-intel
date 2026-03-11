@@ -14,6 +14,8 @@ import { extractDocumentText } from "@/lib/extractDocumentText";
 import { DocumentPreviewPanel } from "./DocumentPreviewPanel";
 import { useDocumentUpload } from "@/hooks/useDocumentUpload";
 import { ErrorFeedback } from "../atoms/form/feedback";
+import ProcessingIndicator from "./ProcessingIndicator";
+import { CloseIcon } from "@/assets/svg/CloseIcon";
 
 interface UploadDocumentProps {
   isExpanded: boolean;
@@ -61,7 +63,8 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB per file
 const MAX_TOTAL_SIZE = 50 * 1024 * 1024; // 50MB total
 
 const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentProps) => {
-  const { processText, isLoading, reset, error, percentage } = useDocumentUpload();
+  const { processText, isLoading, reset, error, percentage, currentStep } = useDocumentUpload();
+
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [showPreviewPanel, setShowPreviewPanel] = useState(false);
@@ -258,176 +261,202 @@ const UploadDocument = ({ isExpanded, onClick, onFilesChange }: UploadDocumentPr
       colorScheme="blue"
       collapsedButtonText="Browse Files"
     >
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileSelect}
-        accept={ACCEPTED_EXTENSIONS.join(",")}
-        multiple
-        className="hidden"
-      />
-
-      {/* Drag and drop area */}
-      <div
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
-        className={`border-2 w-full border-dashed rounded-xl p-8 md:p-12 flex flex-col items-center justify-center gap-4 cursor-pointer transition-colors ${
-          isDragging
-            ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-            : "border-blue-400 bg-gray-50 dark:bg-gray-900/50 hover:border-blue-500"
-        }`}
-      >
-        <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center shrink-0">
-          <HiOutlineUpload className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-        </div>
-        <div className="text-center">
-          <p className="text-sm md:text-base lg:text-lg font-semibold text-gray-900 dark:text-white">
-            Drag and drop your legal files here, or click to select
-          </p>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Max {MAX_FILE_SIZE / (1024 * 1024)}MB per file, {MAX_TOTAL_SIZE / (1024 * 1024)}MB total
-            • PDF, DOCX, TXT, MD, ODT, HTML, EPUB, RTF
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            fileInputRef.current?.click();
-          }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3  font-semibold transition-colors rounded-full"
-        >
-          Browse Files
-        </button>
-      </div>
-
-      {/* File list */}
-      {files.length > 0 && (
-        <div className="mt-4 space-y-2 max-h-64 overflow-y-auto">
-          <AnimatePresence>
-            {files.map((uploadedFile) => (
-              <motion.div
-                key={uploadedFile.id}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className={`flex items-center justify-between p-3 rounded-lg border ${
-                  uploadedFile.status === "error"
-                    ? "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800"
-                    : uploadedFile.status === "success"
-                      ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
-                      : "bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700"
-                }`}
-              >
-                <div className="flex items-center gap-3 flex-1 min-w-0">
-                  {uploadedFile.status === "success" ? (
-                    <MdCheckCircle className="w-5 h-5 text-green-500 shrink-0" />
-                  ) : uploadedFile.status === "error" ? (
-                    <MdDeleteOutline className="w-5 h-5 text-red-500 shrink-0" />
-                  ) : (
-                    <HiOutlineUpload className="w-5 h-5 text-gray-400 shrink-0" />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <p
-                      className={`text-sm font-medium truncate ${
-                        uploadedFile.status === "error"
-                          ? "text-red-700 dark:text-red-400"
-                          : "text-gray-700 dark:text-gray-200"
-                      }`}
-                    >
-                      {uploadedFile.file.name}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {formatFileSize(uploadedFile.file.size)}
-                      {uploadedFile.error && (
-                        <span className="text-red-500 dark:text-red-400 ml-2">
-                          • {uploadedFile.error}
-                        </span>
-                      )}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeFile(uploadedFile.id);
-                  }}
-                  className="ml-2 p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors shrink-0 cursor-pointer"
-                  aria-label="Remove file"
-                >
-                  <TrashIcon color="#6a7282" size={20} />
-                  {/* <MdDeleteOutline className="w-4 h-4 md:w-5 md:h-5 text-gray-500 hover:,text-red-500" /> */}
-                </button>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-      )}
-
-      {files.length > 0 && (
-        <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
-          {files.length} file{files.length !== 1 ? "s" : ""} • {formatFileSize(totalSize)} /{" "}
-          {formatFileSize(MAX_TOTAL_SIZE)}
-        </p>
-      )}
-
-      {/* Extracted text preview panel (single or multi-file with indicators) */}
-      {showPreviewPanel && hasValidFiles && (
-        <AnimatePresence>
-          <DocumentPreviewPanel
-            key="document-preview-panel"
-            files={files
-              .filter((f) => f.status !== "error")
-              .map((f) => ({
-                id: f.id,
-                fileName: f.file.name,
-                text: f.extractedText ?? "",
-                isLoading: f.extractionStatus === "extracting",
-                error: f.extractionError,
-              }))}
-            onClose={() => setShowPreviewPanel(false)}
-            className="mt-4"
+      {!isLoading && (
+        <>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            accept={ACCEPTED_EXTENSIONS.join(",")}
+            multiple
+            className="hidden"
           />
-        </AnimatePresence>
-      )}
-      {error && <ErrorFeedback className="mt-4" message={error} />}
-      {files.length > 0 && (
-        <div className="mt-6 flex flex-wrap gap-3 items-center">
-          <Button
-            className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white w-full sm:flex-1"
-            size="analyze"
-            // disabled={!hasValidFiles}
-            onClick={runExtractionAndShowPreview}
+
+          {/* Drag and drop area */}
+          <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => fileInputRef.current?.click()}
+            className={`border-2 w-full border-dashed rounded-xl p-8 md:p-12 flex flex-col items-center justify-center gap-4 cursor-pointer transition-colors ${
+              isDragging
+                ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
+                : "border-blue-400 bg-gray-50 dark:bg-gray-900/50 hover:border-blue-500"
+            }`}
           >
-            <span>Preview Document</span>
-            <EyeIconFilled color="white" />
-          </Button>
+            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center shrink-0">
+              <HiOutlineUpload className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div className="text-center">
+              <p className="text-sm md:text-base lg:text-lg font-semibold text-gray-900 dark:text-white">
+                Drag and drop your legal files here, or click to select
+              </p>
+              <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Max {MAX_FILE_SIZE / (1024 * 1024)}MB per file, {MAX_TOTAL_SIZE / (1024 * 1024)}MB
+                total • PDF, DOCX, TXT, MD, ODT, HTML, EPUB, RTF
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                fileInputRef.current?.click();
+              }}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3  font-semibold transition-colors rounded-full"
+            >
+              Browse Files
+            </button>
+          </div>
+
+          {/* File list */}
+          {files.length > 0 && (
+            <div className="mt-4 space-y-2 max-h-64 overflow-y-auto">
+              <AnimatePresence>
+                {files.map((uploadedFile) => (
+                  <motion.div
+                    key={uploadedFile.id}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className={`flex items-center justify-between p-3 rounded-lg border ${
+                      uploadedFile.status === "error"
+                        ? "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800"
+                        : uploadedFile.status === "success"
+                          ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
+                          : "bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      {uploadedFile.status === "success" ? (
+                        <MdCheckCircle className="w-5 h-5 text-green-500 shrink-0" />
+                      ) : uploadedFile.status === "error" ? (
+                        <MdDeleteOutline className="w-5 h-5 text-red-500 shrink-0" />
+                      ) : (
+                        <HiOutlineUpload className="w-5 h-5 text-gray-400 shrink-0" />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className={`text-sm font-medium truncate ${
+                            uploadedFile.status === "error"
+                              ? "text-red-700 dark:text-red-400"
+                              : "text-gray-700 dark:text-gray-200"
+                          }`}
+                        >
+                          {uploadedFile.file.name}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {formatFileSize(uploadedFile.file.size)}
+                          {uploadedFile.error && (
+                            <span className="text-red-500 dark:text-red-400 ml-2">
+                              • {uploadedFile.error}
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeFile(uploadedFile.id);
+                      }}
+                      className="ml-2 p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-md transition-colors shrink-0 cursor-pointer"
+                      aria-label="Remove file"
+                    >
+                      <TrashIcon color="#6a7282" size={20} />
+                      {/* <MdDeleteOutline className="w-4 h-4 md:w-5 md:h-5 text-gray-500 hover:,text-red-500" /> */}
+                    </button>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          )}
+
+          {files.length > 0 && (
+            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
+              {files.length} file{files.length !== 1 ? "s" : ""} • {formatFileSize(totalSize)} /{" "}
+              {formatFileSize(MAX_TOTAL_SIZE)}
+            </p>
+          )}
+
+          {/* Extracted text preview panel (single or multi-file with indicators) */}
+          {showPreviewPanel && hasValidFiles && (
+            <AnimatePresence>
+              <DocumentPreviewPanel
+                key="document-preview-panel"
+                files={files
+                  .filter((f) => f.status !== "error")
+                  .map((f) => ({
+                    id: f.id,
+                    fileName: f.file.name,
+                    text: f.extractedText ?? "",
+                    isLoading: f.extractionStatus === "extracting",
+                    error: f.extractionError,
+                  }))}
+                onClose={() => setShowPreviewPanel(false)}
+                className="mt-4"
+              />
+            </AnimatePresence>
+          )}
+          {error && <ErrorFeedback className="mt-4" message={error} />}
+          {files.length > 0 && !isLoading && (
+            <div className="mt-6 flex flex-wrap gap-3 items-center">
+              <Button
+                className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white w-full sm:flex-1"
+                size="analyze"
+                // disabled={!hasValidFiles}
+                onClick={runExtractionAndShowPreview}
+              >
+                <span>Preview Document</span>
+                <EyeIconFilled color="white" />
+              </Button>
+              <Button
+                className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white w-full sm:flex-1"
+                size="analyze"
+                // disabled={!hasValidFiles}
+                onClick={handleAnalyzeDocument}
+                isLoading={isLoading}
+                showSpinner
+              >
+                <span>Analyze Document</span>
+                <PlayIconFilled color="white" />
+              </Button>
+            </div>
+          )}
+        </>
+      )}
+
+      {files.length > 0 && (
+        <>
+          {!isLoading && (
+            <Button
+              type="button"
+              variant="outline"
+              className="rounded-full font-semibold text-sm w-full mt-4 text-gray-500"
+              onClick={handleReset}
+            >
+              <TrashIcon color="#6a7282" />
+              Clear all
+            </Button>
+          )}
+          {/* {isLoading && <ProcessingIndicator completedCount={currentStep} colorScheme="blue" />} */}
+        </>
+      )}
+      {isLoading && (
+        <>
+          <ProcessingIndicator completedCount={currentStep} colorScheme="blue" />{" "}
           <Button
-            className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white w-full sm:flex-1"
+            className="bg-blue-600 shadow shadow-blue-600/30 border-none text-white w-full sm:flex-1 mt-4"
             size="analyze"
             // disabled={!hasValidFiles}
-            onClick={handleAnalyzeDocument}
+            onClick={reset}
             isLoading={isLoading}
             showSpinner
           >
-            <span>Analyze Document</span>
-            <PlayIconFilled color="white" />
+            <span>Cancel</span>
+            <CloseIcon color="white" />
           </Button>
-        </div>
-      )}
-      {files.length > 0 && (
-        <Button
-          type="button"
-          variant="outline"
-          className="rounded-full font-semibold text-sm w-full mt-4 text-gray-500"
-          onClick={handleReset}
-        >
-          <TrashIcon color="#6a7282" />
-          Clear all
-        </Button>
+        </>
       )}
     </InputMethodTemplate>
   );

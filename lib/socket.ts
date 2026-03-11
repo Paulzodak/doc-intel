@@ -41,8 +41,9 @@ export const createSocketConnection = (jobId: string): Socket => {
 };
 
 // Cleanup socket connection
-export const disconnectSocket = (socket: Socket | null): void => {
+export const disconnectSocket = (socket: Socket | null, jobId: string): void => {
   if (socket) {
+    socket.emit("leave-job", jobId);
     socket.disconnect();
     socket.removeAllListeners();
   }

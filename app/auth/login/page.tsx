@@ -65,25 +65,24 @@ export default function LoginPage() {
 
   const testimonials = [
     {
-      name: "David S.",
-      title: "CEO & Co-founder",
-      testimonial: "Best Ever.",
-      avatar: "👨",
-    },
-    {
-      name: "Mira K.",
-      title: "Marketing manager",
-      testimonial: "Revolutionary.",
+      name: "Sarah L.",
+      title: "In-house Counsel",
+      testimonial: "Cuts contract review time by more than half. Risk and compliance scores are spot-on.",
       avatar: "👩",
     },
     {
-      name: "Alex M.",
-      title: "Marketing",
-      testimonial: "Amazing.",
+      name: "James K.",
+      title: "Legal Operations",
+      testimonial: "We use it for every NDA and vendor agreement. Highlights surface issues we used to miss.",
       avatar: "👨",
     },
+    {
+      name: "Elena M.",
+      title: "Compliance Officer",
+      testimonial: "Clear grading and key points make it easy to brief stakeholders. A real time-saver.",
+      avatar: "👩",
+    },
   ];
-  console.log(error);
   return (
     <div className=" min-h-screen flex dbg-[#0a0a0a] font-nunito relative overflow-hidden bg-gradient-to-br  from-[#11161f] via-100% via-primary-green to-[#11161f]">
       {/* Left Section - Branding */}
@@ -116,8 +115,10 @@ export default function LoginPage() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mb-12 text-center"
           >
-            <h1 className="text-6xl md:text-7xl font-black text-white mb-4">
-              Your <span className="text-primary-green">AI</span> Assistant
+            <h1 className="text-5xl md:text-6xl font-black text-white mb-4 leading-tight">
+              <span className="text-primary-green">AI</span> for Legal
+              <br />
+              Document Review
             </h1>
           </motion.div>
 
@@ -179,7 +180,7 @@ export default function LoginPage() {
               <circle cx="180" cy="190" r="8" fill="#2a2a2a" />
             </svg>
 
-            {/* Feature Card 1 - Battery Life */}
+            {/* Feature Card 1 - Grading */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -187,12 +188,12 @@ export default function LoginPage() {
               className="absolute -left-8 top-32 bg-[#11161f] border border-[#062a16] rounded-xl p-4 shadow-lg"
             >
               <div className="text-white">
-                <div className="text-2xl font-bold">+15 Hours</div>
-                <div className="text-sm text-gray-400">Battery life</div>
+                <div className="text-2xl font-bold">Risk · Compliance</div>
+                <div className="text-sm text-gray-400">Grading & key points</div>
               </div>
             </motion.div>
 
-            {/* Feature Card 2 - Users */}
+            {/* Feature Card 2 - Formats */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -200,8 +201,8 @@ export default function LoginPage() {
               className="absolute -right-8 top-48 bg-[#11161f] border border-[#062a16] rounded-xl p-4 shadow-lg"
             >
               <div className="text-white">
-                <div className="text-2xl font-bold">+ 2000</div>
-                <div className="text-sm text-gray-400">Users every day</div>
+                <div className="text-2xl font-bold">PDF, DOCX</div>
+                <div className="text-sm text-gray-400">Upload or paste text</div>
               </div>
             </motion.div>
           </motion.div>
@@ -219,7 +220,7 @@ export default function LoginPage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: 0.9 + index * 0.1 }}
-                className="bg-primary-blue-dark border-[2px]  border-[#062a16] bosrder-primary-blue-dark/10 rounded-2xl p-4 min-w-[180px] relative shadow-2xl shadow-[#082013]"
+                className="bg-primary-blue-dark border-[2px] border-[#062a16] rounded-2xl p-4 min-w-[180px] relative shadow-2xl shadow-[#082013]"
               >
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center text-2xl shrink-0">

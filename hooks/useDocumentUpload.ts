@@ -20,10 +20,11 @@ interface UseDocumentUploadOptions {
 export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { setDocumentName } = useDocumentNames();
-
   const [error, setErrorState] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState(0);
+  console.log(error, "error");
   const [percentage, setPercentage] = useState(0);
+  console.log(percentage, "percentage");
   const [jobId, setJobId] = useState<string | null>(null);
   const socketRef = useRef<Socket | null>(null);
 
@@ -51,7 +52,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
 
       // Clean up socket if it exists
       if (socketRef.current) {
-        disconnectSocket(socketRef.current);
+        disconnectSocket(socketRef.current, jobId || "");
         socketRef.current = null;
       }
     },
@@ -59,32 +60,38 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
 
   // Connect to socket.io and listen for progress updates
   const connectToSocket = (jobId: string) => {
+    const socket = createSocketConnection(jobId);
     if (!jobId) return;
 
     // Clean up any existing socket connection
     if (socketRef.current) {
-      disconnectSocket(socketRef.current);
+      disconnectSocket(socketRef.current, jobId || "");
       socketRef.current = null;
     }
 
     // Create new socket connection
-    const socket = createSocketConnection(jobId);
     socketRef.current = socket;
 
     // Listen for progress updates
     socket.on(
       "progress",
-      (data: { progress: number; status?: string; statusText?: string; message?: string }) => {
+      (data: {
+        percentage: number;
+        status?: string;
+        statusText?: string;
+        message?: string;
+        step: number;
+      }) => {
         const statusText = data.statusText?.toLowerCase() || "";
-        const progress = data.progress || 0;
 
-        setPercentage(progress);
-        options?.onProgress?.(progress);
-
+        setPercentage(data.percentage);
+        options?.onProgress?.(percentage);
+        setCurrentStep(data.step);
         if (statusText === "completed") {
           setIsLoading(false);
           setPercentage(100);
-          disconnectSocket(socket);
+          setCurrentStep(data.step);
+          disconnectSocket(socket, jobId || "");
           socketRef.current = null;
 
           router.push(`/doc/${jobId}`);
@@ -94,7 +101,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
           setIsLoading(false);
           setPercentage(0);
           setErrorState("Processing failed");
-          disconnectSocket(socket);
+          disconnectSocket(socket, jobId || "");
           socketRef.current = null;
           options?.onError?.("Processing failed");
         }
@@ -104,7 +111,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
           setErrorState(errorMessage);
           setIsLoading(false);
           setPercentage(0);
-          disconnectSocket(socket);
+          disconnectSocket(socket, jobId || "");
           socketRef.current = null;
           options?.onError?.(errorMessage);
         }
@@ -116,7 +123,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
       setIsLoading(false);
       setPercentage(100);
       options?.onProgress?.(100);
-      disconnectSocket(socket);
+      disconnectSocket(socket, jobId || "");
       socketRef.current = null;
     });
 
@@ -126,13 +133,14 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
       setIsLoading(false);
       setPercentage(0);
       setErrorState(error.message || "Socket error occurred");
-      disconnectSocket(socket);
+      disconnectSocket(socket, jobId || "");
       socketRef.current = null;
       options?.onError?.(error.message || "Socket error occurred");
     });
 
     // Handle disconnection
     socket.on("disconnect", () => {
+      socket.emit("join-job", jobId);
       console.log("Socket disconnected");
       // Only reset if we're still processing (unexpected disconnect)
       if (isLoading) {
@@ -185,10 +193,16 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
     setErrorState(null);
     setJobId(null);
 
+    console.log("stopping the process");
     // Clean up socket connection on reset
     if (socketRef.current) {
-      disconnectSocket(socketRef.current);
-      socketRef.current = null;
+      console.log("disconnecting the socket");
+      try {
+        disconnectSocket(socketRef.current, jobId || "");
+        socketRef.current = null;
+      } catch (error) {
+        console.error("Error disconnecting socket:", error);
+      }
     }
   };
 
@@ -196,7 +210,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
   useEffect(() => {
     return () => {
       if (socketRef.current) {
-        disconnectSocket(socketRef.current);
+        disconnectSocket(socketRef.current, jobId || "");
         socketRef.current = null;
       }
     };
@@ -206,6 +220,7 @@ export const useDocumentUpload = (options?: UseDocumentUploadOptions) => {
     // State
     error,
     percentage,
+    currentStep,
     jobId,
     isLoading,
     // text,

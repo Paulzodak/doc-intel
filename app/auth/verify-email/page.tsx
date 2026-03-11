@@ -31,9 +31,9 @@ export default function VerifyEmailPage() {
   const handleRetry = () => tokenParam && verifyEmail({ token: tokenParam });
 
   const testimonials = [
-    { name: "David S.", title: "CEO & Co-founder", testimonial: "Best Ever.", avatar: "👨" },
-    { name: "Mira K.", title: "Marketing manager", testimonial: "Revolutionary.", avatar: "👩" },
-    { name: "Alex M.", title: "Marketing", testimonial: "Amazing.", avatar: "👨" },
+    { name: "Sarah L.", title: "In-house Counsel", testimonial: "Cuts contract review time by more than half. Risk and compliance scores are spot-on.", avatar: "👩" },
+    { name: "James K.", title: "Legal Operations", testimonial: "We use it for every NDA and vendor agreement. Highlights surface issues we used to miss.", avatar: "👨" },
+    { name: "Elena M.", title: "Compliance Officer", testimonial: "Clear grading and key points make it easy to brief stakeholders. A real time-saver.", avatar: "👩" },
   ];
 
   return (

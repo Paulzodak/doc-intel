@@ -30,7 +30,9 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
       <div className="flex border-b border-gray-200 bg-white/80 sticsky tomp-0 z-10">
         {[
           { id: "grading", label: "Grading", icon: FiTrendingUp },
-          { id: "chat", label: "AI Chat", icon: FiMessageCircle },
+          ...(!docData.externalDocId
+            ? [{ id: "chat", label: "AI Chat", icon: FiMessageCircle }]
+            : []),
           { id: "details", label: "Details", icon: FiCheckCircle },
         ].map((tab) => (
           <button
@@ -52,11 +54,11 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
         ))}
       </div>
 
-      <div className="flex-1 overflow-hidden p-4 sm:p-6">
+      <div className="flex-1 overflow-hidden p-4 sm:p-6 ">
         {activeTab === "grading" && (
           <GradingPanel analysis={analysis} documentSummary={docData.documentSummary} />
         )}
-        {activeTab === "chat" && <AIConsultantPanel docData={docData} />}
+        {activeTab === "chat" && !docData.externalDocId && <AIConsultantPanel docData={docData} />}
         {activeTab === "details" && <DetailsPanel analysis={analysis} />}
       </div>
     </div>

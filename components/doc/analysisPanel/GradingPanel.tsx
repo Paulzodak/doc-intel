@@ -56,6 +56,7 @@ export const GradingPanel: React.FC<GradingPanelProps> = ({ analysis, documentSu
     };
   }, [analysis.highlights]);
 
+  console.log(documentSummary);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}

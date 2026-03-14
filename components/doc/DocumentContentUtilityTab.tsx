@@ -11,6 +11,7 @@ import { VisibilityButton } from "@/components/doc/VisibilityButton";
 import { ShareModal } from "@/components/doc/ShareModal";
 import { Document } from "@/types/document";
 import { LockIcon } from "@/assets/svg/LockIcon";
+import { ExportButton } from "./ExportButton";
 
 interface DocumentContentUtilityTabProps {
   docId: string;
@@ -71,6 +72,7 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
                 documentName={documentName}
                 docData={docData}
               />
+              {/* <ExportButton documentId={docId} /> */}
             </div>
           </div>
         </div>

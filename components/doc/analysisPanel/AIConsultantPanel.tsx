@@ -8,8 +8,14 @@ import { SpeechToTextInput } from "./SpeechToTextInput";
 import { useDocumentChat } from "@/data/document/chat";
 import type { Document, DocumentChatMessage } from "@/types/document";
 import { apiClient } from "@/lib/axios";
-import { selectMessagesForJob, setMessages } from "@/redux/slices/document/documentChat.slice";
+import {
+  appendMessage,
+  selectMessagesForJob,
+  setMessages,
+} from "@/redux/slices/document/documentChat.slice";
 import type { RootState } from "@/redux/store";
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
+import { ChatMessages } from "@/components/doc/analysisPanel/Chat/ChatMessages";
 
 export interface AIConsultantPanelProps {
   docData: Document;
@@ -17,7 +23,9 @@ export interface AIConsultantPanelProps {
 
 export const AIConsultantPanel: React.FC<AIConsultantPanelProps> = ({ docData }) => {
   const dispatch = useDispatch();
+  console.log("docData", docData);
   const { data, isPending } = useDocumentChat(docData.jobId);
+  console.log("data", data, isPending);
   const chatMessages = useSelector((state: RootState) =>
     selectMessagesForJob(state, docData.jobId),
   );
@@ -36,6 +44,17 @@ export const AIConsultantPanel: React.FC<AIConsultantPanelProps> = ({ docData })
 
     const text = chatInput.trim();
     setChatInput("");
+    dispatch(
+      appendMessage({
+        jobId: docData.jobId,
+        message: {
+          id: crypto.randomUUID(),
+          role: "user",
+          content: text,
+          createdAt: new Date().toISOString(),
+        },
+      }),
+    );
     setIsSending(true);
 
     apiClient
@@ -45,6 +64,7 @@ export const AIConsultantPanel: React.FC<AIConsultantPanelProps> = ({ docData })
       })
       .then((res) => {
         const history = res.data?.chatHistory;
+        console.log("history", history);
         if (Array.isArray(history)) {
           dispatch(setMessages({ jobId: docData.jobId, messages: history }));
         }
@@ -57,62 +77,46 @@ export const AIConsultantPanel: React.FC<AIConsultantPanelProps> = ({ docData })
       });
   };
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="h-full flex flex-col sm:max-h-[calc(100vh-20rem)]"
-    >
-      <div className="flex-1 overflow-y-auto space-y-4 mb-4 min-h-0">
-        {chatMessages.length === 0 ? (
-          <div className="text-center py-12">
-            <FiMessageCircle className="text-gray-400 mx-auto mb-2" size={32} />
-            <p className="text-gray-500 text-sm mb-1">Ask questions about this document</p>
-            <p className="text-gray-400 text-xs">
-              Get insights, explanations, and analysis powered by AI
-            </p>
-          </div>
-        ) : (
-          chatMessages.map((message) => (
-            <motion.div
-              key={message.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-[85%] rounded-lg p-3 ${
-                  message.role === "user" ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-900"
-                }`}
-              >
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-              </div>
-            </motion.div>
-          ))
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="h-full flex flex-col sm:max-h-[calc(100vh-20rem)]"
+      >
+        {!isPending && chatMessages.length > 0 && (
+          <ChatMessages chatMessages={chatMessages} isSending={isSending} />
         )}
-        {isLoading && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex justify-start"
-          >
-            <div className="bg-gray-100 rounded-lg p-3">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]" />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]" />
-              </div>
+        {!isSending && !isPending && chatMessages.length == 0 && (
+          <>
+            <div className="text-center py-12">
+              <FiMessageCircle className="text-gray-400 mx-auto mb-2" size={32} />
+              <p className="text-gray-500 text-sm mb-1">Ask questions about this document</p>
+              <p className="text-gray-400 text-xs">
+                Get insights, explanations, and analysis powered by AI
+              </p>
             </div>
-          </motion.div>
+          </>
         )}
-      </div>
+        {isPending && (
+          <>
+            <div className="text-center py-12">
+              <QlaretyLogo className="mx-auto animate-pulse" />
+              <p className="text-gray-500 text-sm mb-1 mt-2">Fetching your chat history...</p>
+              <p className="text-gray-400 text-xs">This may take a few seconds. Please wait.</p>
+            </div>
+          </>
+        )}
 
-      <SpeechToTextInput
-        value={chatInput}
-        onChange={setChatInput}
-        onSend={handleSendMessage}
-        placeholder="Ask Qlarety about this document..."
-        disabled={isLoading}
-      />
-    </motion.div>
+        {
+          <SpeechToTextInput
+            value={chatInput}
+            onChange={setChatInput}
+            onSend={handleSendMessage}
+            placeholder="Ask Qlarety about this document..."
+            disabled={isLoading}
+          />
+        }
+      </motion.div>
+    </>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useDocumentsList, useDeleteDocument } from "@/data/document";
 import type { Document } from "@/types/document";
@@ -27,20 +27,43 @@ import { RefreshIcon } from "@/assets/svg/RefreshIcon";
 import { LockIcon } from "@/assets/svg/LockIcon";
 import { setMobileSidebarOpen } from "@/redux/slices/dashboard/layout.slice";
 import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
+import { SpinnerLoader } from "../ui/SpinnerLoader";
 
 const Sidebar = () => {
-  useDocumentsList();
+  const { refetch, isRefetching } = useDocumentsList();
   const pathname = usePathname();
   const dispatch = useDispatch();
   const router = useRouter();
   const documents = useSelector((state: RootState) => state.documentsList.documents);
   const { mutateAsync: deleteDocument } = useDeleteDocument();
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const docId = useMemo(() => {
     const match = pathname?.match(/\/doc\/([^/]+)/);
     return match ? match[1] : null;
   }, [pathname]);
+
+  useEffect(() => {
+    refetch();
+  }, [pathname, refetch]);
+
+  useEffect(() => {
+    if (!openDropdownId) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!sidebarRef.current) return;
+      if (!sidebarRef.current.contains(event.target as Node)) {
+        setOpenDropdownId(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openDropdownId]);
 
   // const allDocuments = useMemo(
   //   (): Document[] => (documentsData && documentsData?.data ? documentsData.data : []),
@@ -119,7 +142,10 @@ const Sidebar = () => {
   };
 
   return (
-    <div className=" rounded-2xl  block sm:block min-h-[200px]  flex-col  relative h-full">
+    <div
+      ref={sidebarRef}
+      className=" rounded-2xl  block sm:block min-h-[200px]  flex-col  relative h-full"
+    >
       <div className="flex flex-col py-4 flex-1">
         <div className="flex justify-between px-4 items-center">
           <div className="text-black font-semibold ">
@@ -132,8 +158,16 @@ const Sidebar = () => {
         </div>
         <div className="mt-6 text-neutral-500 font-semibold text-xs px-4 flex items-center gap-2">
           RECENT DOCUMENTS
-          <button type="button">
-            <RefreshIcon size={12} color="#737373" />
+          <button
+            className="flex items-center cursor-pointer"
+            onClick={() => refetch()}
+            type="button"
+          >
+            {isRefetching ? (
+              <SpinnerLoader size="sm" color="#737373" className="my-auto" />
+            ) : (
+              <RefreshIcon size={12} color="#737373" />
+            )}
           </button>
         </div>
         {recentDocuments.length > 0 ? (

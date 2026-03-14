@@ -5,6 +5,8 @@ import { CameraIconFilled } from "@/assets/svg/CameraIconFilled";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { GalleryIcon } from "@/assets/svg/GalleryIcon";
+import { GalleryIconFilled } from "@/assets/svg/GalleryIconFilled";
 
 export interface ImageFile {
   id: string;
@@ -27,7 +29,8 @@ export const ImageCapture: React.FC<ImageCaptureProps> = ({
   disabled = false,
   maxImages = 10,
 }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFileSelect = useCallback(
@@ -57,11 +60,6 @@ export const ImageCapture: React.FC<ImageCaptureProps> = ({
       if (validFiles.length > 0) {
         onImageSelect(validFiles);
       }
-
-      // Reset input to allow selecting the same file again
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     },
     [onImageSelect, selectedImages.length, maxImages],
   );
@@ -72,6 +70,7 @@ export const ImageCapture: React.FC<ImageCaptureProps> = ({
       if (files.length > 0) {
         handleFileSelect(files);
       }
+      e.target.value = "";
     },
     [handleFileSelect],
   );
@@ -111,7 +110,12 @@ export const ImageCapture: React.FC<ImageCaptureProps> = ({
 
   const handleCameraClick = useCallback(() => {
     if (disabled) return;
-    fileInputRef.current?.click();
+    cameraInputRef.current?.click();
+  }, [disabled]);
+
+  const handleSelectImageClick = useCallback(() => {
+    if (disabled) return;
+    galleryInputRef.current?.click();
   }, [disabled]);
 
   const handleRemoveImage = useCallback(
@@ -122,16 +126,24 @@ export const ImageCapture: React.FC<ImageCaptureProps> = ({
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       <input
-        ref={fileInputRef}
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileInputChange}
+        className="hidden"
+        disabled={disabled}
+        capture="environment" // Prefer rear camera on mobile
+      />
+      <input
+        ref={galleryInputRef}
         type="file"
         accept="image/*"
         onChange={handleFileInputChange}
         className="hidden"
         disabled={disabled}
         multiple
-        capture="environment" // Prefer rear camera on mobile
       />
 
       {/* Selected Images Grid */}
@@ -175,31 +187,42 @@ export const ImageCapture: React.FC<ImageCaptureProps> = ({
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            className={`border-2 w-full border-dashed rounded-xl p-12 bg-gray-50 dark:bg-gray-900/50 flex flex-col items-center justify-center gap-4 cursor-pointer transition-colors ${
+            className={`border-2 w-full border-dashed rounded-xl p-12 bg-gray-50 dark:bg-gray-900/50 flex flex-col items-center justify-center gap-4 transition-colors ${
               isDragging
                 ? "border-primary-green bg-primary-green/10"
                 : "border-primary-green hover:border-green-500"
             } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
-            onClick={handleCameraClick}
           >
             <div className="w-16 h-16 bg-green-600 dark:bg-green-600 rounded-full flex items-center justify-center">
               <CameraIconFilled className="" size={20} color="white" />
             </div>
             <div className="text-center">
               <p className="text-sm md:text-base lg:text-lg font-semibold text-gray-900 dark:text-white">
-                {isDragging ? "Drop image here" : "Take a photo or upload an image"}
+                {isDragging ? "Drop image here" : "Take a photo or select an image"}
               </p>
               <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
                 Supports JPG, PNG, and other image formats
               </p>
             </div>
-            <Button
-              type="button"
-              disabled={disabled}
-              className="bg-green-600 hover:bg-green-600 text-white border-none px-8 py-3 rounded-full font-semibold transition-colors disabled:opacity-50"
-            >
-              {isDragging ? "Drop Image" : "Open Camera"}
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm items-center justify-center">
+              {/* <Button
+                type="button"
+                disabled={disabled}
+                onClick={handleCameraClick}
+                className="bg-green-600 hover:bg-green-600 text-white border-none px-6 py-3 rounded-full font-semibold transition-colors disabled:opacity-50 w-fusll"
+              >
+                Open Camera
+              </Button> */}
+              <Button
+                type="button"
+                disabled={disabled}
+                onClick={handleSelectImageClick}
+                className="bg-green-600 text-white border border-green-200 hover:border-green-300 px-6 py-3 rounded-full font-semibold transition-colors disabled:opacity-50 ws-full"
+              >
+                Upload
+                <GalleryIconFilled color="white" />
+              </Button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

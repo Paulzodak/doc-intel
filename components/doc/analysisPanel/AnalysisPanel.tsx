@@ -10,10 +10,15 @@ import {
   selectActiveTab,
   AnalysisPanelTab,
 } from "@/redux/slices/dashboard/analysispanel.slice";
+import {
+  selectAnalysisPanelLocked,
+  setAnalysisPanelLocked,
+} from "@/redux/slices/document/documentAnalysis.slice";
 import type { Document } from "@/types/document";
 import { GradingPanel } from "./GradingPanel";
 import { AIConsultantPanel } from "./AIConsultantPanel";
 import { DetailsPanel } from "./DetailsPanel";
+import { LockIcon } from "@/assets/svg/LockIcon";
 
 export interface AnalysisPanelProps {
   analysis: DocumentAnalysis;
@@ -24,21 +29,36 @@ export interface AnalysisPanelProps {
 const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
   const dispatch = useDispatch();
   const activeTab = useSelector(selectActiveTab);
+  const analysisPanelLocked = useSelector(selectAnalysisPanelLocked);
 
   return (
-    <div className="hs-full sticky top-4 flekx flkex-col bg-white overflow-scroll border bordesr-red-700 max-h-full rounded-3xl">
-      <div className="flex border-b border-gray-200 bg-white/80 sticsky tomp-0 z-10">
+    <div
+      className={`h-fuldl sticky top-0 flexs flexs-col bg-white overflow-scroll border border-gray-200 max-h-full rounded-3xl 
+        ${analysisPanelLocked ? "mdax-sm:sticky mdax-sm:top-0 dmax-sm:z-20 mmax-sm:shadow-lg" : ""}
+      `}
+    >
+      {/* <button
+        type="button"
+        onClick={() => dispatch(setAnalysisPanelLocked(!analysisPanelLocked))}
+        className="flex w-full items-center justify-center gap-2 py-1.5 border-b border-gray-200 text-gray-700 bg-gray-100/50 sm:hidden touch-manipulation"
+      >
+        <LockIcon className="shrink-0" size={16} />
+        <span className="text-sm font-medium">{analysisPanelLocked ? "Locked" : "Unlocked"}</span>
+      </button> */}
+      <div className="flex border-b border-gray-200 bg-white/80 sticky top-0 z-10">
         {[
           { id: "grading", label: "Grading", icon: FiTrendingUp },
-          { id: "chat", label: "AI Chat", icon: FiMessageCircle },
+          ...(!docData.externalDocId
+            ? [{ id: "chat", label: "AI Chat", icon: FiMessageCircle }]
+            : []),
           { id: "details", label: "Details", icon: FiCheckCircle },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => dispatch(setActiveTab(tab.id as AnalysisPanelTab))}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium transitiodn-colors relative ${
+            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium transition-colors relative ${
               activeTab === tab.id ? "text-green-800" : "text-gray-600 hover:text-gray-900"
-            }`}
+            } ${tab.id === "details" ? "lg:flex hidden" : ""}`}
           >
             <tab.icon size={16} />
             <span className="hidden sm:inline">{tab.label}</span>
@@ -52,11 +72,11 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
         ))}
       </div>
 
-      <div className="flex-1 overflow-hidden p-4 sm:p-6">
+      <div className="flex-1 overflow-hidden p-4 sm:p-6 ">
         {activeTab === "grading" && (
           <GradingPanel analysis={analysis} documentSummary={docData.documentSummary} />
         )}
-        {activeTab === "chat" && <AIConsultantPanel docData={docData} />}
+        {activeTab === "chat" && !docData.externalDocId && <AIConsultantPanel docData={docData} />}
         {activeTab === "details" && <DetailsPanel analysis={analysis} />}
       </div>
     </div>

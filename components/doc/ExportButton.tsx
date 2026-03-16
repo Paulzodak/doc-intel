@@ -7,7 +7,14 @@ import { LockIcon } from "@/assets/svg/LockIcon";
 import { CheckIcon } from "@/assets/svg/CheckIcon";
 import { useUpdateDocument } from "@/data/document";
 import { DownloadIcon } from "@/assets/svg/DownloadIcon";
-
+import { toBlob } from "html-to-image";
+import { Document } from "@/types/document";
+import { GalleryIcon } from "@/assets/svg/GalleryIcon";
+import { GalleryIconFilled } from "@/assets/svg/GalleryIconFilled";
+import DocumentContent from "./DocumentContent";
+import { RenderTextContent } from "./docContent/RenderTextContent";
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
+import { DownloadIconFilled } from "@/assets/svg/DownloadIconFilled";
 export type VisibilityOption = 1 | 2 | 3;
 
 const VISIBILITY_OPTIONS: { id: VisibilityOption; label: string; description: string }[] = [
@@ -28,10 +35,12 @@ interface ExportButtonProps {
   /** Called when user selects a new option. */
   onChange?: (value: VisibilityOption) => void;
   className?: string;
+  docData: Document;
 }
 
 export const ExportButton: React.FC<ExportButtonProps> = ({
   documentId,
+  docData,
   value: controlledValue,
   onChange,
   className,
@@ -81,49 +90,101 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showDropdown]);
 
-  const selectedMeta = VISIBILITY_OPTIONS.find((o) => o.id === visibility);
-  const displayLabel = selectedMeta?.label ?? "Public";
+  const handleExport = () => {
+    const node = document.querySelector(".my-node");
+    if (!node || !(node instanceof HTMLElement)) return;
+    toBlob(node)
+      .then((blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "document.png";
+        a.click();
+        URL.revokeObjectURL(url);
+      })
+      .catch((err) => console.error("Export failed:", err));
+  };
 
   return (
     <div ref={ref} className={clsx("relative", className)}>
       <button
         type="button"
+        // onClick={handleExport}
         onClick={() => setShowDropdown((v) => !v)}
-        className="flex bg-neutral-50 border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
+        className=" flex bg-neutral-50 border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
       >
         <DownloadIcon size={15} />
-        <span>Export document</span>
+        <span>Export content</span>
       </button>
       <AnimatePresence>
         {showDropdown && (
           <motion.div
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
+            key="export-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="absolute left-0 top-full mt-1 min-w-[220px] bg-white border border-gray-200 rounded-lg shadow-lg z-20 overflow-hidden"
+            className="fixed inset-0 z-10 flex items-center justify-center p-4"
+            onClick={() => setShowDropdown(false)}
           >
-            <div className="py-1">
-              <button
-                type="button"
-                // onClick={() => handleOptionClick(opt.id)}
-                disabled={savingOptionId !== null}
-                className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-70 disabled:pointer-events-none"
-              >
-                <span className="w-4 h-4 flex items-center justify-center shrink-0">
-                  <span
-                    className="animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"
-                    style={{ width: 14, height: 14 }}
+            <div className="absolute inset-0 bg-black/50" aria-hidden />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.15 }}
+              className="relative w-full max-w-[500px] bg-white border border-gray-200 rounded-4xl shadow-xl shadow-black/20 overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="py-1 p-4 sm:p-6 sm:px-8">
+                <div
+                  onClick={handleExport}
+                  className="w-full flex items-center gap-2  text-left  text-gray-700 hover:bg-gray-50 disabled:opacity-70 disabled:pointer-events-none"
+                >
+                  {/* <DownloadIcon size={20} /> */}
+                  <span className="text-center mx-auto font-bold font-brockmann text-lg sm:text-xl">
+                    {docData.documentName}
+                  </span>
+                </div>
+                <div className="max-h-[300px] relative overflow-hidden border border-gray-200 rounded-2xl mt-4 shadow">
+                  <RenderTextContent
+                    documentText={docData.inputText}
+                    highlights={docData.result?.analyzeChunkResults?.flatMap(
+                      (chunk) => chunk.highlights || [],
+                    )}
+                    onHighlightClick={() => {}}
                   />
-                </span>
-                <span>Export document</span>
-              </button>
-            </div>
-            {selectedMeta && (
-              <div className="border-t border-gray-100 bg-gray-50 px-3 py-2 text-xs text-gray-500">
-                Export document
+                  <div className="absolute z-0 w-full h-full todp-[50%] top-0 bg-linear-to-b from-white/10 from-10%  to-white opacity-80  " />
+                  <div className="absolute bottom-0 right-0 flex items-end flex-col p-2 backdrop-brightness-150 m-[4px]">
+                    <QlaretyLogo size={50} className="msx-auto" />
+                    <span className="text-sm text-black font-medium">Qlarety</span>
+                  </div>
+                </div>
               </div>
-            )}
+              <div className="border-t border-gray-100 bg-gray-50  text-xs text-gray-500 p-4 sm:p-6 sm:px-8">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="">
+                    <button className="flex flex-col items-center gap-2 bg-green-700 borders p-5 rounded-full mx-auto mb-2 shadow-xl shadow-green-950/20">
+                      <DownloadIconFilled size={20} color="white" />
+                    </button>
+                    <span className="">Download PDF</span>
+                  </div>
+                  {/* <div className="">
+                    <button className="flex flex-col items-center gap-2 bg-green-700 borders p-5 rounded-full mx-auto mb-2 shadow-xl shadow-green-950/20">
+                      <GalleryIconFilled size={20} color="white" />
+                    </button>
+                    <span className="">Export as image</span>
+                  </div>
+                  <div className="">
+                    <button className="flex flex-col items-center gap-2 bg-green-700 borders p-5 rounded-full mx-auto mb-2 shadow-xl shadow-green-950/20">
+                      <GalleryIconFilled size={20} color="white" />
+                    </button>
+                    <span className="">Export as image</span>
+                  </div> */}
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

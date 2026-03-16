@@ -18,7 +18,7 @@ export const DetailsPanel: React.FC<DetailsPanelProps> = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-6 hidden lg:block"
+      className="space-y-6 hidden lg:block p-2 sm:p-4 "
     >
       {selectedHighlight ? (
         <motion.div

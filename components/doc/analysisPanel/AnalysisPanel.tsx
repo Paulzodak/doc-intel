@@ -19,6 +19,10 @@ import { GradingPanel } from "./GradingPanel";
 import { AIConsultantPanel } from "./AIConsultantPanel";
 import { DetailsPanel } from "./DetailsPanel";
 import { LockIcon } from "@/assets/svg/LockIcon";
+import { GalleryIconFilled } from "@/assets/svg/GalleryIconFilled";
+import { ExportButton } from "../ExportButton";
+import { DownloadIcon } from "@/assets/svg/DownloadIcon";
+import { ShareIcon } from "@/assets/svg/ShareIcon";
 
 export interface AnalysisPanelProps {
   analysis: DocumentAnalysis;
@@ -33,7 +37,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
 
   return (
     <div
-      className={`h-fuldl sticky top-0 flexs flexs-col bg-white overflow-scroll border border-gray-200 max-h-full rounded-3xl 
+      className={`h-fuldl sticky top-0 flexs flexs-col bg-white overflow-scroll border border-gray-200 max-h-full rounded-3xl my-node 
         ${analysisPanelLocked ? "mdax-sm:sticky mdax-sm:top-0 dmax-sm:z-20 mmax-sm:shadow-lg" : ""}
       `}
     >
@@ -72,7 +76,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
         ))}
       </div>
 
-      <div className="flex-1 overflow-hidden p-4 sm:p-6 ">
+      <div className="flex-1 overflow-hidden  ">
         {activeTab === "grading" && (
           <GradingPanel analysis={analysis} documentSummary={docData.documentSummary} />
         )}

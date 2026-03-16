@@ -27,7 +27,7 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
   const [shareModalOpen, setShareModalOpen] = useState(false);
 
   return (
-    <div className="border-b py-4 font-jakarta px-4 sm:px-8">
+    <div className="border-b py-4 font-jakarta px-4 sm:px-8 .my-node">
       <div className="flex items-center justify-between font-jakarta">
         <EditableDocumentName docData={docData} />
         <div className="flex gap-2">
@@ -72,7 +72,7 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
                 documentName={documentName}
                 docData={docData}
               />
-              {/* <ExportButton documentId={docId} /> */}
+              <ExportButton documentId={docId} docData={docData} />
             </div>
           </div>
         </div>

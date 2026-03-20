@@ -148,7 +148,8 @@ export const useTesseractOCR = (options?: UseTesseractOCROptions) => {
         const combinedText = extractedTexts
           .map((text, index) => {
             if (index === 0) return text;
-            return `\n\n--- Image ${index + 1} ---\n\n${text}`;
+            // return `\n\n--- Image ${index + 1} ---\n\n${text}`;
+            return `${text}`;
           })
           .join("");
 

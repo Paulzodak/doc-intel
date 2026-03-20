@@ -4,6 +4,8 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MicrophoneIcon } from "@/assets/svg/MicrophoneIcon";
 import { ArrowLeftIcon } from "@/assets/svg/ArrowLeftIcon";
+import { SendIcon } from "@/assets/svg/SendIcon";
+import { SendIconFilled } from "@/assets/svg/SendIconFilled";
 
 interface SpeechRecognitionEventLike {
   resultIndex: number;
@@ -203,7 +205,7 @@ export const SpeechToTextInput: React.FC<SpeechToTextInputProps> = ({
         </AnimatePresence>
         <div className="flex items-center justify-end shrink-0">
           <div className="flex gap-2 items-center">
-            <button
+            {/* <button
               type="button"
               onClick={toggleRecording}
               disabled={disabled}
@@ -215,15 +217,16 @@ export const SpeechToTextInput: React.FC<SpeechToTextInputProps> = ({
               aria-label={isRecording ? "Stop recording" : "Start voice input"}
             >
               <MicrophoneIcon size={16} color={isRecording ? "#dc2626" : "black"} />
-            </button>
+            </button> */}
             <button
               type="button"
               onClick={onSend}
               disabled={!value.trim() || disabled}
-              className="p-[6px] rounded-full bg-black text-white shadow-sm hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-[8px] rounded-full bg-black text-white shadow-sm hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               aria-label="Send message"
             >
-              <ArrowLeftIcon size={16} color="white" className="rotate-90" />
+              {/* <ArrowLeftIcon size={16} color="white" className="rotate-90" /> */}
+              <SendIconFilled size={18} color="white" className="" />
             </button>
           </div>
         </div>

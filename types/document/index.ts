@@ -152,3 +152,18 @@ export interface ShareDocumentResponse {
   visibility: number;
   externalDocId: string;
 }
+
+export interface GeneratePdfRequest {
+  html: string;
+  scale?: number;
+  output?: "png" | "pdf";
+  fileName?: string;
+  viewportWidth?: number;
+  viewportHeight?: number;
+  fullPage?: boolean;
+}
+
+export interface GeneratePdfResponse {
+  success: boolean;
+  message?: string;
+}

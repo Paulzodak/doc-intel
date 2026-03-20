@@ -12,6 +12,9 @@ import { ShareModal } from "@/components/doc/ShareModal";
 import { Document } from "@/types/document";
 import { LockIcon } from "@/assets/svg/LockIcon";
 import { ExportButton } from "./ExportButton";
+import { EditIcon } from "@/assets/svg/EditIcon";
+import { CursorPointerIcon } from "@/assets/svg/CursorPointerIcon";
+import { SelectIcon } from "@/assets/svg/SelectIcon";
 
 interface DocumentContentUtilityTabProps {
   docId: string;
@@ -74,6 +77,15 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
               />
               <ExportButton documentId={docId} docData={docData} />
             </div>
+          </div>
+          <div className="border-l border-gray-200 my-1" />
+          <div className="flex gap-2 items-center">
+            <button>
+              <SelectIcon size={18} color="black" />
+            </button>
+            <button>
+              <CursorPointerIcon size={18} color="black" />
+            </button>
           </div>
         </div>
       )}

@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { motion } from "framer-motion";
+import React, { useCallback, useMemo } from "react";
 import type { Highlight } from "@/types/analysis";
+import {
+  HIGHLIGHT_INDEX_ATTR,
+  useRenderHighlightedHtml,
+} from "@/components/doc/docContent/useRenderHighlightedHtml";
 
 interface RenderTextContentProps {
   documentText: string;
@@ -19,73 +22,40 @@ export const RenderTextContent: React.FC<RenderTextContentProps> = ({
     return [...highlights].sort((a, b) => a.start - b.start);
   }, [highlights]);
 
+  const handleContainerClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!onHighlightClick) return;
+      const target = e.target as HTMLElement;
+      const highlightEl = target.closest(`[${HIGHLIGHT_INDEX_ATTR}]`);
+      if (!highlightEl) return;
+      const index = highlightEl.getAttribute(HIGHLIGHT_INDEX_ATTR);
+      if (index == null) return;
+      const i = parseInt(index, 10);
+      if (Number.isNaN(i) || i < 0 || i >= sortedHighlights.length) return;
+      onHighlightClick(sortedHighlights[i]);
+    },
+    [onHighlightClick, sortedHighlights],
+  );
+
   const handleTextSelection = () => {
     const selection = window.getSelection();
     if (selection && selection.toString().trim().length > 0) {
-      const selectedText = selection.toString().trim();
-      console.log("Selected text:", selectedText);
+      selection.toString().trim();
     }
   };
 
-  const renderHighlightedText = () => {
-    if (sortedHighlights.length === 0) {
-      return <p className="text-gray-800 whitespace-pre-wrap leading-relaxed">{documentText}</p>;
-    }
-
-    const parts: React.ReactNode[] = [];
-    let lastIndex = 0;
-
-    sortedHighlights.forEach((highlight, index) => {
-      if (highlight.start > lastIndex) {
-        parts.push(
-          <span key={`text-${index}`} className="text-gray-800">
-            {documentText.substring(lastIndex, highlight.start)}
-          </span>,
-        );
-      }
-
-      const highlightClass = {
-        risk: "bg-red-100 text-red-900 border-b-2 border-red-400 cursor-pointer hover:bg-red-200 transition-colors",
-        advantage:
-          "bg-green-100 text-green-900 border-b-2 border-green-400 cursor-pointer hover:bg-green-200 transition-colors",
-        compliance:
-          "bg-yellow-100 text-yellow-900 border-b-2 border-yellow-400 cursor-pointer hover:bg-yellow-200 transition-colors",
-      }[highlight.type];
-
-      parts.push(
-        <motion.span
-          key={`highlight-${index}`}
-          className={highlightClass}
-          onClick={() => onHighlightClick?.(highlight)}
-          title={highlight.description || highlight.text}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          {highlight.text}
-        </motion.span>,
-      );
-
-      lastIndex = highlight.end;
-    });
-
-    if (lastIndex < documentText.length) {
-      parts.push(
-        <span key="text-end" className="text-gray-800">
-          {documentText.substring(lastIndex)}
-        </span>,
-      );
-    }
-
-    return <p className="whitespace-pre-wrap leading-relaxed">{parts}</p>;
-  };
+  const htmlRenderText = useRenderHighlightedHtml(documentText, sortedHighlights);
 
   return (
     <div
       id="prose"
-      className=" prose max-w-none border-gray-200 select-text text-[14px] md:text-[14px] font-jakarta py-4 px-4 sm:px-8"
+      className="prose max-w-none border-gray-200 select-text text-[14px] md:text-[14px]  font-jakarta py-4 px-4 sm:px-8 leading-[2px]"
       onMouseUp={handleTextSelection}
+      onClick={handleContainerClick}
+      dangerouslySetInnerHTML={{ __html: htmlRenderText }}
+      // style={{ backgroundColor: "blue" }}
     >
-      {renderHighlightedText()}
+      {/* {renderHighlightedText()} */}
     </div>
   );
 };

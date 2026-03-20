@@ -11,6 +11,7 @@ import { apiClient } from "@/lib/axios";
 import type {
   CleanTextRequest,
   CleanTextResponse,
+  GeneratePdfRequest,
   JobResponse,
   ListDocumentsResponse,
   ProcessDocumentRequest,
@@ -32,9 +33,10 @@ import {
   removeDocument,
 } from "@/redux/slices/document/documentsList.slice";
 import { store } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import { AxiosError } from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { AxiosError, AxiosResponse } from "axios";
 import type { Document } from "@/types/document";
+import { selectExportFormat } from "@/redux/slices/document/documentAnalysis.slice";
 
 // Query keys factory
 export const documentsKeys = {
@@ -334,6 +336,38 @@ export function useShareDocument(
       return response.data;
     },
     enabled: !!shareId,
+    ...options,
+  });
+}
+
+export function useGeneratePdf(
+  options?: UseMutationOptions<AxiosResponse<Blob>, AxiosError, GeneratePdfRequest>,
+) {
+  return useMutation({
+    mutationFn: async (data: GeneratePdfRequest) => {
+      const response = await apiClient.post<Blob>(`/api/pdf`, data, {
+        responseType: "blob",
+      });
+      return response;
+    },
+    ...options,
+  });
+}
+export function useGeneratePdfFromPage(
+  options?: UseMutationOptions<AxiosResponse<Blob>, AxiosError, GeneratePdfRequest>,
+) {
+  const selectedExportFormat = useSelector(selectExportFormat);
+  return useMutation({
+    mutationFn: async (data: GeneratePdfRequest) => {
+      const response = await apiClient.post<Blob>(
+        `/api/pdf/render`,
+        { ...data, output: selectedExportFormat },
+        {
+          responseType: "blob",
+        },
+      );
+      return response;
+    },
     ...options,
   });
 }

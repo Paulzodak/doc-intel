@@ -4,72 +4,26 @@ import ReactDOMServer from "react-dom/server";
 import clsx from "clsx";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LockIcon } from "@/assets/svg/LockIcon";
-import { CheckIcon } from "@/assets/svg/CheckIcon";
-import { useGeneratePdf, useUpdateDocument } from "@/data/document";
+import { useGeneratePdf, useGeneratePdfFromPage } from "@/data/document";
 import { DownloadIcon } from "@/assets/svg/DownloadIcon";
-import { toBlob } from "html-to-image";
 import { Document } from "@/types/document";
-import { GalleryIcon } from "@/assets/svg/GalleryIcon";
-import { GalleryIconFilled } from "@/assets/svg/GalleryIconFilled";
-import DocumentContent from "./DocumentContent";
-import { RenderTextContent } from "./docContent/RenderTextContent";
 import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 import { DownloadIconFilled } from "@/assets/svg/DownloadIconFilled";
-import { useRenderHighlightedHtml } from "./docContent/useRenderHighlightedHtml";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectExportFormat,
-  setExportFormat,
-} from "@/redux/slices/document/documentAnalysis.slice";
-import { SelectExporFormat } from "./SelectExporFormat";
-export type VisibilityOption = 1 | 2 | 3;
-
-const VISIBILITY_OPTIONS: { id: VisibilityOption; label: string; description: string }[] = [
-  { id: 1, label: "Public", description: "Document is visible to everyone." },
-  {
-    id: 2,
-    label: "Selected Users with the link",
-    description: "Only selected users with the link can view this document.",
-  },
-  { id: 3, label: "Me only", description: "Only you can view this document." },
-];
-
-interface ExportButtonProps {
-  /** Document ID for saving visibility (required for Save to work). */
-  documentId?: string;
-  /** Initial visibility. Defaults to "public". */
-  value?: VisibilityOption;
-  /** Called when user selects a new option. */
-  onChange?: (value: VisibilityOption) => void;
+import { SelectExporFormat } from "../../SelectExporFormat";
+interface ExportResponseButtonProps {
+  text?: string;
+  docData?: Document;
   className?: string;
-  docData: Document;
 }
 
-export const ExportButton: React.FC<ExportButtonProps> = ({
-  documentId,
+export const ExportResponseButton: React.FC<ExportResponseButtonProps> = ({
   docData,
-  value: controlledValue,
-  onChange,
+  text,
   className,
 }) => {
-  const dispatch = useDispatch();
-  const { mutate: generatePdf } = useGeneratePdf();
-  const [internalValue, setInternalValue] = useState<VisibilityOption>(1);
+  const { mutate: generatePdf } = useGeneratePdfFromPage();
   const [showDropdown, setShowDropdown] = useState(false);
-  const exportFormat = useSelector(selectExportFormat);
-  const [savingOptionId, setSavingOptionId] = useState<VisibilityOption | null>(null);
   const ref = useRef<HTMLDivElement>(null);
-  const { mutate } = useUpdateDocument();
-
-  const isControlled = controlledValue !== undefined;
-  const visibility = isControlled ? controlledValue : internalValue;
-
-  const setVisibility = (next: VisibilityOption) => {
-    if (!isControlled) setInternalValue(next);
-    onChange?.(next);
-    setShowDropdown(false);
-  };
 
   useEffect(() => {
     if (!showDropdown) return;
@@ -82,14 +36,51 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [showDropdown]);
 
-  const htmlRenderText = useRenderHighlightedHtml(
-    docData.inputText,
-    docData.result?.analyzeChunkResults?.flatMap((chunk) => chunk.highlights || []),
-  );
-  const handleExport = (output?: "pdf" | "jpeg" | "png") => {
-    console.log("htmlRenderText", htmlRenderText);
+  const handleExport = () => {
+    // console.log("htmlRenderText", htmlRenderText);
+    // const html = `<div style="white-space: pre-wrap;">${text}</div>`;
+    const logoHtml = ReactDOMServer.renderToStaticMarkup(<QlaretyLogo size={30} />);
+    const html = `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      p {
+        margin: 0;
+        white-space: pre-wrap;
+        line-height: 1.6;
+      }
+
+    
+      .export-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      
+
+      
+    }
+      .export-container {
+        padding: 10px;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+  <div class="export-container">
+  <div class="export-brand">
+  ${logoHtml}
+  </div>
+  <p class="text-sm whitespace-pre-wrap">${text}</p>
+  </div>
+  </body>
+</html>`;
     generatePdf(
-      { html: htmlRenderText || "", output: output as "pdf" | "png" },
+      { html: html },
       {
         onSuccess: (response) => {
           const blob = response.data;
@@ -124,15 +115,15 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
   };
 
   return (
-    <div ref={ref} className={clsx("relative", className)}>
+    <div ref={ref} className={clsx("relative flex items-center", className)}>
       <button
         type="button"
         // onClick={handleExport}
         onClick={() => setShowDropdown((v) => !v)}
-        className=" flex bg-neutral-50 border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
+        className="my-auto"
+        // className=" flex bg-neutral-50 border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
       >
-        <DownloadIcon size={15} />
-        <span>Export content</span>
+        <DownloadIcon size={16} color="#6a7282" />
       </button>
       <AnimatePresence>
         {showDropdown && (
@@ -156,15 +147,17 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
             >
               <div className="py-1 p-4 sm:p-6 sm:px-8">
                 <div
-                  onClick={() => handleExport(exportFormat)}
+                  onClick={handleExport}
                   className="w-full flex items-center gap-2  text-left  text-gray-700 hover:bg-gray-50 disabled:opacity-70 disabled:pointer-events-none"
                 >
                   {/* <DownloadIcon size={20} /> */}
-                  <span className="text-center mx-auto font-bold font-brockmann text-lg sm:text-xl">
-                    {docData.documentName}
-                  </span>
+                  {/* <span className="text-center mx-auto font-bold font-brockmann text-lg sm:text-xl">
+                    name
+                  </span> */}
                 </div>
                 <div className="max-h-[300px] relative overflow-hidden border border-gray-200 rounded-2xl mt-4 shadow">
+                  {/* {text} */}
+                  <p className="text-sm whitespace-pre-wrap">{text}</p>
                   {/* <RenderTextContent
                     documentText={docData.inputText}
                     highlights={docData.result?.analyzeChunkResults?.flatMap(
@@ -172,24 +165,21 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
                     )}
                     onHighlightClick={() => {}}
                   /> */}
-                  <div dangerouslySetInnerHTML={{ __html: htmlRenderText }} />
-                  {/* <div className="absolute z-0 w-full h-full todp-[50%] top-0 bg-linear-to-b from-white/10 from-10%  to-white opacity-80  " />
+                  <div className="absolute z-0 w-full h-full todp-[50%] top-0 bg-linear-to-b from-white/10 from-10%  to-white opacity-80  " />
                   <div className="absolute bottom-0 right-0 flex items-end flex-col p-2 backdrop-brightness-150 m-[4px]">
                     <QlaretyLogo size={50} className="msx-auto" />
                     <span className="text-sm text-black font-medium">Qlarety</span>
-                  </div> */}
+                  </div>
                 </div>
               </div>
               <div className="border-t border-gray-100 bg-gray-50  text-xs text-gray-500 p-4 sm:p-6 sm:px-8">
+                <SelectExporFormat />
                 <div className="flex items-center justify-center gap-2">
-                  <SelectExporFormat />
-                </div>
-                <div className="flex items-center justify-center gap-2">
-                  <button onClick={() => handleExport(exportFormat)} className="">
+                  <button onClick={handleExport} className="">
                     <button className="flex flex-col items-center gap-2 bg-green-700 borders p-5 rounded-full mx-auto mb-2 shadow-xl shadow-green-950/20">
                       <DownloadIconFilled size={20} color="white" />
                     </button>
-                    <span className="">Download </span>
+                    <span className="">Download PDF</span>
                   </button>
                   {/* <div className="">
                     <button className="flex flex-col items-center gap-2 bg-green-700 borders p-5 rounded-full mx-auto mb-2 shadow-xl shadow-green-950/20">

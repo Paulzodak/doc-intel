@@ -47,7 +47,7 @@ export default function DashboardLayout({
     <div className="h-screen w-screen overflow-hidden flex font-nunito relative max-w-[1800px] mx-auto bg-white">
       <DotGridBackground
         dotColor="#d1d5dc"
-        className="absolute w-screen h-screen inset-0 opacity-50 bg-gdray-300 "
+        className="absolute w-screen h-screen inset-0 opacity-50 bg-gdray-300"
       />
       <div className="w-screen h-screen max-h-screen  p-2 flex flex-row  sm:p-4 grsid grid-cols-1  sm:grid-cols-[18rem_auto] gap-4 min-[1500px]:p-8 min-[1500px]:gap-6 font-nunito">
         {desktopSidebarOpen && (
@@ -60,7 +60,7 @@ export default function DashboardLayout({
             <Sidebar />
           </motion.div>
         )}
-        <div className="flex  grow flex-col  gap-4 relative z-10 ">
+        <div className="flex  grow flex-col  gap-4 relkative z-10 ">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -131,7 +131,7 @@ export default function DashboardLayout({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-gray-100/50 rounded-2xl border border-gray-200/50 overflow-scroll h-full relative z-10 "
+            className="bg-gray-100/50 rounded-2xl border border-gray-200/50 overflow-scroll h-full relaktive "
           >
             {children}
           </motion.div>

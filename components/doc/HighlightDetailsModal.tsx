@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiX, FiInfo } from "react-icons/fi";
 import type { Highlight } from "@/types/analysis";
 import { Button } from "../ui/button";
+import { ExportDetailButton } from "./analysisPanel/Detail/ExportDetailButton";
+import { Copy, ThumbsDownIcon, ThumbsUpIcon } from "lucide-react";
 
 interface HighlightDetailsModalProps {
   highlight: Highlight | null;
@@ -124,6 +126,38 @@ const HighlightDetailsModal: React.FC<HighlightDetailsModalProps> = ({
                     </div>
                   </div>
                 </div>
+                {highlight.text && (
+                  <div className="mt-2 flex items-center gap-2 text-gray-500">
+                    <button
+                      type="button"
+                      className="p-[5px] rounded hover:bg-gray-100 transition-colors"
+                      aria-label="Copy"
+                    >
+                      <Copy size={14} />
+                    </button>
+                    <button
+                      type="button"
+                      className="p-[5px] rounded hover:bg-gray-100 transition-colors"
+                      aria-label="Thumbs up"
+                    >
+                      <ThumbsUpIcon size={16} color="#6a7282" />
+                    </button>
+                    <button
+                      type="button"
+                      className="p-[5px] rounded hover:bg-gray-100 transition-colors"
+                      aria-label="Thumbs down"
+                    >
+                      <ThumbsDownIcon size={16} color="#6a7282" />
+                    </button>
+                    <button
+                      type="button"
+                      className="p-[5px] rounded hover:bg-gray-100 transition-colors"
+                      aria-label="Export"
+                    >
+                      <ExportDetailButton highlightData={highlight} />
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Footer */}

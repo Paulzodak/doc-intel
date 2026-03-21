@@ -30,10 +30,10 @@ export const DetailsPanel: React.FC<DetailsPanelProps> = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border-2 border-blue-400 shadow-lg"
+          className="bg-white/80 backdrop-blur-sm rounded-xl p-6 border-2 border-green-700 shadow-lg"
         >
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <FiInfo className="text-blue-500" />
+            <FiInfo className="text-green-700" />
             Highlight Details
           </h3>
           <RenderHighlightDetails className="p-0" highlightData={selectedHighlight} />

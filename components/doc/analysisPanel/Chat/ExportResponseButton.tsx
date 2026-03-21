@@ -115,7 +115,7 @@ export const ExportResponseButton: React.FC<ExportResponseButtonProps> = ({
   };
 
   return (
-    <div ref={ref} className={clsx("relative flex items-center", className)}>
+    <div ref={ref} className={clsx("flex items-center", className)}>
       <button
         type="button"
         // onClick={handleExport}
@@ -133,16 +133,16 @@ export const ExportResponseButton: React.FC<ExportResponseButtonProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-10 flex items-center justify-center p-4"
+            className="bg-black/50 absolute w-full h-full top-0 left-0 inset-0 z-50 flex items-center justify-center p-4"
             onClick={() => setShowDropdown(false)}
           >
-            <div className="absolute inset-0 bg-black/50" aria-hidden />
+            {/* <div className="absolute z-10 inset-0 bg-black/50" aria-hidden /> */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.15 }}
-              className="relative w-full max-w-[500px] bg-white border border-gray-200 rounded-4xl shadow-xl shadow-black/20 overflow-hidden"
+              className="relaktive z-50 w-full max-w-[500px] bg-white border border-gray-200 rounded-4xl shadow-xl shadow-black/20 overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="py-1 p-4 sm:p-6 sm:px-8">

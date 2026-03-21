@@ -158,18 +158,17 @@ export default function DocPage({ params }: DocPageProps) {
 
       {/* Content */}
       {docData && (
-        <div className="flex-1 overflow-y-auto h-full bodrder border-red-800 relative">
-          <div className="madx-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 hs-full bodrder">
-            <div className="flex flex-col lg:grid lg:grid-cols-10 gap-6 s border-blue-800 h-full md:overflow-hidden">
+        <div className="flex-1 overflow-y-auto sm:h-full bokrder border-red-800 reldative">
+          <div className="madx-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6  sm:h-full borderr overflow-hidden">
+            <div className="flex flex-col lg:grid sm:grid-rows-1 lg:grid-cols-10 gap-6 borderr border-blue-800 h-full md:overfslow-hidden relatsive">
               {/* Analysis Panel - First on mobile, right column on desktop */}
-              <div className=" order-1 lg:order-2 lg:col-span-3  md:overflow-scroll     border-green-800 rounde">
-                {/* <div className="lg:ssticky lg:top-6 max-h-full  rounded-2xl border border-red-800"> */}
+              <div className=" order-1 lg:order-2 lg:col-span-3  md:overflow-scroll border-green-800  z-0">
                 <AnalysisPanel analysis={analysis} docData={docData} />
               </div>
               {/* </div> */}
 
               {/* Document Text - Second on mobile, left column on desktop */}
-              <div className="order-2 lg:order-1 lg:col-span-7 md:overflow-scroll h-full bodrder border-red-800">
+              <div className="order-2 lg:order-1 lg:col-span-7 md:ovesrflow-scroll sm:h-full borderr border-red-800">
                 <DocumentContent
                   docId={docId}
                   docData={docData}

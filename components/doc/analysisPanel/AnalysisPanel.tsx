@@ -37,9 +37,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
 
   return (
     <div
-      className={`h-fuldl sticky top-0 flexs flexs-col bg-white overflow-scroll border border-gray-200 max-h-full rounded-3xl my-node 
-        ${analysisPanelLocked ? "mdax-sm:sticky mdax-sm:top-0 dmax-sm:z-20 mmax-sm:shadow-lg" : ""}
-      `}
+      className={` bg-white overflow-scroll border border-gray-200 max-h-[40rem] sm:max-h-full rounded-3xl `}
     >
       {/* <button
         type="button"
@@ -49,7 +47,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
         <LockIcon className="shrink-0" size={16} />
         <span className="text-sm font-medium">{analysisPanelLocked ? "Locked" : "Unlocked"}</span>
       </button> */}
-      <div className="flex border-b border-gray-200 bg-white/80 sticky top-0 z-10">
+      <div className="flex border-b border-gray-200 bg-white/80">
         {[
           { id: "grading", label: "Grading", icon: FiTrendingUp },
           ...(!docData.externalDocId

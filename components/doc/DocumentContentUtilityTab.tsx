@@ -30,7 +30,7 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
   const [shareModalOpen, setShareModalOpen] = useState(false);
 
   return (
-    <div className="border-b py-4 font-jakarta px-4 sm:px-8 .my-node">
+    <div className="border-b py-4 font-jakarta px-4 sm:px-8">
       <div className="flex items-center justify-between font-jakarta">
         <EditableDocumentName docData={docData} />
         <div className="flex gap-2">
@@ -57,13 +57,13 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
       </div>
       {!docData.externalDocId && (
         <div className="flex gap-2 mt-2">
-          <div className="flex gap-2 text-[10px] sm:text-xs leading-5 hidden sm:flex">
-            <div className="gap-2 hidden md:flex">
+          <div className="flex gap-2 text-[11px] sm:text-xs leading-5 flex sm:flex">
+            <div className="gap-2 flex-wrap flex md:flex">
               <VisibilityButton documentId={docId} />
               <button
                 type="button"
                 onClick={() => setShareModalOpen(true)}
-                className="flex bg-neutral-50 border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
+                className="flex bg-neutral-50 border  border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
               >
                 <ShareIcon size={15} />
                 <span>Share</span>
@@ -76,16 +76,16 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
                 docData={docData}
               />
               <ExportButton documentId={docId} docData={docData} />
+              <div className="border-l border-gray-200 my-1" />
+              <div className="flex gap-4 items-center">
+                <button>
+                  <SelectIcon size={18} color="black" />
+                </button>
+                <button>
+                  <CursorPointerIcon size={18} color="black" />
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="border-l border-gray-200 my-1" />
-          <div className="flex gap-2 items-center">
-            <button>
-              <SelectIcon size={18} color="black" />
-            </button>
-            <button>
-              <CursorPointerIcon size={18} color="black" />
-            </button>
           </div>
         </div>
       )}

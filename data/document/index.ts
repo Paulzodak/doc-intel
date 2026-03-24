@@ -37,6 +37,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AxiosError, AxiosResponse } from "axios";
 import type { Document } from "@/types/document";
 import { selectExportFormat } from "@/redux/slices/document/documentAnalysis.slice";
+import { toast } from "sonner";
 
 // Query keys factory
 export const documentsKeys = {
@@ -348,6 +349,7 @@ export function useGeneratePdf(
       const response = await apiClient.post<Blob>(`/api/pdf`, data, {
         responseType: "blob",
       });
+      console.log(response);
       return response;
     },
     ...options,
@@ -357,6 +359,7 @@ export function useGeneratePdfFromPage(
   options?: UseMutationOptions<AxiosResponse<Blob>, AxiosError, GeneratePdfRequest>,
 ) {
   const selectedExportFormat = useSelector(selectExportFormat);
+  const { onError: userOnError, ...restOptions } = options ?? {};
   return useMutation({
     mutationFn: async (data: GeneratePdfRequest) => {
       const response = await apiClient.post<Blob>(
@@ -366,9 +369,21 @@ export function useGeneratePdfFromPage(
           responseType: "blob",
         },
       );
+      console.log(response);
       return response;
     },
-    ...options,
+
+    // ...restOptions,
+    onError: (error, variables, onMutateResult, context) => {
+      // toast("error");
+      console.log("error", error);
+      const axiosError = error as AxiosError<{ message?: string }>;
+      ToastLogger.error(
+        "documents",
+        axiosError.response?.data?.message ?? axiosError.message ?? "Failed to generate export",
+      );
+      // userOnError?.(error, variables, onMutateResult, context);
+    },
   });
 }
 

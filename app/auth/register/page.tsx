@@ -79,19 +79,22 @@ export default function LoginPage() {
     {
       name: "Sarah L.",
       title: "In-house Counsel",
-      testimonial: "Cuts contract review time by more than half. Risk and compliance scores are spot-on.",
+      testimonial:
+        "Cuts contract review time by more than half. Risk and compliance scores are spot-on.",
       avatar: "👩",
     },
     {
       name: "James K.",
       title: "Legal Operations",
-      testimonial: "We use it for every NDA and vendor agreement. Highlights surface issues we used to miss.",
+      testimonial:
+        "We use it for every NDA and vendor agreement. Highlights surface issues we used to miss.",
       avatar: "👨",
     },
     {
       name: "Elena M.",
       title: "Compliance Officer",
-      testimonial: "Clear grading and key points make it easy to brief stakeholders. A real time-saver.",
+      testimonial:
+        "Clear grading and key points make it easy to brief stakeholders. A real time-saver.",
       avatar: "👩",
     },
   ];
@@ -304,7 +307,7 @@ export default function LoginPage() {
                     <FormControl>
                       <div className="relative text-primary-blue-dark">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                          <FaUser size={15} />
+                          <FaUser size={15} className="text-green-900" />
                         </div>
                         <Input
                           placeholder="Username"
@@ -327,7 +330,7 @@ export default function LoginPage() {
                     <FormControl>
                       <div className="relative text-primary-blue-dark">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                          <MdEmail size={17} />
+                          <MdEmail size={17} className="text-green-900" />
                         </div>
                         <Input
                           type="email"
@@ -351,7 +354,7 @@ export default function LoginPage() {
                     <FormControl>
                       <div className="relative text-primary-blue-dark">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                          <FaLock size={15} />
+                          <FaLock size={15} className="text-green-900" />
                         </div>
                         <Input
                           type="password"
@@ -416,8 +419,8 @@ export default function LoginPage() {
               >
                 {!isPending && (
                   <>
-                    <span className="font-semibold text-base pr-2">Continue with Email</span>
-                    <FaArrowRightLong size={15} className="text-black" />
+                    <span className="text-base pr-2">Continue with Email</span>
+                    <FaArrowRightLong size={15} className="text-white" />
                   </>
                 )}
               </Button>
@@ -437,7 +440,7 @@ export default function LoginPage() {
                 >
                   {/* <FaArrowLeftLong size={15} className="text-white" /> */}
                   <MdArrowBackIosNew size={15} className="text-white" />
-                  <span className="font-semibold text-base pl-2">Go back</span>
+                  <span className="text-base pl-2">Go back</span>
                 </Button>
               </motion.div>
             </form>

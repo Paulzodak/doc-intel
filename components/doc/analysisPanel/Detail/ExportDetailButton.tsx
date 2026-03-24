@@ -13,6 +13,7 @@ import { RenderHighlightDetails } from "./RenderHightlightDetail";
 import ReactDOMServer from "react-dom/server";
 import { setExportFormat } from "@/redux/slices/document/documentAnalysis.slice";
 import { SelectExporFormat } from "../../SelectExporFormat";
+import { DownloadButton } from "../../DownloadButton";
 
 interface ExportDetailButtonProps {
   highlightData?: Highlight;
@@ -186,29 +187,7 @@ export const ExportDetailButton: React.FC<ExportDetailButtonProps> = ({
                       </div>
                     </div> */}
                   </div>
-                  <div className="border-t border-gray-100 bg-gray-50  text-xs text-gray-500 p-4 sm:p-6 sm:px-8">
-                    <SelectExporFormat />
-                    <div className="flex items-center justify-center gap-2">
-                      <button onClick={handleExport} className="">
-                        <button className="flex flex-col items-center gap-2 bg-green-700 borders p-5 rounded-full mx-auto mb-2 shadow-xl shadow-green-950/20">
-                          <DownloadIconFilled size={20} color="white" />
-                        </button>
-                        <span className="">Download </span>
-                      </button>
-                      {/* <div className="">
-                    <button className="flex flex-col items-center gap-2 bg-green-700 borders p-5 rounded-full mx-auto mb-2 shadow-xl shadow-green-950/20">
-                      <GalleryIconFilled size={20} color="white" />
-                    </button>
-                    <span className="">Export as image</span>
-                  </div>
-                  <div className="">
-                    <button className="flex flex-col items-center gap-2 bg-green-700 borders p-5 rounded-full mx-auto mb-2 shadow-xl shadow-green-950/20">
-                      <GalleryIconFilled size={20} color="white" />
-                    </button>
-                    <span className="">Export as image</span>
-                  </div> */}
-                    </div>
-                  </div>
+                  <DownloadButton htmlRenderText={html} />
                 </motion.div>
               </motion.div>
             )}

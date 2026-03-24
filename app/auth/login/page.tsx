@@ -67,19 +67,22 @@ export default function LoginPage() {
     {
       name: "Sarah L.",
       title: "In-house Counsel",
-      testimonial: "Cuts contract review time by more than half. Risk and compliance scores are spot-on.",
+      testimonial:
+        "Cuts contract review time by more than half. Risk and compliance scores are spot-on.",
       avatar: "👩",
     },
     {
       name: "James K.",
       title: "Legal Operations",
-      testimonial: "We use it for every NDA and vendor agreement. Highlights surface issues we used to miss.",
+      testimonial:
+        "We use it for every NDA and vendor agreement. Highlights surface issues we used to miss.",
       avatar: "👨",
     },
     {
       name: "Elena M.",
       title: "Compliance Officer",
-      testimonial: "Clear grading and key points make it easy to brief stakeholders. A real time-saver.",
+      testimonial:
+        "Clear grading and key points make it easy to brief stakeholders. A real time-saver.",
       avatar: "👩",
     },
   ];
@@ -302,7 +305,7 @@ export default function LoginPage() {
                     <FormControl>
                       <div className="relative text-gray-400">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                          <MdEmail size={17} />
+                          <MdEmail className="text-green-800" size={17} />
                         </div>
                         <Input
                           type="email"
@@ -326,7 +329,7 @@ export default function LoginPage() {
                     <FormControl>
                       <div className="relative text-gray-400">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                          <FaLock size={15} />
+                          <FaLock className="text-green-900" size={15} />
                         </div>
                         <Input
                           type="password"
@@ -366,8 +369,8 @@ export default function LoginPage() {
               >
                 {!isPending && (
                   <>
-                    <span className="font-semibold text-base pr-2">Continue with Email</span>
-                    <FaArrowRightLong size={15} className="text-black" />
+                    <span className="text-base pr-2">Continue with Email</span>
+                    <FaArrowRightLong size={15} className="text-white" />
                   </>
                 )}
               </Button>
@@ -386,8 +389,8 @@ export default function LoginPage() {
                   variant="primary-green"
                   className="w-full rounded-full px-6 py-4 shadow-none"
                 >
-                  <FaLink className="text-black" />
-                  <span className="font-semibold text-base">Use Magic Link</span>
+                  <FaLink className="text-white" />
+                  <span className="text-base">Use Magic Link</span>
                 </Button>
               </motion.div>
             </form>

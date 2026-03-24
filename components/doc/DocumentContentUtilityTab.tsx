@@ -75,7 +75,7 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
                 documentName={documentName}
                 docData={docData}
               />
-              <ExportButton documentId={docId} docData={docData} />
+              <ExportButton docData={docData} />
               <div className="border-l border-gray-200 my-1" />
               <div className="flex gap-4 items-center">
                 <button>

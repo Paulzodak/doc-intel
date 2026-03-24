@@ -42,19 +42,22 @@ export default function LoginPage() {
     {
       name: "Sarah L.",
       title: "In-house Counsel",
-      testimonial: "Cuts contract review time by more than half. Risk and compliance scores are spot-on.",
+      testimonial:
+        "Cuts contract review time by more than half. Risk and compliance scores are spot-on.",
       avatar: "👩",
     },
     {
       name: "James K.",
       title: "Legal Operations",
-      testimonial: "We use it for every NDA and vendor agreement. Highlights surface issues we used to miss.",
+      testimonial:
+        "We use it for every NDA and vendor agreement. Highlights surface issues we used to miss.",
       avatar: "👨",
     },
     {
       name: "Elena M.",
       title: "Compliance Officer",
-      testimonial: "Clear grading and key points make it easy to brief stakeholders. A real time-saver.",
+      testimonial:
+        "Clear grading and key points make it easy to brief stakeholders. A real time-saver.",
       avatar: "👩",
     },
   ];
@@ -380,8 +383,8 @@ export default function LoginPage() {
               variant="primary-green"
               className="w-full rounded-full px-6 py-4 shadow-none"
             >
-              <MdEmail className="text-black" />
-              <span className="font-semibold text-base">Continue with Email</span>
+              <MdEmail className="text-white" />
+              <span className="text-base">Continue with Email</span>
             </Button>
           </motion.div>
           {/* Continue with Magic Link Button */}
@@ -399,8 +402,8 @@ export default function LoginPage() {
               variant="primary-green"
               className="w-full rounded-full px-6 py-4 shadow-none"
             >
-              <FaLink className="text-black" />
-              <span className="font-semibold text-base">Use Magic Link</span>
+              <FaLink className="text-white" />
+              <span className="text-base">Use Magic Link</span>
             </Button>
           </motion.div>
 

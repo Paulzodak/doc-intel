@@ -61,6 +61,7 @@ class ToastLoggerClass {
     return toast.error(message, {
       description: options?.description,
       duration: options?.duration || 7000,
+      position: "top-center",
     });
   }
 

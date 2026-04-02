@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState, useCallback, useEffect, useRef } from "react";
+import { useMemo, useState, useCallback, useEffect, useRef, type ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useDocumentsList, useDeleteDocument } from "@/data/document";
-import type { Document } from "@/types/document";
+import { useLogout } from "@/data/auth";
+import type { Document, ISidebarDoc } from "@/types/document";
 import { BsLayoutSidebar } from "react-icons/bs";
 import { TbLayoutSidebar, TbLayoutSidebarFilled } from "react-icons/tb";
 import {
@@ -28,6 +29,18 @@ import { LockIcon } from "@/assets/svg/LockIcon";
 import { setMobileSidebarOpen } from "@/redux/slices/dashboard/layout.slice";
 import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 import { SpinnerLoader } from "../ui/SpinnerLoader";
+import { FileIconFilled } from "@/assets/svg/FileIconFilled";
+import { FileIcon2 } from "@/assets/svg/FileIcon2";
+import { FileIcon2Filled } from "@/assets/svg/FileIcon2Filled";
+import { ToastLogger } from "@/utils/toastUtils";
+import { TrashIcon } from "@/assets/svg/TrashIcon";
+import { OpenIcon } from "@/assets/svg/OpenIcon";
+import { EyeIconFilled } from "@/assets/svg/EyeIconFilled";
+import { EyeIcon } from "@/assets/svg/EyeIcon";
+import { MetaInfoModal } from "../doc/MetaInfoModal";
+import Dialog from "../atoms/Dialog";
+import { motion } from "framer-motion";
+import { setShowSetting } from "@/redux/slices/settings/settings.slice";
 
 const Sidebar = () => {
   const { refetch, isRefetching } = useDocumentsList();
@@ -36,7 +49,12 @@ const Sidebar = () => {
   const router = useRouter();
   const documents = useSelector((state: RootState) => state.documentsList.documents);
   const { mutateAsync: deleteDocument } = useDeleteDocument();
-  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const { mutate: logout, isPending: isLoggingOut } = useLogout();
+  const [openDropdown, setOpenDropdown] = useState<{
+    id: string;
+    x: number;
+    y: number;
+  } | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const docId = useMemo(() => {
@@ -49,12 +67,12 @@ const Sidebar = () => {
   }, [pathname, refetch]);
 
   useEffect(() => {
-    if (!openDropdownId) return;
+    if (!openDropdown) return;
 
     const handleClickOutside = (event: MouseEvent) => {
       if (!sidebarRef.current) return;
       if (!sidebarRef.current.contains(event.target as Node)) {
-        setOpenDropdownId(null);
+        setOpenDropdown(null);
       }
     };
 
@@ -63,7 +81,7 @@ const Sidebar = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [openDropdownId]);
+  }, [openDropdown]);
 
   // const allDocuments = useMemo(
   //   (): Document[] => (documentsData && documentsData?.data ? documentsData.data : []),
@@ -71,7 +89,7 @@ const Sidebar = () => {
   // );
   const allDocuments = documents || [];
 
-  const recentDocuments = useMemo(
+  const recentDocuments: ISidebarDoc[] = useMemo(
     () =>
       allDocuments.slice(0, 10).map((doc: Document) => ({
         id: doc.id,
@@ -87,52 +105,44 @@ const Sidebar = () => {
     [allDocuments],
   );
 
-  const handleDocumentClick = useCallback(
-    (id: string) => {
-      setOpenDropdownId(null);
-      router.push(`/doc/${id}`);
-      dispatch(setMobileSidebarOpen(false));
-    },
-    [router, dispatch],
-  );
+  const handleLogout = useCallback(() => {
+    logout(undefined, {
+      onSuccess: () => {
+        router.push("/");
+        dispatch(setMobileSidebarOpen(false));
+      },
+      onError: (error) => {
+        const message =
+          error.response?.data?.message ??
+          (error.response?.data as { status?: string })?.status ??
+          error.message ??
+          "Failed to log out";
+        ToastLogger.error("auth", message);
+      },
+    });
+  }, [logout, router, dispatch]);
 
-  const toggleDropdown = useCallback((id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setOpenDropdownId((prev) => (prev === id ? null : id));
-  }, []);
-
-  const handleSelectClick = useCallback(
-    (id: string, e: React.MouseEvent) => {
-      e.stopPropagation();
-      setOpenDropdownId(null);
-      router.push(`/doc/${id}`);
-    },
-    [router],
-  );
-
-  const handleDeleteClick = useCallback(
-    (id: string, e: React.MouseEvent) => {
-      e.stopPropagation();
-      deleteDocument(id).finally(() => setOpenDropdownId(null));
-    },
-    [deleteDocument],
-  );
-
-  const generalItems = [
+  const handleOpenSettings = () => {
+    dispatch(setShowSetting(true));
+  };
+  const generalItems: {
+    icon: ReactNode;
+    label: string;
+    href?: string;
+    action?: () => void;
+    loading?: boolean;
+  }[] = [
     {
       icon: <SettingsIcon size={18} color="#737373" />,
       label: "Settings",
       href: "/settings",
+      action: handleOpenSettings,
     },
-    // {
-    //   icon: <SettingsIcon size={18} color="#737373" />,
-    //   label: "Help",
-    //   href: "/settings",
-    // },
     {
       icon: <KeyIcon size={18} color="#737373" />,
       label: "Logout",
-      href: "/settings",
+      action: handleLogout,
+      loading: isLoggingOut,
     },
   ];
 
@@ -144,7 +154,7 @@ const Sidebar = () => {
   return (
     <div
       ref={sidebarRef}
-      className=" rounded-2xl  block sm:block min-h-[200px]  flex-col  relative h-full"
+      className=" rounded-2xl relative  block sm:block min-h-[200px]  flex-col  relative h-full"
     >
       <div className="flex flex-col py-4 flex-1">
         <div className="flex justify-between px-4 items-center">
@@ -173,105 +183,7 @@ const Sidebar = () => {
         {recentDocuments.length > 0 ? (
           <div className="space-y-2 mt-3  px-4 max-h-[22rem] overflow-scroll">
             {recentDocuments.map((doc) => {
-              const isActive = doc.jobId === docId;
-              const isDropdownOpen = openDropdownId === doc.id;
-              const isExternal = doc.externalDocId;
-              return (
-                <div
-                  key={doc.id}
-                  className={`relative rounded-xl border transition-all duration-200 group ${
-                    isActive
-                      ? "bg-gray-500/10 border-gray-300 hover:bg-gray-600/10"
-                      : " border-gray-200 hover:bg-white hover:border-gray-300 bg-gray-300/10"
-                  }`}
-                >
-                  {/* <div className="bg-primary-green w-4 h-4" /> */}
-                  <button
-                    onClick={() => handleDocumentClick(doc.jobId)}
-                    className="w-full text-left p-3"
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          {isActive && (
-                            <div className="w-2 h-2 bg-gray-800 rounded-full shrink-0" />
-                          )}
-                          <p
-                            className={`text-sm font-medium truncate transition-colors ${
-                              isActive
-                                ? "text-gray-900 group-hover:text-gray-900"
-                                : "text-gray-500 group-hover:text-gray-900"
-                            }`}
-                          >
-                            {doc.name}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-1 mt-1">
-                          <FiClock
-                            className={isActive ? " text-gray-500" : "text-gray-500"}
-                            size={12}
-                          />
-                          <span
-                            className={isActive ? "text-gray-500 text-xs" : "text-gray-500 text-xs"}
-                          >
-                            {doc.date}
-                          </span>
-                          {isExternal && (
-                            <span className="rounded-full border flex gap-1 items-center px-2 py-1 text-xs text-gray-500">
-                              <LockIcon size={12} color="#737373" />
-                              <span>External</span>
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <FiChevronRight
-                          className={`shrink-0 mt-0.5 transition-colors ${
-                            isActive
-                              ? "text-gray-400 group-hover:text-gray-400"
-                              : "text-gray-500 group-hover:text-gray-400"
-                          }`}
-                          size={16}
-                        />
-                        <button
-                          type="button"
-                          onClick={(e) => toggleDropdown(doc.id, e)}
-                          className={`p-1 rounded hover:bg-gray-200 transition-colors ${
-                            isDropdownOpen ? "bg-gray-200" : ""
-                          }`}
-                        >
-                          <FiMoreVertical
-                            className={isActive ? "text-gray-500" : "text-gray-400"}
-                            size={16}
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {isDropdownOpen && (
-                    <div className="absolute right-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden min-w-[140px]">
-                      <button
-                        type="button"
-                        onClick={(e) => handleSelectClick(doc.id, e)}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 transition-colors flex items-center gap-2"
-                      >
-                        <FiCheck size={14} />
-                        <span>Open</span>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(e) => handleDeleteClick(doc.id, e)}
-                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
-                      >
-                        <FiTrash2 size={14} />
-                        <span>Delete</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              );
+              return <DocItem key={doc.id} doc={doc} docId={docId || ""} sidebarRef={sidebarRef} />;
             })}
           </div>
         ) : (
@@ -296,9 +208,20 @@ const Sidebar = () => {
         <div className=" text-neutral-500 font-semibold text-xs px-4">GENERAL</div>
         <div className="text-neutral-500 mt-4">
           {generalItems.map((item, i) => (
-            <div key={i} className="flex items-center gap-2 px-4 py-2">
-              {item.icon}
-              <span className="">{item.label}</span>
+            <div key={i} className="px-4 py-2 text-sm">
+              <button
+                type="button"
+                onClick={item.action}
+                // onClick={handleLogout}
+                // disabled={isLoggingOut}
+                className="flex cursor-pointer items-center gap-2 text-neutral-500 w-full text-left disabled:opacity-70"
+              >
+                {item.icon}
+                <span className="flex-1">{item.label}</span>
+                {item.loading && (
+                  <SpinnerLoader size="sm" color="text-neutral-500" className="shrink-0" />
+                )}
+              </button>
             </div>
           ))}
         </div>
@@ -308,3 +231,217 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+const DocItem = ({
+  doc,
+  docId,
+  sidebarRef,
+}: {
+  doc: ISidebarDoc;
+  docId: string;
+  sidebarRef: unknown;
+}) => {
+  const { mutate: deleteDocument, isPending: isDeleting } = useDeleteDocument();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [showMetaInfo, setShowMetaInfo] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<{
+    id: string;
+    x: number;
+    y: number;
+  } | null>(null);
+  const isActive = doc.jobId === docId;
+  const isDropdownOpen = openDropdown?.id === doc.id;
+  const isExternal = doc.externalDocId;
+  const itemRef = useRef<HTMLDivElement | null>(null);
+
+  const handleDocumentClick = useCallback(
+    (id: string) => {
+      setOpenDropdown(null);
+      router.push(`/doc/${id}`);
+      dispatch(setMobileSidebarOpen(false));
+    },
+    [router, dispatch],
+  );
+
+  const toggleDropdown = useCallback((id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOpenDropdown((prev) => {
+      if (prev?.id === id) return null;
+      return { id, x: e.clientX, y: e.clientY };
+    });
+  }, []);
+
+  const handleSelectClick = useCallback(
+    (id: string, e: React.MouseEvent) => {
+      e.stopPropagation();
+      setOpenDropdown(null);
+      router.push(`/doc/${id}`);
+    },
+    [router],
+  );
+
+  const handleDeleteClick = (id: string) => {
+    deleteDocument(id, {
+      onSuccess: () => {
+        setShowDelete(false);
+      },
+      onError: (error) => {
+        ToastLogger.error("documents", "Failed to delete document");
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (!openDropdown) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!itemRef.current) return;
+      if (!itemRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openDropdown]);
+  return (
+    <div
+      ref={itemRef}
+      key={doc.id}
+      className={` rounded-xl border transition-all duration-200 group ${
+        isActive
+          ? "bg-gray-500/10 border-gray-300 hover:bg-gray-600/10"
+          : " border-gray-200/50 hover:bg-white hover:border-gray-300 bg-gray-300/10"
+      }`}
+    >
+      {/* <div className="bg-primary-green w-4 h-4" /> */}
+      <button onClick={() => handleDocumentClick(doc.jobId)} className="w-full text-left p-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <FileIcon2Filled
+                className="text-gray-600"
+                color={isActive ? "#4a5565 " : "#99a1af"}
+                size={16}
+              />
+              {/* {isActive && (
+            <div className="w-2 h-2 bg-gray-800 rounded-full shrink-0" />
+          )} */}
+              <p
+                className={`text-sm font-medium truncate transition-colors ${
+                  isActive
+                    ? "text-gray-900 group-hover:text-gray-900"
+                    : "text-gray-500 group-hover:text-gray-900"
+                }`}
+              >
+                {doc.name}
+              </p>
+            </div>
+            <div className="flex items-center gap-1 mt-1">
+              <FiClock className={isActive ? " text-gray-600" : "text-gray-400"} size={12} />
+              <span className={isActive ? "text-gray-500 text-xs" : "text-gray-400 text-xs"}>
+                {doc.date}
+              </span>
+              {isExternal && (
+                <span className="rounded-full border flex gap-1 items-center px-2 py-1 text-xs text-gray-500">
+                  <LockIcon size={12} color="#737373" />
+                  <span>External</span>
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-1">
+            {/* <FiChevronRight
+          className={`shrink-0 mt-0.5 transition-colors ${
+            isActive
+              ? "text-gray-400 group-hover:text-gray-400"
+              : "text-gray-500 group-hover:text-gray-400"
+          }`}
+          size={16}
+        /> */}
+            <button
+              type="button"
+              onClick={(e) => toggleDropdown(doc.id, e)}
+              className={`p-1 rounded hover:bg-gray-200 transition-colors ${
+                isDropdownOpen ? "bg-gray-200" : ""
+              }`}
+            >
+              <FiMoreVertical className={isActive ? "text-gray-500" : "text-gray-400"} size={16} />
+            </button>
+          </div>
+        </div>
+      </button>
+
+      <Dialog
+        isOpen={showDelete}
+        onClose={() => setShowDelete(false)}
+        title="Delete Document"
+        message="Are you sure you want to delete this document?"
+        primaryButton={{
+          onClick: () => handleDeleteClick(doc.jobId),
+          children: isDeleting ? (
+            <SpinnerLoader size="sm" color="#737373" className="shrink-0" />
+          ) : (
+            "Delete"
+          ),
+        }}
+        secondaryButton={{
+          onClick: () => setShowDelete(false),
+          children: "Cancel",
+        }}
+        className="w-full max-w-md"
+        variant="danger"
+      />
+      <MetaInfoModal
+        isOpen={showMetaInfo}
+        onClose={() => setShowMetaInfo(false)}
+        jobId={doc.jobId}
+      />
+      {isDropdownOpen && openDropdown && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed z-30 bg-white border border-gray-200 rounded-lg shadow-2xl overflow-hidden min-w-[140px]"
+          style={{ left: openDropdown.x, top: openDropdown.y + 4 }}
+        >
+          <button
+            type="button"
+            onClick={(e) => handleSelectClick(doc.jobId, e)}
+            className="cursor-pointer w-full text-left px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 transition-colors flex items-center gap-2"
+          >
+            <OpenIcon size={14} />
+            <span>Open</span>
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              setShowMetaInfo(true);
+              handleSelectClick(doc.jobId, e);
+            }}
+            className="cursor-pointer w-full text-left px-4 py-2 text-sm text-gray-900 hover:bg-gray-100 transition-colors flex items-center gap-2"
+          >
+            <EyeIcon size={14} />
+            <span>View meta info</span>
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              setShowDelete(true);
+            }}
+            className="cursor-pointer w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+          >
+            <TrashIcon size={14} color={"oklch(57.7% 0.245 27.325)"} />
+            <span>Delete</span>
+          </button>
+        </motion.div>
+      )}
+      {/* Dropdown Menu */}
+    </div>
+  );
+};

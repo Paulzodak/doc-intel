@@ -16,6 +16,7 @@ import documentsListSlice from "./slices/document/documentsList.slice";
 import type { IDocumentsListState } from "./slices/document/documentsList.slice";
 import documentAnalysisSlice from "./slices/document/documentAnalysis.slice";
 import documentChatSlice from "./slices/document/documentChat.slice";
+import settingsSlice from "./slices/settings/settings.slice";
 
 const rootReducer = combineReducers({
   documentInput: documentInputSlice,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   documentAnalysis: documentAnalysisSlice,
   documentChat: documentChatSlice,
   layout: layoutSlice,
+  settings: settingsSlice,
 
   // add more reducers here
 });

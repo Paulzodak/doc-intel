@@ -98,9 +98,9 @@ ${logoHtml}
                   <p className="text-sm whitespace-pre-wrap">{text}</p>
 
                   <div className="absolute z-0 w-full h-full todp-[50%] top-0 bg-linear-to-b from-white/10 from-10%  to-white opacity-80  " />
-                  <div className="absolute bottom-0 right-0 flex items-end flex-col p-2 backdrop-brightness-150 m-[4px]">
-                    <QlaretyLogo size={50} className="msx-auto" />
-                    <span className="text-sm text-black font-medium">Qlarety</span>
+                  <div className="absolute bottom-0 right-0 flex items-end flex-col p-2 m-[4px]">
+                    <QlaretyLogo size={40} className="msx-auto" />
+                    {/* <span className="text-sm text-black font-medium">Qlarety</span> */}
                   </div>
                 </div>
               </div>

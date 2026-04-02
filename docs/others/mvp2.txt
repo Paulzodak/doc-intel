@@ -1,0 +1,15 @@
+2. AI Customer Support Automation
+User asks question
+AI answers
+If unsure → escalate
+Logs everything
+
+Phase 2
+Add agent workflows
+Multi-step reasoning (tools + actions)
+
+Phase 3
+Monetize:
+AI SaaS
+API product
+AI automation tools

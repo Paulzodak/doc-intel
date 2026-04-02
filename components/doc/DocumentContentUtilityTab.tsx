@@ -12,9 +12,10 @@ import { ShareModal } from "@/components/doc/ShareModal";
 import { Document } from "@/types/document";
 import { LockIcon } from "@/assets/svg/LockIcon";
 import { ExportButton } from "./ExportButton";
-import { EditIcon } from "@/assets/svg/EditIcon";
 import { CursorPointerIcon } from "@/assets/svg/CursorPointerIcon";
 import { SelectIcon } from "@/assets/svg/SelectIcon";
+import { MetaInfoModal } from "@/components/doc/MetaInfoModal";
+import { FiInfo } from "react-icons/fi";
 
 interface DocumentContentUtilityTabProps {
   docId: string;
@@ -28,6 +29,7 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
   docData,
 }) => {
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [metaInfoOpen, setMetaInfoOpen] = useState(false);
 
   return (
     <div className="border-b py-4 font-jakarta px-4 sm:px-8">
@@ -74,6 +76,19 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
                 docId={docId}
                 documentName={documentName}
                 docData={docData}
+              />
+              <button
+                type="button"
+                onClick={() => setMetaInfoOpen(true)}
+                className="flex bg-neutral-50 border border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
+              >
+                <FiInfo size={14} />
+                <span>Info</span>
+              </button>
+              <MetaInfoModal
+                isOpen={metaInfoOpen}
+                onClose={() => setMetaInfoOpen(false)}
+                jobId={docData.jobId}
               />
               <ExportButton docData={docData} />
               <div className="border-l border-gray-200 my-1" />

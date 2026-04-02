@@ -1,5 +1,5 @@
 import { ToastLogger } from "@/utils/toastUtils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   useMutation,
   UseMutationOptions,
@@ -51,6 +51,7 @@ export const documentsKeys = {
   processing: () => [...documentsKeys.all, "processing"] as const,
   analysis: (id: string) => [...documentsKeys.all, "analysis", id] as const,
   job: (jobId: string) => [...documentsKeys.all, "job", jobId] as const,
+  search: (q: string) => [...documentsKeys.all, "search", q] as const,
 };
 
 // Hook to attach document to entity
@@ -198,6 +199,33 @@ export function useDocumentsList(
   return query;
 }
 
+/**
+ * Searches documents via GET /api/documents/search.
+ * Waits {@link DOCUMENT_SEARCH_DEBOUNCE_MS} after `searchInput` stops changing before requesting.
+ * Clearing the input resets the debounced term immediately (no request).
+ */
+export function useDocumentsSearch(
+  searchInput: string,
+  options?: Omit<
+    UseQueryOptions<ListDocumentsResponse["data"], AxiosError<ListDocumentsResponse["data"]>>,
+    "queryKey" | "queryFn" | "enabled"
+  >,
+) {
+  const query = useQuery({
+    queryKey: documentsKeys.search(searchInput),
+    queryFn: async () => {
+      const response = await apiClient.get<ListDocumentsResponse>("/api/documents/search", {
+        params: { name: searchInput },
+      });
+      return response.data.data;
+    },
+    enabled: searchInput.length > 0,
+    ...options,
+  });
+
+  return { ...query, searchInput };
+}
+
 // Hook to delete a document
 export function useDeleteDocument(
   options?: UseMutationOptions<{ success: boolean; message?: string }, Error, string>,
@@ -207,7 +235,7 @@ export function useDeleteDocument(
   return useMutation({
     mutationFn: async (documentId: string) => {
       const response = await apiClient.delete<{ success: boolean; message?: string }>(
-        `/api/documents/${documentId}`,
+        `/api/document/${documentId}`,
       );
       return response.data;
     },

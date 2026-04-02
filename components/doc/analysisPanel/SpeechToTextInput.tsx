@@ -222,7 +222,7 @@ export const SpeechToTextInput: React.FC<SpeechToTextInputProps> = ({
               type="button"
               onClick={onSend}
               disabled={!value.trim() || disabled}
-              className="p-[8px] rounded-full bg-black text-white shadow-sm hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-[8px] rounded-full bg-green-700 text-white shadow-sm hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               aria-label="Send message"
             >
               {/* <ArrowLeftIcon size={16} color="white" className="rotate-90" /> */}

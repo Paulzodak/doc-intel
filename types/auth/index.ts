@@ -67,6 +67,11 @@ export interface SessionResponse {
   };
 }
 
+export interface LogoutResponse {
+  success: boolean;
+  message?: string;
+}
+
 export type OAuthProvider = "google" | "apple" | "github";
 
 export interface OAuthRedirectRequest {

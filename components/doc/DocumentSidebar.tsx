@@ -324,9 +324,14 @@ const DocumentSidebar: React.FC<DocumentSidebarProps> = React.memo(
           message={`Are you sure you want to delete "${
             recentDocuments.find((d) => d.id === deleteDialog.docId)?.name || "this document"
           }"? This action cannot be undone.`}
-          confirmText="Delete"
-          cancelText="Cancel"
-          onConfirm={handleDeleteConfirm}
+          primaryButton={{
+            onClick: handleDeleteConfirm,
+            children: "Delete",
+          }}
+          secondaryButton={{
+            onClick: () => setDeleteDialog({ isOpen: false, docId: null }),
+            children: "Cancel",
+          }}
           variant="danger"
         />
       </>

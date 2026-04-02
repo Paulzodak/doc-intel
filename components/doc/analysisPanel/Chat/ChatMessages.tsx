@@ -59,7 +59,9 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({ chatMessages, isSend
               <div className="max-w-[85%]">
                 <div
                   className={`rounded-lg p-3 ${
-                    message.role === "user" ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-900"
+                    message.role === "user"
+                      ? "bg-green-600 text-white"
+                      : "bg-gray-100 text-gray-900"
                   }`}
                 >
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>

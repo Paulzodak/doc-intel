@@ -2,9 +2,6 @@
 
 import { useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Input } from "@/components/ui/input";
-import { MdKeyboardCommandKey } from "react-icons/md";
-import { SearchIcon } from "@/assets/svg/SearchIcon";
 import { MailIcon } from "@/assets/svg/MailIcon";
 import { BellIcon } from "@/assets/svg/BellIcon";
 import Sidebar from "./Sidebar";
@@ -20,13 +17,17 @@ import {
 import staticData from "@/lib/staticData";
 import { TbLayoutSidebar } from "react-icons/tb";
 import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
+import { AppSearch } from "../dashboardLayout/AppSearch";
+import SettingsModal from "../settings/SettingsModal";
+import { selectShowSetting } from "@/redux/slices/settings/settings.slice";
+
 export default function DashboardLayout({
   children,
-  title,
 }: {
   children: React.ReactNode;
   title: string;
 }) {
+  const showSettingsModal = useSelector(selectShowSetting);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const mobileSidebarOpen = useSelector(selectMobileSidebarOpen);
@@ -55,7 +56,7 @@ export default function DashboardLayout({
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.2 }}
-            className="bg-gray-100/50 rounded-2xl hidden lg:flex border border-gray-200/50 shrink-0"
+            className="bg-gray-100/50 rounded-2xl hidden relative lg:flex border border-gray-200/50 shrink-0"
           >
             <Sidebar />
           </motion.div>
@@ -86,21 +87,7 @@ export default function DashboardLayout({
                   <TbLayoutSidebar size={18} className="text-neutral-600" />
                 </button>
               </div>
-              <div className="relative hidden lg:block">
-                <Input
-                  placeholder="Search documents..."
-                  className="bg-white rounded-full border shadow-none px-10 py-3"
-                />
-                <SearchIcon
-                  color="#4a5565"
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"
-                  size={18}
-                />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-200 p-1 rounded-sm flex gap-1 items-center justify-center text-gray-600 ">
-                  <MdKeyboardCommandKey size={14} />
-                  <span className="text-xs ">F</span>
-                </div>
-              </div>
+              <AppSearch />
             </div>
             <div className="flex items-center gap-2">
               <QlaretyLogo className="hidden lg:block" width={30} height={30} />
@@ -163,15 +150,9 @@ export default function DashboardLayout({
           </motion.div>
         )}
       </AnimatePresence>
-      {/* Sidebar - Persists across navigation */}
-      {/* <DocumentSidebar */}
-      {/* currentDocumentName={currentDocumentName}
-        recentDocuments={recentDocuments}
-        onDocumentSelect={handleDocumentSelect}
-        onDocumentDelete={handleDocumentDelete}
-        showCreateNew={showCreateNew}
-        currentDocumentId={docId} */}
-      {/* /> */}
+      <AnimatePresence>
+        {showSettingsModal ? <SettingsModal /> : null}
+      </AnimatePresence>
 
       {/* <div
         style={{

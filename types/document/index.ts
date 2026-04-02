@@ -167,3 +167,11 @@ export interface GeneratePdfResponse {
   success: boolean;
   message?: string;
 }
+
+export interface ISidebarDoc {
+  id: string;
+  jobId: string;
+  name: string;
+  externalDocId: string;
+  date: string;
+}

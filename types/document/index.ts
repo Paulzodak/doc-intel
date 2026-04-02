@@ -63,6 +63,13 @@ export interface UpdateDocumentResponse {
   message?: string;
 }
 
+/** Response from POST /api/document/:jobId/archive */
+export interface ArchiveDocumentResponse {
+  success: boolean;
+  message?: string;
+  data?: Document;
+}
+
 export interface SaveAllowedUsersRequest {
   userIds: string[];
 }

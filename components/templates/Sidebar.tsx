@@ -2,8 +2,8 @@
 
 import { useMemo, useState, useCallback, useEffect, useRef, type ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useDocumentsList, useDeleteDocument } from "@/data/document";
-import { useLogout } from "@/data/auth";
+import { useDocumentsList, useDeleteDocument, useArchiveDocument } from "@/data/document";
+import { useGetSession, useLogout } from "@/data/auth";
 import type { Document, ISidebarDoc } from "@/types/document";
 import { BsLayoutSidebar } from "react-icons/bs";
 import { TbLayoutSidebar, TbLayoutSidebarFilled } from "react-icons/tb";
@@ -41,6 +41,8 @@ import { MetaInfoModal } from "../doc/MetaInfoModal";
 import Dialog from "../atoms/Dialog";
 import { motion } from "framer-motion";
 import { setShowSetting } from "@/redux/slices/settings/settings.slice";
+import { selectUser } from "@/redux/slices/user/user.slice";
+import { BagIcon } from "@/assets/svg/BagIcon";
 
 const Sidebar = () => {
   const { refetch, isRefetching } = useDocumentsList();
@@ -50,38 +52,13 @@ const Sidebar = () => {
   const documents = useSelector((state: RootState) => state.documentsList.documents);
   const { mutateAsync: deleteDocument } = useDeleteDocument();
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
-  const [openDropdown, setOpenDropdown] = useState<{
-    id: string;
-    x: number;
-    y: number;
-  } | null>(null);
-  const sidebarRef = useRef<HTMLDivElement | null>(null);
-
-  const docId = useMemo(() => {
-    const match = pathname?.match(/\/doc\/([^/]+)/);
-    return match ? match[1] : null;
-  }, [pathname]);
+  const user = useSelector(selectUser);
+  const { data: sessionData } = useGetSession();
+  const isSignedIn = sessionData?.user;
 
   useEffect(() => {
     refetch();
   }, [pathname, refetch]);
-
-  useEffect(() => {
-    if (!openDropdown) return;
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!sidebarRef.current) return;
-      if (!sidebarRef.current.contains(event.target as Node)) {
-        setOpenDropdown(null);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [openDropdown]);
 
   // const allDocuments = useMemo(
   //   (): Document[] => (documentsData && documentsData?.data ? documentsData.data : []),
@@ -151,11 +128,12 @@ const Sidebar = () => {
     dispatch(setMobileSidebarOpen(false));
   };
 
+  const handleLogin = () => {
+    router.push("/auth");
+  };
+
   return (
-    <div
-      ref={sidebarRef}
-      className=" rounded-2xl relative  block sm:block min-h-[200px]  flex-col  relative h-full"
-    >
+    <div className=" rounded-2xl relative  block sm:block min-h-[200px] sm:w-[18rem]  flex-col  relative h-full">
       <div className="flex flex-col py-4 flex-1">
         <div className="flex justify-between px-4 items-center">
           <div className="text-black font-semibold ">
@@ -183,7 +161,7 @@ const Sidebar = () => {
         {recentDocuments.length > 0 ? (
           <div className="space-y-2 mt-3  px-4 max-h-[22rem] overflow-scroll">
             {recentDocuments.map((doc) => {
-              return <DocItem key={doc.id} doc={doc} docId={docId || ""} sidebarRef={sidebarRef} />;
+              return <DocItem key={doc.id} doc={doc} />;
             })}
           </div>
         ) : (
@@ -204,48 +182,61 @@ const Sidebar = () => {
           <span>Create New</span>
         </Button>
       </div>
-      <div className="absolute bottom-0 w-full mb-4">
-        <div className=" text-neutral-500 font-semibold text-xs px-4">GENERAL</div>
-        <div className="text-neutral-500 mt-4">
-          {generalItems.map((item, i) => (
-            <div key={i} className="px-4 py-2 text-sm">
-              <button
-                type="button"
-                onClick={item.action}
-                // onClick={handleLogout}
-                // disabled={isLoggingOut}
-                className="flex cursor-pointer items-center gap-2 text-neutral-500 w-full text-left disabled:opacity-70"
-              >
-                {item.icon}
-                <span className="flex-1">{item.label}</span>
-                {item.loading && (
-                  <SpinnerLoader size="sm" color="text-neutral-500" className="shrink-0" />
-                )}
-              </button>
-            </div>
-          ))}
+      {user && (
+        <div className="absolute bottom-0 w-full mb-4">
+          <div className=" text-neutral-500 font-semibold text-xs px-4">GENERAL</div>
+          <div className="text-neutral-500 mt-4">
+            {generalItems.map((item, i) => (
+              <div key={i} className="px-4 py-2 text-sm">
+                <button
+                  type="button"
+                  onClick={item.action}
+                  // onClick={handleLogout}
+                  // disabled={isLoggingOut}
+                  className="flex cursor-pointer items-center gap-2 text-neutral-500 w-full text-left disabled:opacity-70"
+                >
+                  {item.icon}
+                  <span className="flex-1">{item.label}</span>
+                  {item.loading && (
+                    <SpinnerLoader size="sm" color="text-neutral-500" className="shrink-0" />
+                  )}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
+      {!user && (
+        <div className="absolute bottom-0 w-full mb-4 px-4">
+          <Button
+            onClick={handleLogin}
+            variant="primary-green"
+            className="w-full rounded-full shadow-none text-sm"
+          >
+            <LockIcon size={16} color="#fff" />
+            Login
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Sidebar;
 
-const DocItem = ({
-  doc,
-  docId,
-  sidebarRef,
-}: {
-  doc: ISidebarDoc;
-  docId: string;
-  sidebarRef: unknown;
-}) => {
+const DocItem = ({ doc }: { doc: ISidebarDoc }) => {
+  const pathname = usePathname();
+  const docId = useMemo(() => {
+    const match = pathname?.match(/\/doc\/([^/]+)/);
+    return match ? match[1] : null;
+  }, [pathname]);
   const { mutate: deleteDocument, isPending: isDeleting } = useDeleteDocument();
+  const { mutate: archiveDocument, isPending: isArchiving } = useArchiveDocument();
   const router = useRouter();
   const dispatch = useDispatch();
   const [showMetaInfo, setShowMetaInfo] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [showArchive, setShowArchive] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<{
     id: string;
     x: number;
@@ -289,6 +280,16 @@ const DocItem = ({
       },
       onError: (error) => {
         ToastLogger.error("documents", "Failed to delete document");
+      },
+    });
+  };
+  const handleArchiveClick = (id: string) => {
+    archiveDocument(id, {
+      onSuccess: () => {
+        setShowArchive(false);
+      },
+      onError: (error) => {
+        ToastLogger.error("documents", "Failed to archive document");
       },
     });
   };
@@ -377,26 +378,6 @@ const DocItem = ({
         </div>
       </button>
 
-      <Dialog
-        isOpen={showDelete}
-        onClose={() => setShowDelete(false)}
-        title="Delete Document"
-        message="Are you sure you want to delete this document?"
-        primaryButton={{
-          onClick: () => handleDeleteClick(doc.jobId),
-          children: isDeleting ? (
-            <SpinnerLoader size="sm" color="#737373" className="shrink-0" />
-          ) : (
-            "Delete"
-          ),
-        }}
-        secondaryButton={{
-          onClick: () => setShowDelete(false),
-          children: "Cancel",
-        }}
-        className="w-full max-w-md"
-        variant="danger"
-      />
       <MetaInfoModal
         isOpen={showMetaInfo}
         onClose={() => setShowMetaInfo(false)}
@@ -429,6 +410,17 @@ const DocItem = ({
             <EyeIcon size={14} />
             <span>View meta info</span>
           </button>
+          <hr />
+          <button
+            type="button"
+            onClick={(e) => {
+              setShowArchive(true);
+            }}
+            className="cursor-pointer w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+          >
+            <BagIcon size={14} color={"oklch(57.7% 0.245 27.325)"} />
+            <span>Archive</span>
+          </button>
           <button
             type="button"
             onClick={(e) => {
@@ -439,9 +431,56 @@ const DocItem = ({
             <TrashIcon size={14} color={"oklch(57.7% 0.245 27.325)"} />
             <span>Delete</span>
           </button>
+          <Dialog
+            isOpen={showArchive}
+            onClose={() => setShowArchive(false)}
+            title="Archive Document"
+            message="Are you sure you want to archive this document?"
+            primaryButton={{
+              onClick: () => handleArchiveClick(doc.jobId),
+              children: isArchiving ? (
+                <SpinnerLoader size="sm" color="#737373" className="shrink-0" />
+              ) : (
+                "Archive"
+              ),
+            }}
+            secondaryButton={{
+              onClick: () => setShowArchive(false),
+              children: "Cancel",
+            }}
+            className="w-full max-w-md"
+            variant="danger"
+          />
+          <Dialog
+            isOpen={showDelete}
+            onClose={() => setShowDelete(false)}
+            title="Delete Document"
+            message={deleteMessage}
+            primaryButton={{
+              onClick: () => handleDeleteClick(doc.jobId),
+              children: isDeleting ? (
+                <SpinnerLoader size="sm" color="#737373" className="shrink-0" />
+              ) : (
+                "Delete"
+              ),
+            }}
+            secondaryButton={{
+              onClick: () => setShowDelete(false),
+              children: "Cancel",
+            }}
+            className="w-full max-w-md"
+            variant="danger"
+          />
         </motion.div>
       )}
       {/* Dropdown Menu */}
     </div>
   );
 };
+
+const deleteMessage = (
+  <p>
+    Are you sure you want to permanently delete this document?
+    <b> THIS WILL PERMANENTLY DELETE THE DOCUMENT AND IT CANNOT BE RECOVERED.</b>
+  </p>
+);

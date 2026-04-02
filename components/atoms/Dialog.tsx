@@ -16,7 +16,7 @@ interface DialogProps {
   primaryButton: ButtonProps;
   secondaryButton: ButtonProps;
   title: string;
-  message: string;
+  message: string | React.ReactNode;
   onClose: () => void;
 
   variant: "danger" | "warning" | "info";

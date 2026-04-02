@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShowSetting } from "@/redux/slices/settings/settings.slice";
 import { selectUser } from "@/redux/slices/user/user.slice";
 import General from "./General";
+import Documents from "./Documents";
 
 export default function SettingsModal() {
   const user = useSelector(selectUser);
@@ -33,24 +34,24 @@ export default function SettingsModal() {
         exit={{ scale: 0.95, opacity: 0, height: 0 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative bordser border-amber-800 grid w-[50rem] h-[35rem] max-h-[35rem] min-h-[35rem] bg-white rounded-xl shadow-xl overflow-hidden  "
+        className="relative bordser border-amber-800 grid w-[50rem] h-[35rem] max-h-[35rem] min-h-[35rem] bg-white rounded-2xl shadow-xl overflow-hidden  "
       >
         {/* <div className=" text-black w-[50rem] h-[35rem] border-4 border-b-fuchsia-500 grid grid-cols-2 overflow-scroll   "> */}
         <Tabs
           defaultValue="general"
-          className="w-full h-full! overflow-hidden border-b-amber-800 bsorder  bg-gray-100 "
+          className="w-full h-full! overflow-hidden bsorder-b-amber-800 bsorder  bg-gray-100 "
         >
-          <div className="h-full bordser border-red-500 overflow-hidden max-w-full grid grid-rows-[4rem_31rem] sm:grid-rows-none sm:grid-cols-[4fr_8fr] sm:gap-6  ">
-            <div className="bordesr border-blue-500 sm:h-full sm:flex sm:flex-col p-2 sm:p-4 w-full max-w-full overflow-scroll ">
+          <div className="h-full bordser border-red-500 overflow-hidden max-w-full grid grid-rows-[4rem_31rem] sm:grid-rows-none sm:grid-cols-[3fr_8fr] sm:gap-6  ">
+            <div className="bordser border-blue-500 sm:h-full sm:flex sm:flex-col p-2 sm:p-4 w-full max-w-full overflow-scroll ">
               <h1 className="text-2xl font-bold hidden sm:block text-black">Settings</h1>
               {/* <div className="border border-blue-500 overflow-hidden !w-full !max-w-full"> */}
-              <TabsList className="  sm:mt-4 p-0!  sm:h-auto   bg-gray-100/70 sm:flex sm:flex-col sm:items-stretch rounded-lg sm:p-1">
+              <TabsList className=" flex! sm:mt-4 p-0!  sm:h-auto  bosrder bosrder-red-700 w-full bg-gray-100/70 sm:flex sm:flex-col sm:items-stretch rounded-lg sm:p-1">
                 <TabsTrigger
                   value="general"
                   className="sm:w-full sm:justify-start gap-2 rounded-md"
                 >
                   <SettingsIcon size={18} color="currentColor" />
-                  General
+                  <p className="sm:block hidden">General</p>
                 </TabsTrigger>
                 {/* <TabsTrigger value="account" className="w-full justify-start gap-2">
                     <LockIcon size={18} color="currentColor" />
@@ -61,27 +62,27 @@ export default function SettingsModal() {
                   className="sm:w-full sm:justify-start gap-2 rounded-md"
                 >
                   <FileIcon2 size={18} color="currentColor" />
-                  Documents
+                  <p className="sm:block hidden">Documents</p>
                 </TabsTrigger>
                 <TabsTrigger
                   value="billing"
                   className="sm:w-full sm:justify-start gap-2 rounded-md"
                 >
                   <CreditCardIcon size={18} color="currentColor" />
-                  Billing
+                  <p className="sm:block hidden">Billing</p>
                 </TabsTrigger>
                 <TabsTrigger
                   value="security"
                   className="sm:w-full sm:justify-start gap-2 rounded-md"
                 >
                   <LockIcon size={18} color="currentColor" />
-                  Security
+                  <p className="sm:block hidden">Security</p>
                 </TabsTrigger>
               </TabsList>
               {/* </div> */}
             </div>
 
-            <div className="max-h-full! grid overflow-scroll sm:pr-1 rounded-2xl border border-gray-100">
+            <div className="max-h-full! grid overflow-scroll  rounded-2xl border border-gray-100">
               <TabsContent
                 value="general"
                 className="mt-0 max-h-full! overflow-scroll borsder border-red-500"
@@ -93,7 +94,7 @@ export default function SettingsModal() {
                 <div className="bg-white h-full rounded-lg p-4">Account settings</div>
               </TabsContent>
               <TabsContent value="notifications" className="mt-0 h-full">
-                <div className="bg-white h-full rounded-lg p-4">Document settings</div>
+                {user && <Documents user={user} />}
               </TabsContent>
               <TabsContent value="billing" className="mt-0 h-full">
                 <div className="bg-white h-full rounded-lg p-4">Billing settings</div>

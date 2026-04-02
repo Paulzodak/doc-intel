@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { apiClient } from "@/lib/axios";
 import type {
+  ArchiveDocumentResponse,
   CleanTextRequest,
   CleanTextResponse,
   GeneratePdfRequest,
@@ -52,6 +53,7 @@ export const documentsKeys = {
   analysis: (id: string) => [...documentsKeys.all, "analysis", id] as const,
   job: (jobId: string) => [...documentsKeys.all, "job", jobId] as const,
   search: (q: string) => [...documentsKeys.all, "search", q] as const,
+  archived: () => [...documentsKeys.all, "archived"] as const,
 };
 
 // Hook to attach document to entity
@@ -226,6 +228,23 @@ export function useDocumentsSearch(
   return { ...query, searchInput };
 }
 
+/** GET /api/documents/archived — same shape as {@link ListDocumentsResponse} */
+export function useArchivedDocuments(
+  options?: Omit<
+    UseQueryOptions<ListDocumentsResponse, AxiosError<ListDocumentsResponse>>,
+    "queryKey" | "queryFn"
+  >,
+) {
+  return useQuery({
+    queryKey: documentsKeys.archived(),
+    queryFn: async () => {
+      const response = await apiClient.get<ListDocumentsResponse>("/api/documents/archived");
+      return response.data;
+    },
+    ...options,
+  });
+}
+
 // Hook to delete a document
 export function useDeleteDocument(
   options?: UseMutationOptions<{ success: boolean; message?: string }, Error, string>,
@@ -242,6 +261,37 @@ export function useDeleteDocument(
     onSuccess: (_data, documentId) => {
       dispatch(removeDocument(documentId));
       queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+    },
+    ...options,
+  });
+}
+
+/** POST /api/document/:jobId/archive */
+export function useArchiveDocument(
+  options?: UseMutationOptions<
+    ArchiveDocumentResponse,
+    AxiosError<ArchiveDocumentResponse>,
+    string
+  >,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (jobId: string) => {
+      const response = await apiClient.patch<ArchiveDocumentResponse>(
+        `/api/document/${jobId}/archive`,
+      );
+      return response.data;
+    },
+    onSuccess: (_data, jobId) => {
+      queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.archived() });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.job(jobId) });
+    },
+    onError: (error: AxiosError<ArchiveDocumentResponse>) => {
+      ToastLogger.error(
+        "documents",
+        error.response?.data?.message ?? error.message ?? "Failed to archive document",
+      );
     },
     ...options,
   });

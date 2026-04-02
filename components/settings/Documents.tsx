@@ -30,7 +30,7 @@ const profileSchema = z.object({
   }),
 });
 
-export default function General({ user }: { user: User }) {
+export default function Documents({ user }: { user: User }) {
   const { data: sessionData } = useGetSession();
   console.log(sessionData);
   const { mutateAsync: updateUser, isPending } = useUpdateMe();
@@ -58,7 +58,7 @@ export default function General({ user }: { user: User }) {
   return (
     <div className="bg-white h-full overflow-scroll rounded-lg border p-4">
       <div className="grid text-sm text-black  gap-4">
-        <h2 className="text-lg font-bold">General</h2>
+        <h2 className="text-lg font-bold">Documents</h2>
         <div className="grid grid-cols-[5fr_8fr] gap-2">
           <label htmlFor="name" className="font-semibold">
             Memoji

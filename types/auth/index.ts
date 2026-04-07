@@ -43,6 +43,19 @@ export interface MagicLinkResponse {
   };
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ForgotPasswordResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    email: string;
+    sent: boolean;
+  };
+}
+
 export interface VerifyEmailRequest {
   token: string;
 }

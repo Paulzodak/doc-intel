@@ -37,17 +37,21 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
         <EditableDocumentName docData={docData} />
         <div className="flex gap-2">
           <div className="flex gap-2 text-[10px] sm:text-xs leading-5 hidden sm:flex">
-            <span className="px-2 py-1 bg-red-100 text-red-700 rounded-full">Risks</span>
-            <span className="px-2 py-1 bg-green-100 text-primary-blue-dark rounded-full">
+            <span className="px-2 py-1 border border-red-500 bg-red-100 text-red-700 rounded-full">
+              Risks
+            </span>
+            <span className="px-2 py-1 border border-green-500 bg-green-100 text-primary-blue-dark rounded-full">
               Advantages
             </span>
-            <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full">Compliance</span>
+            <span className="px-2 py-1 border border-yellow-500 bg-yellow-100 text-yellow-700 rounded-full">
+              Compliance
+            </span>
             <div className="border-l border-gray-200 my-1" />
             <div className="gap-2 hidden md:flex">
-              <div className="flex border bg-neutral-50 text-sm border-neutral-300 gap-2 text-gray-500 items-center px-2 py-1 rounded-full">
+              {/* <div className="flex border bg-neutral-50 text-sm border-neutral-300 gap-2 text-gray-500 items-center px-2 py-1 rounded-full">
                 <Copy color="black" size={14} />
                 <span>Copy</span>
-              </div>
+              </div> */}
               {/* <div className="flex border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full">
                 <ShareIcon size={15} color="#6a7282" />
                 <span>Share</span>

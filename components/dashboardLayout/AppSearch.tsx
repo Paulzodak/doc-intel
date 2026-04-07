@@ -22,7 +22,7 @@ export function AppSearch() {
     return () => window.clearTimeout(id);
   }, [input]);
   return (
-    <div className="relative hidden lg:block">
+    <div className="relative z-10 hidden lg:block">
       <Input
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -94,9 +94,7 @@ const DocumentItem = ({ document }: { document: Document }) => {
       <h3>{document.documentName}</h3>
       <div className="flex gap-1 items-center mt-1">
         <FiClock size={11} className="text-gray-400" />
-        <span className="text-gray-400 text-[11px]">
-          Last viewed: {lastActivity || "—"}
-        </span>
+        <span className="text-gray-400 text-[11px]">Last viewed: {lastActivity || "—"}</span>
       </div>
     </div>
   );

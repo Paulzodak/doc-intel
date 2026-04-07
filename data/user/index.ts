@@ -7,14 +7,18 @@ import {
 } from "@tanstack/react-query";
 import { apiClient } from "@/lib/axios";
 import type {
+  ChangePasswordRequest,
+  ChangePasswordResponse,
   GetUserResponse,
   ListUsersResponse,
+  User,
   UpdateMeRequest,
   UpdateMeResponse,
 } from "@/types/user";
 import { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/user/user.slice";
+import { ToastLogger } from "@/utils/toastUtils";
 
 // Query keys factory
 export const userKeys = {
@@ -22,6 +26,7 @@ export const userKeys = {
   current: () => [...userKeys.all, "current"] as const,
   detail: (id: string) => [...userKeys.all, "detail", id] as const,
   list: () => [...userKeys.all, "list"] as const,
+  search: (query: string) => [...userKeys.all, "search", query] as const,
 };
 
 // Hook to get users list (GET api/users)
@@ -37,6 +42,35 @@ export function useUsers(
       const response = await apiClient.get<ListUsersResponse>("/api/users");
       return response.data;
     },
+    ...options,
+  });
+}
+
+// Hook to search users via /api/admin/users/search
+export function useUserSearch(
+  query: string,
+  options?: Omit<
+    UseQueryOptions<User | null, AxiosError<{ message?: string }>>,
+    "queryKey" | "queryFn" | "enabled"
+  >,
+) {
+  return useQuery({
+    queryKey: userKeys.search(query),
+    queryFn: async () => {
+      const response = await apiClient.get("/api/users/search", {
+        params: { email: query },
+      });
+      const payload = response.data;
+      const userCandidate =
+        payload?.data?.user ?? payload?.data ?? payload?.user ?? payload ?? null;
+      if (!userCandidate?.id) return null;
+      return {
+        id: userCandidate.id,
+        username: userCandidate.username,
+        email: userCandidate.email,
+      } as User;
+    },
+    enabled: false,
     ...options,
   });
 }
@@ -80,6 +114,31 @@ export function useUpdateMe(
       queryClient.invalidateQueries({ queryKey: userKeys.current() });
       queryClient.invalidateQueries({ queryKey: userKeys.list() });
       userOnSuccess?.(data, variables, context, mutation);
+    },
+  });
+}
+
+export function useChangePassword(
+  options?: UseMutationOptions<
+    ChangePasswordResponse,
+    AxiosError<ChangePasswordResponse>,
+    ChangePasswordRequest
+  >,
+) {
+  const { onError: userOnError, ...restOptions } = options ?? {};
+
+  return useMutation({
+    mutationFn: async (data: ChangePasswordRequest) => {
+      const response = await apiClient.patch<ChangePasswordResponse>("/api/user/me/password", data);
+      return response.data;
+    },
+    ...restOptions,
+    onError: (error, variables, onMutateResult, context) => {
+      ToastLogger.error(
+        "auth",
+        error.response?.data?.message ?? error.message ?? "Failed to change password",
+      );
+      userOnError?.(error, variables, onMutateResult, context);
     },
   });
 }

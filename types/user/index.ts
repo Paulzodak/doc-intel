@@ -38,3 +38,13 @@ export interface UpdateMeRequest {
 }
 
 export type UpdateMeResponse = GetUserResponse;
+
+export interface ChangePasswordRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
+export interface ChangePasswordResponse {
+  success: boolean;
+  message?: string;
+}

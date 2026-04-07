@@ -11,6 +11,8 @@ import { setShowSetting } from "@/redux/slices/settings/settings.slice";
 import { selectUser } from "@/redux/slices/user/user.slice";
 import General from "./General";
 import Documents from "./Documents";
+import Billing from "./Billing";
+import Security from "./Security";
 
 export default function SettingsModal() {
   const user = useSelector(selectUser);
@@ -57,10 +59,7 @@ export default function SettingsModal() {
                     <LockIcon size={18} color="currentColor" />
                     Account
                   </TabsTrigger> */}
-                <TabsTrigger
-                  value="notifications"
-                  className="sm:w-full sm:justify-start gap-2 rounded-md"
-                >
+                <TabsTrigger value="documents" className="sm:w-full sm:justify-start gap-2 rounded-md">
                   <FileIcon2 size={18} color="currentColor" />
                   <p className="sm:block hidden">Documents</p>
                 </TabsTrigger>
@@ -93,14 +92,14 @@ export default function SettingsModal() {
               <TabsContent value="account" className="mt-0 h-full">
                 <div className="bg-white h-full rounded-lg p-4">Account settings</div>
               </TabsContent>
-              <TabsContent value="notifications" className="mt-0 h-full">
+              <TabsContent value="documents" className="mt-0 h-full">
                 {user && <Documents user={user} />}
               </TabsContent>
               <TabsContent value="billing" className="mt-0 h-full">
-                <div className="bg-white h-full rounded-lg p-4">Billing settings</div>
+                <Billing />
               </TabsContent>
               <TabsContent value="security" className="mt-0 h-full">
-                <div className="bg-white h-full rounded-lg p-4">Security settings</div>
+                {user && <Security user={user} />}
               </TabsContent>
             </div>
           </div>

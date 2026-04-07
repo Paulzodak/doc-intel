@@ -9,6 +9,8 @@ import {
 } from "@tanstack/react-query";
 import { apiClient } from "@/lib/axios";
 import type {
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
   SignUpRequest,
   SignUpResponse,
   LoginRequest,
@@ -32,6 +34,7 @@ export const authKeys = {
   signUp: () => [...authKeys.all, "signup"] as const,
   login: () => [...authKeys.all, "login"] as const,
   magicLink: () => [...authKeys.all, "magic-link"] as const,
+  forgotPassword: () => [...authKeys.all, "forgot-password"] as const,
   verifyEmail: () => [...authKeys.all, "verify-email"] as const,
   oauth: (provider: OAuthProvider) => [...authKeys.all, "oauth", provider] as const,
   logout: () => [...authKeys.all, "logout"] as const,
@@ -161,6 +164,30 @@ export function useMagicLink(
     },
     onError: (error: Error) => {
       ToastLogger.error("auth", `Failed to send magic link: ${error.message}`);
+    },
+    ...options,
+  });
+}
+
+export function useForgotPassword(
+  options?: UseMutationOptions<
+    ForgotPasswordResponse,
+    AxiosError<ForgotPasswordResponse>,
+    ForgotPasswordRequest
+  >,
+) {
+  return useMutation({
+    mutationFn: async (data: ForgotPasswordRequest) => {
+      const response = await apiClient.post<ForgotPasswordResponse>("/api/auth/forgot-password", {
+        email: data.email,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      ToastLogger.success("auth", "Password reset email sent");
+    },
+    onError: (error: Error) => {
+      ToastLogger.error("auth", `Failed to send reset email: ${error.message}`);
     },
     ...options,
   });

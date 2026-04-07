@@ -261,6 +261,7 @@ export function useDeleteDocument(
     onSuccess: (_data, documentId) => {
       dispatch(removeDocument(documentId));
       queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.archived() });
     },
     ...options,
   });
@@ -291,6 +292,37 @@ export function useArchiveDocument(
       ToastLogger.error(
         "documents",
         error.response?.data?.message ?? error.message ?? "Failed to archive document",
+      );
+    },
+    ...options,
+  });
+}
+
+/** PATCH /api/document/:jobId/unarchive */
+export function useUnarchiveDocument(
+  options?: UseMutationOptions<
+    ArchiveDocumentResponse,
+    AxiosError<ArchiveDocumentResponse>,
+    string
+  >,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (jobId: string) => {
+      const response = await apiClient.patch<ArchiveDocumentResponse>(
+        `/api/document/${jobId}/unarchive`,
+      );
+      return response.data;
+    },
+    onSuccess: (_data, jobId) => {
+      queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.archived() });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.job(jobId) });
+    },
+    onError: (error: AxiosError<ArchiveDocumentResponse>) => {
+      ToastLogger.error(
+        "documents",
+        error.response?.data?.message ?? error.message ?? "Failed to unarchive document",
       );
     },
     ...options,

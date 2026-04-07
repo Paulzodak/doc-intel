@@ -26,7 +26,7 @@ const DocumentInput = () => {
   };
 
   return (
-    <section className="relative py-12   max-w-full ">
+    <section className="relative py-8 sm:py-12 max-w-full">
       {/* Dotted Grid Background */}
       <div
         className="absolute inset-0 opacity-30"
@@ -35,42 +35,42 @@ const DocumentInput = () => {
         //   backgroundSize: "24px 24px",
         // }}
       />
-      <div className="relative max-w-[800px]  mx-auto">
-        <div className=" grid gap-6 relative">
-          <div className="bg-[#1e2939] dasrk:bg-gray-900 rounded-4xl px-8 py-6 shadow-lg ">
-            <div className="flex flex-col md:flex-row itesms-center justify-between gap-6">
+      <div className="relative max-w-[800px] mx-auto">
+        <div className="grid gap-4 sm:gap-6 relative">
+          <div className="bg-[#1e2939] dasrk:bg-gray-900 rounded-3xl sm:rounded-4xl px-4 py-4 sm:px-8 sm:py-6 shadow-lg">
+            <div className="flex flex-col md:flex-row items-center md:items-center justify-between gap-4 sm:gap-6">
               {/* Left Side */}
-              <div className="">
-                <h3 className="text-xl lg:text-2xl font-black text-white mb-2">
+              <div>
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-black text-white mb-1 sm:mb-2">
                   Ready to proceed?
                 </h3>
-                <p className="text-gray-300 text-xs md:text-sm">
+                <p className="text-gray-300 text-xs sm:text-sm md:text-base">
                   Review your selected input before initiating the AI engine.
                 </p>
               </div>
               {/* Right Side */}
-              <div className="grid sm:flex items-center gap-4">
+              <div className="grid sm:flex items-center gap-3 sm:gap-4">
                 {/* Avatars */}
-                <div className="flex items-center -space-x-3 mx-auto">
-                  <div className="w-10 h-10 rounded-full bg-orange-400 border-2 border-[#1e2939] dark:border-gray-900"></div>
-                  <div className="w-10 h-10 rounded-full bg-amber-700 border-2 border-[#1e2939] dark:border-gray-900"></div>
-                  <div className="w-10 h-10 rounded-full bg-gray-400 border-2 border-[#1e2939] dark:border-gray-900 flex items-center justify-center text-white text-xs font-bold">
+                <div className="flex items-center -space-x-2 sm:-space-x-3 mx-auto">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-orange-400 border-2 border-[#1e2939] dark:border-gray-900"></div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-amber-700 border-2 border-[#1e2939] dark:border-gray-900"></div>
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-400 border-2 border-[#1e2939] dark:border-gray-900 flex items-center justify-center text-white text-xs sm:text-xs font-bold">
                     +12
                   </div>
                 </div>
                 {/* Analyze Button */}
                 {/* <Button variant="primary-green" size="analyze">
-                <span>Analyze Document</span>
-                <PlayIconFilled />
-              </Button> */}
+                  <span>Analyze Document</span>
+                  <PlayIconFilled />
+                </Button> */}
               </div>
             </div>
-            <div className="flex items-center justify-center sm:justify-start gap-4 mt-4 sm:mt-2 flex-wrap sm:flex-nowrap">
+            <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-4 mt-3 sm:mt-2 flex-wrap sm:flex-nowrap">
               <EngineSelector />
               <LanguageSelector />
             </div>
           </div>
-          <div className=" border-2 border-gray-200 w-[70%]  h-full absolute -z-20 top-0 left-[15%]" />
+          <div className="border-2 border-gray-200 w-[90%] sm:w-[70%] h-full absolute -z-20 top-0 left-[5%] sm:left-[15%]" />
           {/* Main Input Section - Method 01 */}
           <UploadDocument
             isExpanded={expandedMethod === "upload"}
@@ -92,21 +92,23 @@ const DocumentInput = () => {
         {/* Call to Action Section */}
 
         {/* Footer - Global Features */}
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 py-6">
-          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 md:gap-12 py-4 sm:py-6">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-gray-700 dark:text-gray-300">
             {/* <span className="material-symbols-outlined text-lg">lock</span> */}
-            <LockIcon className="" size={20} />
-            <span className="text-xs font-bold uppercase tracking-wider">
+            <LockIcon className="" size={18} />
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
               END-TO-END ENCRYPTION
             </span>
           </div>
-          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            <DisplayIcon className="" size={20} />
-            <span className="text-xs font-bold uppercase tracking-wider">AI INSIGHTS</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 text-gray-700 dark:text-gray-300">
+            <DisplayIcon className="" size={18} />
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+              AI INSIGHTS
+            </span>
           </div>
-          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            <VerifiedCheckedIcon className="" size={20} />
-            <span className="text-xs font-bold uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-gray-700 dark:text-gray-300">
+            <VerifiedCheckedIcon className="" size={18} />
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
               LEGAL GRADE PRECISION
             </span>
           </div>

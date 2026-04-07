@@ -83,12 +83,13 @@ export const VisibilityButton: React.FC<VisibilityButtonProps> = ({
   const selectedMeta = VISIBILITY_OPTIONS.find((o) => o.id === visibility);
   const displayLabel = selectedMeta?.label ?? "Public";
 
+  console.log(showDropdown);
   return (
-    <div ref={ref} className={clsx("", className)}>
+    <div ref={ref} className={clsx("relative", className)}>
       <button
         type="button"
         onClick={() => setShowDropdown((v) => !v)}
-        className="flex bg-neutral-50 border  border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
+        className=" z-10 flex bg-neutral-50 border  border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
       >
         <LockIcon size={15} />
         <span>{displayLabel}</span>
@@ -100,7 +101,7 @@ export const VisibilityButton: React.FC<VisibilityButtonProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.15 }}
-            className="absolute left-0 top-full mt-1 min-w-[220px] bg-white border border-gray-200 rounded-lg shadow-lg z-20 overflow-hidden"
+            className="absolute z-50 left-0 top-full mt-1 min-w-[220px] bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
           >
             <div className="py-1">
               {VISIBILITY_OPTIONS.map((opt) => (

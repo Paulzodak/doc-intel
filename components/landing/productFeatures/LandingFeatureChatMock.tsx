@@ -15,7 +15,7 @@ export function LandingFeatureChatMock() {
             <WandIcon size={18} color="#121714" className="h-4 w-4 sm:h-[18px] sm:w-[18px]" />
           </span>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-bold tracking-tight text-gray-800 sm:text-sm">
+            <p className="truncate text-xs font-lora font-medium tracking-tight text-gray-800 sm:text-sm">
               {landingChatDemo.title}
             </p>
             <p className="truncate text-[10px] font-medium text-gray-500 sm:text-[11px]">

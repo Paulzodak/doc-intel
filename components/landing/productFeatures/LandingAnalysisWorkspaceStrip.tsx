@@ -38,7 +38,7 @@ export function LandingAnalysisWorkspaceStrip({
         </p>
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
-        <h3 className="mt-0.5 text-center font-brockmann text-sm font-bold leading-tight tracking-tight text-[#121714] dark:text-white sm:mt-1 sm:text-lg md:text-xl">
+        <h3 className="mt-0.5 text-center font-lora text-sm font-medium leading-tight tracking-tight text-[#121714] dark:text-white sm:mt-1 sm:text-lg md:text-xl">
           {landingAnalysisPanelCopy.workspaceTitle}
         </h3>
         <div className="mt-2 flex shrink-0 flex-wrap items-center justify-center gap-0.5 sm:mt-4 sm:gap-1">

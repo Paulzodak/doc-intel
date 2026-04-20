@@ -23,8 +23,8 @@ export default function Security({ user }: { user: User }) {
             <Button
               id="change-password"
               onClick={() => setShowChangePasswordModal(true)}
-              variant="primary-green"
-              className="ws-full rounded-full px-6 py-2 h-10 shadow-none"
+              // variant="primary-green"
+              className="ws-full rounded-full px-6 py-2 h-10"
             >
               <span className="text-sm">Manage</span>
             </Button>
@@ -40,8 +40,8 @@ export default function Security({ user }: { user: User }) {
             <Button
               id="reset-password"
               onClick={() => setShowResetPasswordModal(true)}
-              variant="primary-green"
-              className="ws-full rounded-full px-6 py-2 h-10 shadow-none"
+              // variant="primary-green"
+              className="ws-full rounded-full px-6 py-2 h-10"
             >
               <span className="text-sm">Manage</span>
             </Button>
@@ -53,10 +53,7 @@ export default function Security({ user }: { user: User }) {
         <ChangePasswordModal onClose={() => setShowChangePasswordModal(false)} />
       )}
       {showResetPasswordModal && (
-        <ResetPasswordModal
-          user={user}
-          onClose={() => setShowResetPasswordModal(false)}
-        />
+        <ResetPasswordModal user={user} onClose={() => setShowResetPasswordModal(false)} />
       )}
     </div>
   );

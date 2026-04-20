@@ -263,7 +263,8 @@ export const ShareModal: React.FC<ShareModalProps> = ({
             <Button
               type="button"
               variant="default"
-              className="bg-green-600  text-sm w-full  text-white  shsadow-2xl shadsow-black/50 shadow-none rounded-full py-3 border-0 hover:opacity-90"
+              // className="bg-primary-green font-nunito border-none w-full msx-auto !px-12 !h-10 !text-black text-legal-navy px-4 py-2 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer flex items-center gap-2"
+              // className="bg-green-600  text-sm w-full  text-white  shsadow-2xl shadsow-black/50 shadow-none rounded-full py-3 border-0 hover:opacity-90"
               onClick={handleSaveAllowedUsers}
               disabled={updateDocument.isPending}
             >

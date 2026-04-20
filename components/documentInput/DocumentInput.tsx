@@ -26,7 +26,7 @@ const DocumentInput = () => {
   };
 
   return (
-    <section className="relative py-8 sm:py-12 max-w-full">
+    <section className="relative py-6 sm:py-10 max-w-full">
       {/* Dotted Grid Background */}
       <div
         className="absolute inset-0 opacity-30"
@@ -36,20 +36,20 @@ const DocumentInput = () => {
         // }}
       />
       <div className="relative max-w-[800px] mx-auto">
-        <div className="grid gap-4 sm:gap-6 relative">
-          <div className="bg-[#1e2939] dasrk:bg-gray-900 rounded-3xl sm:rounded-4xl px-4 py-4 sm:px-8 sm:py-6 shadow-lg">
-            <div className="flex flex-col md:flex-row items-center md:items-center justify-between gap-4 sm:gap-6">
+        <div className="grid gap-3.5 sm:gap-5 relative">
+          <div className="bg-[#1e2939] dasrk:bg-gray-900 rounded-3xl sm:rounded-4xl px-4 py-4 sm:px-7 sm:py-5 shadow-lg">
+            <div className="flex flex-col md:flex-row items-center md:items-center justify-between gap-3.5 sm:gap-5">
               {/* Left Side */}
               <div>
-                <h3 className="text-lg sm:text-xl lg:text-2xl font-black text-white mb-1 sm:mb-2">
+                <h3 className="text-base sm:text-lg lg:text-xl font-black text-white mb-1 sm:mb-1.5">
                   Ready to proceed?
                 </h3>
-                <p className="text-gray-300 text-xs sm:text-sm md:text-base">
+                <p className="text-gray-300 text-xs sm:text-sm md:text-[15px]">
                   Review your selected input before initiating the AI engine.
                 </p>
               </div>
               {/* Right Side */}
-              <div className="grid sm:flex items-center gap-3 sm:gap-4">
+              <div className="grid sm:flex items-center gap-2.5 sm:gap-3.5">
                 {/* Avatars */}
                 <div className="flex items-center -space-x-2 sm:-space-x-3 mx-auto">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-orange-400 border-2 border-[#1e2939] dark:border-gray-900"></div>
@@ -65,7 +65,7 @@ const DocumentInput = () => {
                 </Button> */}
               </div>
             </div>
-            <div className="flex items-center justify-center sm:justify-start gap-3 sm:gap-4 mt-3 sm:mt-2 flex-wrap sm:flex-nowrap">
+            <div className="flex items-center justify-center sm:justify-start gap-2.5 sm:gap-3 mt-2.5 sm:mt-2 flex-wrap sm:flex-nowrap">
               <EngineSelector />
               <LanguageSelector />
             </div>
@@ -92,7 +92,7 @@ const DocumentInput = () => {
         {/* Call to Action Section */}
 
         {/* Footer - Global Features */}
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 md:gap-12 py-4 sm:py-6">
+        <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-7 md:gap-10 py-3.5 sm:py-5">
           <div className="flex items-center gap-1.5 sm:gap-2 text-gray-700 dark:text-gray-300">
             {/* <span className="material-symbols-outlined text-lg">lock</span> */}
             <LockIcon className="" size={18} />

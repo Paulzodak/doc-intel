@@ -50,7 +50,7 @@ export function LandingShareMock() {
         <MacWindowDots className="flex shrink-0 items-center gap-1 sm:gap-1.5" />
         <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
           <ShareIcon size={17} color="#374151" />
-          <h3 className="truncate text-xs font-semibold text-gray-900 sm:text-sm">{landingShareDemo.modalTitle}</h3>
+          <h3 className="truncate text-xs font-lora font-medium text-gray-900 sm:text-sm">{landingShareDemo.modalTitle}</h3>
         </div>
         <span className="rounded-lg p-0.5 text-gray-400 sm:p-1" aria-hidden>
           <CloseIcon size={15} color="#9ca3af" />

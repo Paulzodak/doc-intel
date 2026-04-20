@@ -129,7 +129,7 @@ const InputMethodTemplate = ({
             {features.map((feature, index) => (
               <li key={index} className="flex items-center gap-3">
                 <span className={`w-2 h-2 ${colors.featureDot} rounded-full`}></span>
-                <span className="text-gray-900 dark:text-white font-medium text-sm md:text-lg">
+                <span className="text-gray-900 dark:text-white font-medium text-xs md:text-sm">
                   {feature.name}
                 </span>
               </li>

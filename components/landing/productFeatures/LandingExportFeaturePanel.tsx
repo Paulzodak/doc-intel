@@ -13,7 +13,7 @@ export function LandingExportFeaturePanel() {
   return (
     <div className="flex h-full min-h-0 flex-col px-3.5 py-4 sm:px-5 sm:py-5 md:px-6 md:py-6">
       <header className="shrink-0">
-        <h3 className="text-center font-brockmann text-base font-bold leading-tight tracking-tight text-[#121714] dark:text-white sm:text-lg md:text-xl">
+        <h3 className="text-center font-lora text-base font-medium leading-tight tracking-tight text-[#121714] dark:text-white sm:text-lg md:text-xl">
           {landingExportPanelCopy.title}
         </h3>
         <p className="mt-1 text-center text-[10.5px] leading-snug text-gray-500 dark:text-gray-400 sm:mt-1.5 sm:text-[12px]">

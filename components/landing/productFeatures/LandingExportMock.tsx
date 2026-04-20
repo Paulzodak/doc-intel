@@ -22,7 +22,7 @@ export function LandingExportMock() {
         </div>
       </header>
       <div className="min-h-0 flex-1 overflow-y-auto bg-white/90 p-2.5 shadow-inner ring-1 ring-black/5 sm:p-3">
-        <p className="text-center font-brockmann text-xs font-bold text-gray-800 sm:text-sm">
+        <p className="text-center font-lora text-xs font-medium text-gray-800 sm:text-sm">
           {landingExportDemo.documentName}
         </p>
         <div className="mt-2 max-h-32 overflow-hidden rounded-lg border border-gray-200 bg-white p-2 text-[10px] leading-relaxed text-gray-700 shadow-sm sm:mt-3 sm:max-h-36 sm:rounded-xl sm:p-3 sm:text-[11px]">

@@ -175,11 +175,12 @@ const Sidebar = () => {
       <div className="px-4">
         <Button
           onClick={goToCreateNew}
-          variant="primary-green"
-          className="bg-green-600  text-sm w-full  text-white font-bold shsadow-2xl shadsow-black/50 shadow-none rounded-full py-3 border-0 hover:opacity-90"
+          // variant="primary-green"
+          // className="bg-primary-green w-full text-legal-navy px-4 py-2 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer flex items-center gap-2"
+          // className="bg-green-600 shadow-lg shadow-green-800/30  text-sm w-full  text-white font-bold rounded-full py-3 border-0 hover:opacity-90"
         >
-          <AddFolderIcon2 color="white" size={20} />
-          <span>Create New</span>
+          <AddFolderIcon color="white" size={20} />
+          <span className="text-white">Create New</span>
         </Button>
       </div>
       {user && (

@@ -45,28 +45,31 @@ export default function DashboardLayout({
   const MemojiComponent = staticData.memoji[user?.memoji ?? 1] ?? staticData.memoji[1];
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex font-nunito relative max-w-[1800px] mx-auto bg-white">
-      <DotGridBackground
+    <div className="h-screen w-screen  overflow-hidden flexs font-nunito relative masx-w-[1800px] ssmx-auto bg-gray-100/40">
+      {/* <DotGridBackground
         dotColor="#d1d5dc"
         className="absolute w-screen h-screen inset-0 opacity-50 bg-gdray-300"
-      />
-      <div className="w-screen h-screen max-h-screen  p-2 flex flex-row  sm:p-4 grsid grid-cols-1  sm:grid-cols-[18rem_auto] gap-4 min-[1500px]:p-8 min-[1500px]:gap-6 font-nunito">
+      /> */}
+      <div
+        // className="w-screen border border-blue-800 h-screen max-h-screen pss-2 flex flex-row  sm:ps-8 grsid grisd-cols-1  sm:grisd-cols-[18rem_auto] gsasp-4 min-[1500px]:ps-8 min-[1500px]:gasps-6 font-nunito">
+        className="flex h-screen font-nunito"
+      >
         {desktopSidebarOpen && (
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.2 }}
-            className="bg-gray-100/50 rounded-2xl hidden relative lg:flex border border-gray-200/50 shrink-0"
+            className="bg-white rounded-2sxl hidden relative lg:flex border border-gray-200/50 shrink-0"
           >
             <Sidebar />
           </motion.div>
         )}
-        <div className="flex  grow flex-col  gap-4 relkative z-10 ">
+        <div className="flex p-8 grow flex-col  gap-6 relkative z-10 max-w-[80rem] mx-auto ">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
-            className="bg-gray-100/50 rounded-2xl flex items-center justify-between px-3 py-3 border border-gray-200/50"
+            className="bag-gray-100/50 bg-white rounded-2xl flex items-center justify-between px-3 py-3 border border-gray-200"
           >
             <div className="flex gap-4">
               <div className="flex items-center">
@@ -98,12 +101,13 @@ export default function DashboardLayout({
               <div className="block lg:hidden text-black">Qlarety</div>
             </div> */}
             <div className="relative h-full flex gap-4 px-2">
-              <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
+              <div className="flex w-32"></div>
+              {/* <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
                 <MailIcon className="" color="#101828" size={18} />
               </div>
               <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
                 <BellIcon className="" color="#101828" size={18} />
-              </div>
+              </div> */}
               <div>
                 {MemojiComponent ? (
                   <MemojiComponent
@@ -114,14 +118,27 @@ export default function DashboardLayout({
               </div>
             </div>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            className="bg-gray-100/50 rounded-2xl border border-gray-200/50 overflow-scroll h-full relaktive "
-          >
-            {children}
-          </motion.div>
+          <div className="bordesr border-green-800 grid h-full overflow-scroll">{children}</div>
+          {/* <div className="grid grid-cols-[3fr_1fr] gap-8 flex-col gap-4">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+              className="bgs-gray-100/50 roundsed-2xl borsder borsder-gray-200/50 overflow-scroll h-full relaktive "
+            >
+              {children}
+            </motion.div>
+            <motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+                className="kbg-gray-100/50 rounded-2xl border h-[40rem] border-gray-200 overflow-scroll  relaktive "
+              >
+                {children}
+              </motion.div>
+            </motion.div>
+          </div> */}
         </div>
       </div>
       <AnimatePresence>
@@ -150,9 +167,7 @@ export default function DashboardLayout({
           </motion.div>
         )}
       </AnimatePresence>
-      <AnimatePresence>
-        {showSettingsModal ? <SettingsModal /> : null}
-      </AnimatePresence>
+      <AnimatePresence>{showSettingsModal ? <SettingsModal /> : null}</AnimatePresence>
 
       {/* <div
         style={{

@@ -20,6 +20,7 @@ interface DropdownColumn {
 
 interface NavItem {
   label: string;
+  href: string;
   columns: DropdownColumn[];
 }
 
@@ -33,12 +34,13 @@ export function LandingNav() {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-  const handleMobileItemClick = (label: string) => {
-    if (openDropdown === label) {
-      setOpenDropdown(null);
-    } else {
-      setOpenDropdown(label);
-    }
+  const handleMobileItemClick = (item: NavItem) => {
+    router.push(item.href);
+    // if (openDropdown === label) {
+    //   setOpenDropdown(null);
+    // } else {
+    //   setOpenDropdown(label);
+    // }
   };
   const goToLogin = () => {
     router.push("/auth");
@@ -54,7 +56,8 @@ export function LandingNav() {
 
   const navItems: NavItem[] = [
     {
-      label: "Product",
+      label: "Use Cases",
+      href: "/use-cases",
       columns: [
         {
           heading: "CAPABILITIES",
@@ -79,7 +82,8 @@ export function LandingNav() {
       ],
     },
     {
-      label: "Resources",
+      href: "/contact-us",
+      label: "Contact Us",
       columns: [
         {
           heading: "SUPPORT",
@@ -98,42 +102,50 @@ export function LandingNav() {
         },
       ],
     },
-    {
-      label: "Pricing",
-      columns: [
-        {
-          heading: "PLANS",
-          items: [
-            {
-              title: "Basic Plan",
-              description: "Perfect for individuals and small teams.",
-              href: "/contact",
-            },
-            {
-              title: "Pro Plan",
-              description: "Advanced features for growing businesses.",
-              href: "/contact",
-            },
-            {
-              title: "Enterprise Plan",
-              description: "Custom solutions for large organizations.",
-              href: "/contact",
-            },
-          ],
-        },
-      ],
-    },
+    // {
+    //   label: "Pricing",
+    //   columns: [
+    //     {
+    //       heading: "PLANS",
+    //       items: [
+    //         {
+    //           title: "Basic Plan",
+    //           description: "Perfect for individuals and small teams.",
+    //           href: "/contact",
+    //         },
+    //         {
+    //           title: "Pro Plan",
+    //           description: "Advanced features for growing businesses.",
+    //           href: "/contact",
+    //         },
+    //         {
+    //           title: "Enterprise Plan",
+    //           description: "Custom solutions for large organizations.",
+    //           href: "/contact",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // },
   ];
   return (
-    <nav className="mb-6 flex w-full items-center justify-between gap-2 text-xs text-gray-700 sm:mb-10 sm:gap-5 sm:text-sm lg:mb-10">
+    <nav className="mb-6 flex w-full z-10 sticky top-0 items-center justify-between gap-2 text-xs text-gray-700 sm:mb-10 sm:gap-5 sm:text-sm lg:mb-10">
       <div className="flex min-w-0 items-center">
         <QlaretyLogo size={44} className="shrink-0 sm:h-[54px] sm:w-[54px]" />
-        <h1 className="truncate text-base font-bold text-black sm:text-[1.35rem]">larety</h1>
+        <h1 className=" truncate font-google-sans tracsking-tight text-base font-medium text-gray-800 sm:text-[16px]">
+          larety
+        </h1>
       </div>
-      <div className="hidden sm:flex items-center gap-3 text-xs font-semibold sm:gap-7 sm:text-[14px] md:text-[15px]">
-        <Link href="/">Products</Link>
-        <Link href="/">Solutions</Link>
-        <Link href="/">Pricing</Link>
+      <div className="hidden font-brockmann text-gray-600 sm:flex items-center gap-3 font-medium sm:gap-7 text-[14px]">
+        {navItems.map((item: NavItem) => (
+          <Link
+            key={item.label}
+            href={item.href}
+            className="hover:text-primary-green transition-colors"
+          >
+            {item.label}
+          </Link>
+        ))}
       </div>
       <div className="flex items-center gap-3">
         {isAuthenticated ? (
@@ -150,14 +162,10 @@ export function LandingNav() {
           </>
         ) : (
           <>
-            <button
-              className="hidden sm:block px-4 py-1.5 text-[13px] font-bold hover:bg-gray-100 rounded-xl transition-colors hover:text-primary-green cursor-pointer"
-            >
+            <button className="hidden sm:block px-4 py-1.5 text-[13px] font-bold hover:bg-gray-100 rounded-xl transition-colors hover:text-primary-green cursor-pointer">
               Log In
             </button>
-            <button
-              className="bg-primary-green text-legal-navy px-5 py-2 rounded-xl text-[13px] font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer"
-            >
+            <button className="bg-primary-green text-legal-navy px-5 py-2 rounded-xl text-[13px] font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer">
               Start Free Trial
             </button>
           </>
@@ -192,7 +200,7 @@ export function LandingNav() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 w-screen h-screen bg-black/20 z-40 md:hidden "
+              className="fixed inset-0 w-screen h-screen bg-black/20 z-10 md:hidden "
               onClick={toggleMobileMenu}
             />
             {/* Menu Popup */}
@@ -201,17 +209,18 @@ export function LandingNav() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="fixed top-24 right-4 left-4 md:hidden bg-white dark:bg-[#192433] border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg z-50 max-h-[80vh] overflow-y-auto text-[#121714]"
+              className="fixed z-20 top-24 right-4 left-4 md:hidden bg-white dark:bg-[#192433] border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg max-h-[80vh] overflow-y-auto text-[#121714]"
             >
               <div className="p-4">
                 {navItems.map((item) => (
                   <div key={item.label} className="mb-2 last:mb-0">
                     <button
-                      onClick={() => handleMobileItemClick(item.label)}
+                      onClick={() => handleMobileItemClick(item)}
                       className="w-full flex items-center justify-between py-3 px-4 hover:bg-gray-50 dark:hover:bg-white/10 rounded-lg transition-colors"
                     >
+                      {/* <span className="font-medium ">{item.label}</span> */}
                       <span className="font-medium ">{item.label}</span>
-                      <motion.svg
+                      {/* <motion.svg
                         width="12"
                         height="12"
                         viewBox="0 0 12 12"
@@ -227,7 +236,7 @@ export function LandingNav() {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
-                      </motion.svg>
+                      </motion.svg> */}
                     </button>
                     <AnimatePresence>
                       {openDropdown === item.label && (

@@ -4,8 +4,8 @@ export function LandingFooter() {
   return (
     <footer className="border-t border-gray-100 bg-white px-4 py-2.5 dark:border-gray-800 dark:bg-background-dark sm:py-3 md:px-14 lg:px-24">
       <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-3 md:flex-row md:gap-6">
-        <div className="flex min-w-0 items-center borsder gap-1">
-          <QlaretyLogo className="shrsink-0 sm:h-[40px] sm:w-[40px]" />
+        <div className="flex smin-w-0 items-center justify-center  gap-1">
+          <QlaretyLogo className="h-[40px] sm:w-[40px]  w-[40px]" />
           <span className="truncate text-sm font-bold text-gray-700 sm:text-base">larety</span>
         </div>
         <p className="text-center text-[11px] text-gray-700 sm:text-xs">

@@ -39,9 +39,9 @@ const DocumentContent: React.FC<DocumentContentProps> = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-3xl h-full max-h-full borkder borsder-green-700 overflow-scroll border shasdow-sm "
+      className="bg-white rounded-2xl h-full max-h-full borkder borsder-green-700 overflow-scroll border shasdow-sm "
     >
-      <DocumentContentUtilityTab docData={docData} docId={docId} documentName={documentName} />
+      {/* <DocumentContentUtilityTab docData={docData} docId={docId} documentName={documentName} /> */}
       <RenderTextContent
         documentText={documentText}
         highlights={highlights}

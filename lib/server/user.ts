@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import type { GetUserResponse, User } from "@/types/user";
 import { isProduction } from "@/lib/utils";
 import { API_BASE_URL } from "../axios";
+import { store } from "@/redux/store";
+import { getGuestIdFromStorage } from "@/lib/axios";
 
 /**
  * Server-side function to get the current user
@@ -28,6 +30,8 @@ export async function getServerUser(): Promise<User | null> {
       cache: "no-store", // Always fetch fresh data
     });
     console.log(response, "response");
+    const guestId = getGuestIdFromStorage();
+    console.log(guestId, "guestId");
     // Handle 401 Unauthorized - redirect to login
     if (response.status === 401) {
       redirect("/auth");

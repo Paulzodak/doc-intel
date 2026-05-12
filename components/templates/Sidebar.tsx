@@ -288,6 +288,7 @@ const DocItem = ({ doc }: { doc: ISidebarDoc }) => {
     archiveDocument(id, {
       onSuccess: () => {
         setShowArchive(false);
+        router.push("/doc/new");
       },
       onError: (error) => {
         ToastLogger.error("documents", "Failed to archive document");

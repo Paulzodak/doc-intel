@@ -32,7 +32,7 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
   const [metaInfoOpen, setMetaInfoOpen] = useState(false);
 
   return (
-    <div className="border-b py-4 font-jakarta px-4 sm:px-8">
+    <div className="borsder-b py-4 font-jakarta px-4 sm:psx-8">
       <div className="flex items-center justify-between font-jakarta">
         <EditableDocumentName docData={docData} />
         <div className="flex gap-2">

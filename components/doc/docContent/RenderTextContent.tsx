@@ -49,7 +49,7 @@ export const RenderTextContent: React.FC<RenderTextContentProps> = ({
   return (
     <div
       id="prose"
-      className="prose max-w-none border-gray-200 select-text text-[14px] md:text-[14px]  font-jakarta py-4 px-4 sm:px-8 leading-[2px]"
+      className="prose max-w-none border-gray-200 select-text text-[14px] md:text-[14px]  font-jakarta pys-4 px-4 sm:spx-8 leading-[2px]"
       onMouseUp={handleTextSelection}
       onClick={handleContainerClick}
       dangerouslySetInnerHTML={{ __html: htmlRenderText }}

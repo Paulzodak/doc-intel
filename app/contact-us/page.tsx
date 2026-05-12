@@ -68,7 +68,7 @@ export default function ContactUsPage() {
       title: "Call Us",
       description: "Speak directly with our support team",
       link: "tel:+1234567890",
-      linkText: "+1 (234) 567-890",
+      linkText: "+234 (816) 844-7706",
     },
     {
       icon: <MailIcon color="oklch(62.7% 0.194 149.214)" />,
@@ -82,32 +82,34 @@ export default function ContactUsPage() {
       title: "Visit Us",
       description: "Our headquarters location",
       link: "https://maps.app.goo.gl/1234567890",
-      linkText: "123 Legal Tech Avenue, San Francisco, CA 94105",
+      linkText: "Lagos, Nigeria",
     },
   ];
 
   return (
     <div className="font-nunito">
-      <div className="relative mx-auto max-w-[140rem] gap-12 px-3 font-nunito sm:gap-20 sm:px-8 lg:grid lg:grid-cols-2 lg:px-20">
+      <div className="relative mx-auto max-w-[110rem] gap-8 px-4 font-nunito sm:gap-14 sm:px-8 lg:grid lg:grid-cols-2 lg:px-14">
         <div className="relative md:py-0">
           <div className="bg-background-light font-display text-[#121714] dark:bg-background-dark dark:text-white">
             <section className="relative overflow-hidden herso-gradient dark:hero-gradient">
               <div className="absolute inset-0 grid-overlay opacity-40" aria-hidden />
-              <div className="relative flex flex-col py-6 sm:py-16 lg:py-20">
+              <div className="relative flex flex-col items-center py-4 sm:py-12 lg:py-14">
                 <LandingNav />
 
                 <div className="mx-auto w-full max-w-lg px-1 sm:px-0">
-                  <div className="mb-5 inline-flex max-w-[95%] items-center gap-1.5 rounded-full border border-primary/20 bg-gradient-to-r from-blue-500/5 via-purple-500/5 via-pink-500/5 via-orange-500/5 to-primary-green/5 px-2.5 py-1 text-center text-[10px] font-bold uppercase tracking-wider text-primary backdrop-blur-[2px] sm:mb-6 sm:gap-2 sm:px-3 sm:text-xs sm:tracking-widest">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-                    </span>
-                    Contact
+                  <div className=" flex justify-center">
+                    <div className="mb-5 mx-auto inline-flex max-w-[95%] items-center gap-1.5 rounded-full border border-primary/20 bg-gradient-to-r from-blue-500/5 via-purple-500/5 via-pink-500/5 via-orange-500/5 to-primary-green/5 px-2.5 py-1 text-center text-[9px] font-bold uppercase tracking-wider text-primary backdrop-blur-[2px] sm:mb-6 sm:gap-2 sm:px-3 sm:text-[10px] sm:tracking-widest">
+                      <span className="relative flex h-2 w-2">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                        <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+                      </span>
+                      Contact
+                    </div>
                   </div>
-                  <h1 className="mb-3 text-3xl font-black leading-tight tracking-tight text-gradient dark:text-white sm:text-4xl lg:text-5xl">
+                  <h1 className="mb-3 max-w-4xl text-center font-medium font-google-sans  text-gradient dark:text-white sm:mb-5 sm:text-[40px] lg:mb-6 lg:text-[60px] leading-[1.2] tracking-tight">
                     Let&apos;s Get In Touch
                   </h1>
-                  <p className="mb-8 text-sm leading-relaxed text-gray-600 dark:text-gray-400 sm:text-base">
+                  <p className="mb-5 max-w-2xl px-1 text-center text-[12.5px] leading-relaxed text-gray-600 dark:text-gray-400 sm:mb-7 sm:text-[14px] md:mb-9 md:text-[15px] font-brockmann font-light">
                     Send a message and we’ll respond as soon as we can.
                   </p>
 

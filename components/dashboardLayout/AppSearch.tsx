@@ -27,7 +27,7 @@ export function AppSearch() {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Search documents..."
-        className="bg-white rounded-full border shadow-none px-10 py-3 text-gray-600"
+        className="bg-white rounded-full border shadow-none px-10 !py-2 text-gray-600"
       />
       <SearchIcon
         color="#4a5565"

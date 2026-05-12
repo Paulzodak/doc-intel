@@ -96,6 +96,10 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased `}>
         <Providers>{children}</Providers>

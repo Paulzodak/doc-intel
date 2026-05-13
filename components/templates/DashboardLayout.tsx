@@ -71,7 +71,7 @@ export default function DashboardLayout({
             transition={{ duration: 1 }}
             className="bag-gray-100/50 bg-white rounded-2xl flex items-center justify-between px-3 py-3 border border-gray-200"
           >
-            <div className="flex gap-4">
+            <div className="flex gap-4 ">
               <div className="flex items-center">
                 <button
                   type="button"
@@ -101,7 +101,7 @@ export default function DashboardLayout({
               <div className="block lg:hidden text-black">Qlarety</div>
             </div> */}
             <div className="relative h-full flex gap-4 px-2">
-              <div className="flex w-32"></div>
+              <div className="flex md:w-32"></div>
               {/* <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
                 <MailIcon className="" color="#101828" size={18} />
               </div>

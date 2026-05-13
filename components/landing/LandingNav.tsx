@@ -50,7 +50,7 @@ export function LandingNav() {
   };
 
   const handleGoToDashboard = () => {
-    toggleMobileMenu();
+    setIsMobileMenuOpen(false);
     router.push("/doc/new");
   };
 
@@ -152,7 +152,7 @@ export function LandingNav() {
           <>
             <button
               onClick={handleGoToDashboard}
-              className="bg-primary-green text-black px-3.5 py-1.5 rounded-xl text-[13px] font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer flex items-center gap-2"
+              className="bg-primary-green  text-black px-3.5 py-1.5 rounded-xl text-[13px] font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer flex items-center gap-2"
             >
               <span className="w-6 h-6 rounded-full bg-white/30 flex items-center justify-center text-xs font-black uppercase">
                 {user?.username?.charAt(0) || user?.email?.charAt(0) || "U"}
@@ -174,7 +174,7 @@ export function LandingNav() {
         {/* Mobile Menu Button */}
         <button
           onClick={toggleMobileMenu}
-          className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors border border-gray-300"
           aria-label="Toggle menu"
         >
           <motion.div

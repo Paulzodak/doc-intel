@@ -101,6 +101,7 @@ const Sidebar = () => {
 
   const handleOpenSettings = () => {
     dispatch(setShowSetting(true));
+    dispatch(setMobileSidebarOpen(false));
   };
   const generalItems: {
     icon: ReactNode;
@@ -316,14 +317,14 @@ const DocItem = ({ doc }: { doc: ISidebarDoc }) => {
     <div
       ref={itemRef}
       key={doc.id}
-      className={` rounded-xl border transition-all duration-200 group ${
+      className={` cursor-pointer rounded-xl border transition-all duration-200 group ${
         isActive
           ? "bg-gray-500/10 border-gray-300 hover:bg-gray-600/10"
           : " border-gray-200/50 hover:bg-white hover:border-gray-300 bg-gray-300/10"
       }`}
     >
       {/* <div className="bg-primary-green w-4 h-4" /> */}
-      <button onClick={() => handleDocumentClick(doc.jobId)} className="w-full text-left p-3">
+      <div onClick={() => handleDocumentClick(doc.jobId)} className="w-full text-left p-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
@@ -378,7 +379,7 @@ const DocItem = ({ doc }: { doc: ISidebarDoc }) => {
             </button>
           </div>
         </div>
-      </button>
+      </div>
 
       <MetaInfoModal
         isOpen={showMetaInfo}

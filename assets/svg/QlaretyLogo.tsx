@@ -1,6 +1,7 @@
+"use client";
 import clsx from "clsx";
 import React from "react";
-
+// import { useRouter } from "next/navigation";
 interface QlaretyLogoProps {
   className?: string;
   /** Width in pixels; height scales to preserve aspect ratio */
@@ -8,6 +9,7 @@ interface QlaretyLogoProps {
   height?: number;
   /** When set, used for both width and height (overrides width/height) */
   size?: number;
+  shouldNavigate?: boolean;
 }
 
 export const QlaretyLogo: React.FC<QlaretyLogoProps> = ({
@@ -15,17 +17,24 @@ export const QlaretyLogo: React.FC<QlaretyLogoProps> = ({
   width: widthProp = 140,
   height: heightProp,
   size,
+  shouldNavigate = true,
 }) => {
+  // const router = useRouter();
+  const handleClick = () => {
+    // router.push("/");
+    window.location.href = "/";
+  };
   const aspect = 140 / 44;
   const width = size ?? widthProp;
   const h = size ?? heightProp ?? Math.round(widthProp / aspect);
 
   return (
     <svg
+      onClick={shouldNavigate ? handleClick : undefined}
       width={width}
       height={h}
       viewBox="0 0 1197 1198"
-      className={clsx(className)}
+      className={clsx(className, shouldNavigate ? "cursor-pointer" : "")}
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       xmlSpace="preserve"
@@ -72,10 +81,10 @@ export const QlaretyLogo: React.FC<QlaretyLogoProps> = ({
             <use xlinkHref="#_Image7" x="656.469" y="785.988" width="235px" height="219px" />
           </g>
           <g transform="matrix(-0.761781,-1.299881,0.674482,-0.395273,-49.586661,3747.759271)">
-          <path
-            d="M773,2110L773,2325L743.627,2325C735.769,2325 728.234,2318.984 722.677,2308.277C717.121,2297.569 714,2283.046 714,2267.902C714,2204.208 714,2110 714,2110L773,2110Z"
-            fill="url(#_Linear8)"
-          />
+            <path
+              d="M773,2110L773,2325L743.627,2325C735.769,2325 728.234,2318.984 722.677,2308.277C717.121,2297.569 714,2283.046 714,2267.902C714,2204.208 714,2110 714,2110L773,2110Z"
+              fill="url(#_Linear8)"
+            />
           </g>
           <g transform="matrix(0.649868,-0.387349,0.198727,0.333411,59.721388,1168.175085)">
             <clipPath id="_clip9">
@@ -111,10 +120,8 @@ export const QlaretyLogo: React.FC<QlaretyLogoProps> = ({
           gradientUnits="userSpaceOnUse"
           gradientTransform="matrix(992.072883,1048.712446,-1044.694534,995.888412,93.989282,1197.223176)"
         >
-          <stop offset="0" stopColor="rgb(6,139,95)"
-stopOpacity={1} />
-          <stop offset="1" stopColor="rgb(0,65,43)"
-stopOpacity={1} />
+          <stop offset="0" stopColor="rgb(6,139,95)" stopOpacity={1} />
+          <stop offset="1" stopColor="rgb(0,65,43)" stopOpacity={1} />
         </linearGradient>
         <image
           id="_Image3"
@@ -131,10 +138,8 @@ stopOpacity={1} />
           gradientUnits="userSpaceOnUse"
           gradientTransform="matrix(6236.45184,7695.5396,-7459.0656,6434.16544,792.3328,1706.290853)"
         >
-          <stop offset="0" stopColor="white"
-stopOpacity={1} />
-          <stop offset="1" stopColor="rgb(6,139,95)"
-stopOpacity={1} />
+          <stop offset="0" stopColor="white" stopOpacity={1} />
+          <stop offset="1" stopColor="rgb(6,139,95)" stopOpacity={1} />
         </linearGradient>
         <image
           id="_Image5"
@@ -151,10 +156,8 @@ stopOpacity={1} />
           gradientUnits="userSpaceOnUse"
           gradientTransform="matrix(834.851987,16578.546462,-6720.811684,2059.369181,589.022522,210.985164)"
         >
-          <stop offset="0" stopColor="white"
-stopOpacity={1} />
-          <stop offset="1" stopColor="rgb(6,139,95)"
-stopOpacity={1} />
+          <stop offset="0" stopColor="white" stopOpacity={1} />
+          <stop offset="1" stopColor="rgb(6,139,95)" stopOpacity={1} />
         </linearGradient>
         <image
           id="_Image7"
@@ -171,10 +174,8 @@ stopOpacity={1} />
           gradientUnits="userSpaceOnUse"
           gradientTransform="matrix(-3417.5158,937.126625,-486.256542,-6586.327939,1215.680434,2205.755321)"
         >
-          <stop offset="0" stopColor="white"
-stopOpacity={1} />
-          <stop offset="1" stopColor="rgb(6,139,95)"
-stopOpacity={1} />
+          <stop offset="0" stopColor="white" stopOpacity={1} />
+          <stop offset="1" stopColor="rgb(6,139,95)" stopOpacity={1} />
         </linearGradient>
         <image
           id="_Image10"
@@ -197,10 +198,8 @@ stopOpacity={1} />
           gradientUnits="userSpaceOnUse"
           gradientTransform="matrix(2909.073304,3030.056753,-3063.376725,2877.431672,172.574958,1266.040146)"
         >
-          <stop offset="0" stopColor="rgb(6,139,95)"
-stopOpacity={1} />
-          <stop offset="1" stopColor="rgb(0,65,43)"
-stopOpacity={1} />
+          <stop offset="0" stopColor="rgb(6,139,95)" stopOpacity={1} />
+          <stop offset="1" stopColor="rgb(0,65,43)" stopOpacity={1} />
         </linearGradient>
       </defs>
     </svg>

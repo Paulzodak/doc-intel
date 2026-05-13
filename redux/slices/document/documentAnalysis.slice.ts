@@ -10,8 +10,8 @@ export interface IDocumentAnalysisState {
 }
 
 const initialState: IDocumentAnalysisState = {
-  isGradingExpanded: false,
-  isKeyPointsExpanded: false,
+  isGradingExpanded: true,
+  isKeyPointsExpanded: true,
   isSummaryExpanded: true,
   analysisPanelLocked: true,
   exportFormat: "png",

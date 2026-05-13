@@ -1,6 +1,7 @@
 "use client";
 
 import GetStarted from "@/components/atoms/GetStarted";
+import SeeUseCases from "@/components/atoms/SeeUseCases";
 import DocumentInput from "@/components/documentInput";
 import { LandingFooter } from "@/components/landing/LandingFooter";
 import { LandingHeroVisualColumn } from "@/components/landing/LandingHeroVisualColumn";
@@ -46,7 +47,7 @@ export default function Home() {
       </div>
       <StayInformedandProtected />
       <div className="text-black max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-14 my-20">
-        <GetStarted />
+        <SeeUseCases />
       </div>
       <LandingFooter />
     </div>

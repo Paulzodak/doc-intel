@@ -36,6 +36,7 @@ import { UserIconFilled } from "@/assets/svg/UserIconFilled";
 import { MailIconFilled } from "@/assets/svg/MailIconFilled";
 import { MessageIconFilled } from "@/assets/svg/MessageIconFilled";
 import { PhoneIcon } from "@/assets/svg/PhoneIcon";
+import { ArrowLeftIcon } from "@/assets/svg/ArrowLeftIcon";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -243,12 +244,12 @@ export default function ContactUsPage() {
                         />
                         <Button
                           type="submit"
-                          variant="primary-green"
+                          // variant="primary-green"
                           // className="w-full rounded-full"
                           className="bg-primary-green text-black px-4 w-full py-2 rounded-full text-sm font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer flex items-center gap-2"
                         >
                           Send message
-                          <FaArrowRightLong size={15} className="text-black" />
+                          <ArrowLeftIcon size={15} className="rotate-180" />
                         </Button>
                       </form>
                     </Form>

@@ -130,7 +130,7 @@ export const GradingPanel: React.FC<GradingPanelProps> = ({ analysis, documentSu
           </CollapsiblePanel>
         )}
       </motion.div>
-      <div className="border-t border-gray-100 bdg-gray-50  text-xs text-gray-500 p-4 sm:p-6 sm:px-8">
+      {/* <div className="border-t border-gray-100 bdg-gray-50  text-xs text-gray-500 p-4 sm:p-6 sm:px-8">
         <div className="flex items-center justdify-center gap-2 mb-4">
           <div className="uppercase">Share Analysis</div>
           <ShareIcon color="#6a7282" size={15} />
@@ -155,7 +155,7 @@ export const GradingPanel: React.FC<GradingPanelProps> = ({ analysis, documentSu
             <span className="">Export as image</span>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -11,7 +11,7 @@ export function ContactUsImageColumn() {
       <div className="sticky top-14 w-full flex-1 self-start sm:top-20">
         <div
           className={[
-            "relative isolate min-h-[min(40rem,85vh)] sm:min-h-[min(80rem,85vh)] w-full overflow-hidden rounded-3xl border border-gray-200/50 dark:border-white/10 sm:rounded-4xl",
+            "flex items-center justify-center  relative isolate min-h-[min(40rem,85vh)] sm:min-h-[min(80rem,85vh)] w-full overflow-hidden rounded-3xl border border-gray-200/50 dark:border-white/10 sm:rounded-4xl",
             "[clip-path:inset(0_round_1rem)] sm:[clip-path:inset(0_round_2rem)]",
           ].join(" ")}
         >
@@ -19,8 +19,15 @@ export function ContactUsImageColumn() {
             src={heroBackground}
             alt="Abstract grid texture"
             fill
-            className="object-cover object-center opacity-80 dark:opacity-70"
+            className="object-cover object-center opacity-50 brightness-50 dark:opacity-70"
             sizes="(max-width: 1024px) 100vw, 50vw"
+            priority
+          />
+          <Image
+            src={heroBackground}
+            alt="Abstract grid texture"
+            className="w-[70%] max-w-[500px] h-[70%] max-h-[500px] object-cover rounded-3xl md:rounded-4xl opacity-80 dark:opacity-70 shadow-2xl"
+            // sizes="(max-width: 1024px) 100vw, 50vw"
             priority
           />
           <div

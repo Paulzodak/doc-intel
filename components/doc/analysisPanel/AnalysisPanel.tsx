@@ -28,16 +28,17 @@ export interface AnalysisPanelProps {
   analysis: DocumentAnalysis;
   documentSummary?: string;
   docData: Document;
+  className?: string;
 }
 
-const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
+const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData, className }) => {
   const dispatch = useDispatch();
   const activeTab = useSelector(selectActiveTab);
   const analysisPanelLocked = useSelector(selectAnalysisPanelLocked);
 
   return (
     <div
-      className={` bg-white overflow-scroll border border-gray-200 sm:max-h-[40rem] sm:max-h-full rounded-2xl `}
+      className={` bg-white flex flex-col overflow-scroll border border-gray-200 sm:max-h-[40rem] sm:max-h-full rounded-2xl ${className}`}
     >
       {/* <button
         type="button"
@@ -50,7 +51,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
       <div className="flex border-b border-gray-200 bg-white/80">
         {[
           { id: "grading", label: "Grading", icon: FiTrendingUp },
-          ...(!docData.externalDocId
+          ...(!docData?.externalDocId
             ? [{ id: "chat", label: "AI Chat", icon: FiMessageCircle }]
             : []),
           { id: "details", label: "Details", icon: FiCheckCircle },
@@ -74,7 +75,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
         ))}
       </div>
 
-      <div className="flex-1 overflow-hidden  ">
+      <div className="flex-1 overflow-scroll bordser border-red-800 smasx-h-[20rem]  px-2 sm:px-0 ">
         {activeTab === "grading" && (
           <GradingPanel analysis={analysis} documentSummary={docData.documentSummary} />
         )}

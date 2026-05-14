@@ -162,9 +162,9 @@ export const SpeechToTextInput: React.FC<SpeechToTextInputProps> = ({
   }, []);
 
   return (
-    <>
+    <div className="mt-auto">
       {recognitionError && <p className="text-xs text-red-600 mb-2">{recognitionError}</p>}
-      <div className="fledx gap-2 border border-gray-200 min-h-[80px] rounded-3xl bg-zinc-100/50 p-2 sm:p-3">
+      <div className="fledx gap-2 border border-gray-200 min-h-[80px] rounded-3xl bg-zinc-100/50 p-4 sm:p-3">
         <AnimatePresence mode="wait">
           {isRecording ? (
             <motion.div
@@ -198,7 +198,7 @@ export const SpeechToTextInput: React.FC<SpeechToTextInputProps> = ({
                 }
               }}
               placeholder={placeholder}
-              className="w-full border-none outline-none bg-transparent focus:outline-none focus:ring-0 text-gray-700 placeholder:text-gray-500 text-sm min-w-0"
+              className="w-full font-google-sans border-none outline-none bg-transparent focus:outline-none focus:ring-0 text-gray-700 placeholder:text-gray-500 text-[16px] min-w-0"
               disabled={disabled}
             />
           )}
@@ -231,6 +231,6 @@ export const SpeechToTextInput: React.FC<SpeechToTextInputProps> = ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

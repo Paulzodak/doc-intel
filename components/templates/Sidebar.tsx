@@ -26,7 +26,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import { RefreshIcon } from "@/assets/svg/RefreshIcon";
 import { LockIcon } from "@/assets/svg/LockIcon";
-import { setMobileSidebarOpen } from "@/redux/slices/dashboard/layout.slice";
+import {
+  setMobileSidebarOpen,
+  setMobileRightSidebarOpen,
+} from "@/redux/slices/dashboard/layout.slice";
 import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
 import { SpinnerLoader } from "../ui/SpinnerLoader";
 import { FileIconFilled } from "@/assets/svg/FileIconFilled";
@@ -87,6 +90,7 @@ const Sidebar = () => {
       onSuccess: () => {
         router.push("/");
         dispatch(setMobileSidebarOpen(false));
+        dispatch(setMobileRightSidebarOpen(false));
       },
       onError: (error) => {
         const message =
@@ -102,6 +106,7 @@ const Sidebar = () => {
   const handleOpenSettings = () => {
     dispatch(setShowSetting(true));
     dispatch(setMobileSidebarOpen(false));
+    dispatch(setMobileRightSidebarOpen(false));
   };
   const generalItems: {
     icon: ReactNode;
@@ -127,6 +132,7 @@ const Sidebar = () => {
   const goToCreateNew = () => {
     router.push("/doc/new");
     dispatch(setMobileSidebarOpen(false));
+    dispatch(setMobileRightSidebarOpen(false));
   };
 
   const handleLogin = () => {
@@ -254,6 +260,7 @@ const DocItem = ({ doc }: { doc: ISidebarDoc }) => {
       setOpenDropdown(null);
       router.push(`/doc/${id}`);
       dispatch(setMobileSidebarOpen(false));
+      dispatch(setMobileRightSidebarOpen(false));
     },
     [router, dispatch],
   );

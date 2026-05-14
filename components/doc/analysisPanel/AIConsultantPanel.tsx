@@ -81,7 +81,7 @@ export const AIConsultantPanel: React.FC<AIConsultantPanelProps> = ({ docData })
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="h-full flex flex-col sm:max-h-[calc(100vh-20rem)] p-2 sm:p-4"
+        className="h-full flex bordser flex-col sm:max-h-[calc(100vh-20rem)] p-2 sm:p-4"
       >
         {!isPending && chatMessages.length > 0 && (
           <ChatMessages chatMessages={chatMessages} isSending={isSending} />

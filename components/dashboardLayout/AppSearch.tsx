@@ -94,14 +94,14 @@ function SearchModal({ onClose }: { onClose: () => void }) {
           />
           <SearchIcon
             color="#6a7282"
-            className="absolute left-6 top-[36px] -translate-y-1/2 text-gray-600"
+            className="absolute left-6 top-[33px] -translate-y-1/2 text-gray-600"
             size={18}
           />
           <button
             type="button"
             onClick={onClose}
             aria-label="Close search"
-            className="absolute right-6 top-[36px] -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition-colors"
+            className="absolute right-6 top-[33px] -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition-colors"
           >
             <FiX className="text-gray-500" size={18} />
           </button>

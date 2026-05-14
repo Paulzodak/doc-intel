@@ -37,7 +37,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
 
   return (
     <div
-      className={` bg-white overflow-scroll border border-gray-200 max-h-[40rem] sm:max-h-full rounded-2xl `}
+      className={` bg-white overflow-scroll border border-gray-200 sm:max-h-[40rem] sm:max-h-full rounded-2xl `}
     >
       {/* <button
         type="button"

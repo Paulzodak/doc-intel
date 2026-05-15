@@ -17,14 +17,14 @@ export const heroSlideContainer = {
   },
 };
 
+/** Slide motion without `filter: blur()` — animating blur on top of CSS blurs tanks mobile GPUs. */
 export const slideOneTop = {
-  initial: { opacity: 0, x: -56, rotate: -5, scale: 0.92, filter: "blur(10px)" },
+  initial: { opacity: 0, x: -56, rotate: -5, scale: 0.92 },
   animate: {
     opacity: 1,
     x: 0,
     rotate: 0,
     scale: 1,
-    filter: "blur(0px)",
     transition: { duration: 0.52, ease: easeOut },
   },
   exit: {
@@ -32,7 +32,6 @@ export const slideOneTop = {
     x: -40,
     rotate: 4,
     scale: 0.94,
-    filter: "blur(8px)",
     transition: { duration: 0.38, ease: easeIn },
   },
 };
@@ -56,12 +55,11 @@ export const slideOneBottom = {
 };
 
 export const slideTwoTop = {
-  initial: { opacity: 0, scale: 0.82, rotate: 3, filter: "blur(14px)" },
+  initial: { opacity: 0, scale: 0.82, rotate: 3 },
   animate: {
     opacity: 1,
     scale: 1,
     rotate: 0,
-    filter: "blur(0px)",
     transition: { duration: 0.58, ease: easeOut },
   },
   exit: {
@@ -69,7 +67,6 @@ export const slideTwoTop = {
     scale: 1.06,
     rotate: -2,
     y: -24,
-    filter: "blur(10px)",
     transition: { duration: 0.4, ease: easeIn },
   },
 };
@@ -93,19 +90,17 @@ export const slideTwoBottom = {
 };
 
 export const slideThreeTop = {
-  initial: { opacity: 0, y: -44, scale: 0.93, filter: "blur(12px)" },
+  initial: { opacity: 0, y: -44, scale: 0.93 },
   animate: {
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: "blur(0px)",
     transition: { duration: 0.5, ease: easeOut },
   },
   exit: {
     opacity: 0,
     y: -28,
     scale: 1.02,
-    filter: "blur(8px)",
     transition: { duration: 0.36, ease: easeIn },
   },
 };
@@ -127,13 +122,12 @@ export const slideThreeBottom = {
 };
 
 export const slideFourTop = {
-  initial: { opacity: 0, x: 52, rotate: 4, scale: 0.9, filter: "blur(10px)" },
+  initial: { opacity: 0, x: 52, rotate: 4, scale: 0.9 },
   animate: {
     opacity: 1,
     x: 0,
     rotate: 0,
     scale: 1,
-    filter: "blur(0px)",
     transition: { duration: 0.52, ease: easeOut },
   },
   exit: {
@@ -141,7 +135,6 @@ export const slideFourTop = {
     x: 36,
     rotate: -3,
     scale: 0.94,
-    filter: "blur(8px)",
     transition: { duration: 0.36, ease: easeIn },
   },
 };

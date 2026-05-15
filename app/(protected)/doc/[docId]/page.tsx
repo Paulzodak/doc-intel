@@ -163,13 +163,13 @@ export default function DocPage({ params }: DocPageProps) {
           {/* <div className="ma÷dx-w-7xl mx-auto pxs-4 sm:pxs-6 lg:pxs-8 psy-6  sm:h-full borderr overflow-hidden"> */}
           <div className="flex flex-col lg:grid sm:grid-rows-1 lg:grid-cols-10 gap-6 borderr border-blue-800 h-full md:overfslow-hidden relatsive">
             {/* Analysis Panel - First on mobile, right column on desktop */}
-            <div className="hidden sm:block order-1 lg:order-2 lg:col-span-3  md:overflow-scroll border-green-800  z-0">
+            <div className="hidden lg:block order-1 lg:order-2 lg:col-span-3  md:overflow-scroll border-green-800  z-0">
               <AnalysisPanel analysis={analysis} docData={docData} />
             </div>
             {/* </div> */}
 
             {/* Document Text - Second on mobile, left column on desktop */}
-            <div className="order-2 lg:order-1 lg:col-span-7 md:ovesrflow-scroll sm:grid grid-rows-[1fr_auto_7fr] borderr border-red-800">
+            <div className="order-2 lg:order-1 lg:col-span-7 md:ovesrflow-scroll lg:grid grid-rows-[1fr_auto_7fr] borderr border-red-800">
               <div className="border  bg-white rounded-2xl">
                 <DocumentContentUtilityTab
                   docData={docData}

@@ -118,7 +118,7 @@ export default function ContactUsPage() {
                     <ContactUsImageColumn />
                   </div>
 
-                  <div className="rounded-3xl bosrder border-gray-200/80 bg-white/80 px-6 py-6 shsadow-sm backdrop-blur-sm dark:border-gray-700/80 dark:bg-gray-900/40 sm:px-8 sm:py-8 sm:rounded-4xl">
+                  <div className="rounded-3xl bosrder border-gray-200/80 bg-white/80  py-6 shsadow-sm backdrop-blur-sm dark:border-gray-700/80 dark:bg-gray-900/40 sm:px-8 sm:py-8 sm:rounded-4xl">
                     <Form {...form}>
                       <form onSubmit={onSubmit} className="space-y-5">
                         <FormField
@@ -141,7 +141,7 @@ export default function ContactUsPage() {
                                   </div>
                                   <Input
                                     placeholder="Jane Doe"
-                                    className="h-11 rounded-full border-gray-200 bg-white pl-12 text-[#0a0a0a] placeholder:text-gray-400 focus:border-primary-green dark:border-gray-600 dark:bg-gray-950"
+                                    className="h-11 rounded-full border-gray-200 bg-white pl-10 text-[#0a0a0a] placeholder:text-gray-500 focus:border-primary-green dark:border-gray-600 dark:bg-gray-950"
                                     {...field}
                                   />
                                 </div>
@@ -171,7 +171,7 @@ export default function ContactUsPage() {
                                   <Input
                                     type="email"
                                     placeholder="you@company.com"
-                                    className="h-11 rounded-full border-gray-200 bg-white pl-12 text-[#0a0a0a] placeholder:text-gray-400 focus:border-primary-green dark:border-gray-600 dark:bg-gray-950"
+                                    className="h-11 rounded-full border-gray-200 bg-white pl-10 text-[#0a0a0a] placeholder:text-gray-500 focus:border-primary-green dark:border-gray-600 dark:bg-gray-950"
                                     {...field}
                                   />
                                 </div>
@@ -197,9 +197,9 @@ export default function ContactUsPage() {
                                     <div className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2">
                                       <MenuIcon3 className="text-green-900" size={15} aria-hidden />
                                     </div>
-                                    <SelectTrigger className="text-black h-12 rounded-full border-gray-200 pl-12 focus:border-primary-green dark:border-gray-600">
+                                    <SelectTrigger className="text-gray-500 h-12 rounded-full border-gray-200 pl-10 focus:border-primary-green dark:border-gray-600">
                                       <SelectValue
-                                        className="text-black"
+                                        className="text-gray-500"
                                         placeholder="Select a subject"
                                       />
                                     </SelectTrigger>
@@ -233,7 +233,7 @@ export default function ContactUsPage() {
                                   <Textarea
                                     rows={5}
                                     placeholder="How can we help?"
-                                    className="min-h-[120px] resize-none rounded-2xl border-gray-200 bg-white pl-12 pt-3 text-[#0a0a0a] placeholder:text-gray-400 focus:border-primary-green dark:border-gray-600 dark:bg-gray-950"
+                                    className="min-h-[120px] resize-none rounded-2xl border-gray-200 bg-white pl-10 pt-3 text-[#0a0a0a] placeholder:text-gray-500 focus:border-primary-green dark:border-gray-600 dark:bg-gray-950"
                                     {...field}
                                   />
                                 </div>
@@ -277,7 +277,7 @@ export default function ContactUsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
           {reachOutMethods.map((method) => (
-            <div key={method.title} className="bg-white rounded-2xl p-6  transition-all">
+            <div key={method.title} className="bg-white rounded-2xl py-6  transition-all">
               <div className="flesx items-center gap-4">
                 <div className="w-12 h-12 bg-green-100/50 rounded-full flex items-center justify-center flex-shrink-0">
                   {method.icon}

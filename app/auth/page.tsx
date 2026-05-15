@@ -74,7 +74,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex dbg-[#0a0a0a] font-nunito relative overflow-hidden bg-gradient-to-br  from-[#11161f] via-100% via-primary-green to-[#11161f]">
       {/* Left Section - Branding */}
       <div className="hidden lg:flex w-1/2  relative overflow-hidden bg-[#11161fd9] backdrop-blur-3xl">
-        <DotGridBackground className="absolute w-full h-full inset-0" />
+        {/* <DotGridBackground className="absolute w-full h-full inset-0" /> */}
 
         {/* Back Button */}
         <motion.button
@@ -226,10 +226,10 @@ export default function LoginPage() {
 
       {/* Right Section - Sign Up Form */}
       <div
-        style={{
-          backgroundImage: "radial-gradient(circle, rgba(0, 0, 0, 0.2) 1px, transparent 1px)",
-          backgroundSize: "30px 30px",
-        }}
+        // style={{
+        //   backgroundImage: "radial-gradient(circle, rgba(0, 0, 0, 0.2) 1px, transparent 1px)",
+        //   backgroundSize: "30px 30px",
+        // }}
         className="w-full lg:w-1/2 bg-white flex flex-col items-center justify-center p-6 md:p-12 relative overflow-hidden"
       >
         {/* <DecorativeDots count={30} className="opacity-50" dropAnimate /> */}
@@ -258,7 +258,7 @@ export default function LoginPage() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="text-center mb-8 col-span-full"
         >
-          <h1 className="text-4xl lg:text-5xl font-black text-[#0a0a0a] mb-2 text-gradient leading-14 tracking-tight">
+          <h1 className="text-4xl lg:text-5xl font-lora font-black text-[#0a0a0a] mb-2 text-gradient leading-14 tracking-tight">
             {/* Let's get you started */}
             {/* Build Full-Stack Web & Mobile Apps in minutes */}
             Analyze Legal Documents in minutes
@@ -297,7 +297,7 @@ export default function LoginPage() {
           >
             <Button
               type="button"
-              className="w-full bg-primary-blue-dark border-none rounded-[40px] px-6 py-4 hover:border-gray-300 shadow-sm"
+              className="shadow-none border-none w-full bg-primary-blue-dark  rounded-[40px] px-6 py-4 hover:border-gray-300 shadow-sm"
               onClick={() => (window.location.href = `${API_BASE_URL}/api/auth/oauth/google`)}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -332,7 +332,7 @@ export default function LoginPage() {
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
               <Button
                 type="button"
-                className="w-full bg-primary-blue-dark rounded-full px-4 py-4 hover:bg-gray-900 text-white"
+                className="shadow-none border-none w-full bg-primary-blue-dark rounded-full px-4 py-4 hover:bg-gray-900 text-white"
                 onClick={() => (window.location.href = `${API_BASE_URL}/api/auth/oauth/github`)}
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -343,7 +343,7 @@ export default function LoginPage() {
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
               <Button
                 type="button"
-                className="w-full bg-primary-blue-dark rounded-full px-4 py-4 hover:bg-gray-900 text-white"
+                className="shadow-none border-none w-full bg-primary-blue-dark rounded-full px-4 py-4 hover:bg-gray-900 text-white"
                 onClick={() => (window.location.href = `${API_BASE_URL}/api/auth/oauth/microsoft`)}
               >
                 <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

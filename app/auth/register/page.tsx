@@ -311,7 +311,7 @@ export default function LoginPage() {
                         </div>
                         <Input
                           placeholder="Username"
-                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-12 "
+                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-10 "
                           {...field}
                         />
                       </div>
@@ -335,7 +335,7 @@ export default function LoginPage() {
                         <Input
                           type="email"
                           placeholder="E-mail"
-                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-12"
+                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-10"
                           {...field}
                         />
                       </div>
@@ -359,7 +359,7 @@ export default function LoginPage() {
                         <Input
                           type="password"
                           placeholder="Password"
-                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-12"
+                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-10"
                           {...field}
                         />
                       </div>
@@ -436,7 +436,7 @@ export default function LoginPage() {
               >
                 <Button
                   // type="button"
-                  className="w-full bg-primary-blue-dark border-none rounded-full px-4 py-4 hover:bg-gray-900 text-white"
+                  className="w-full shadow-none bg-primary-blue-dark border-none rounded-full px-4 py-4 hover:bg-gray-900 text-white"
                 >
                   {/* <FaArrowLeftLong size={15} className="text-white" /> */}
                   <MdArrowBackIosNew size={15} className="text-white" />

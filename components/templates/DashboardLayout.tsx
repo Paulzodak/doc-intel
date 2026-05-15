@@ -129,7 +129,7 @@ export default function DashboardLayout({
               <button
                 type="button"
                 onClick={handleOpenMobileRightSidebar}
-                className="hover:bg-neutral-200/50 p-2 md:hidden rounded-sm cursor-pointer lg:hidden"
+                className="hover:bg-neutral-200/50 p-2 lg:hidden rounded-sm cursor-pointer lg:hidden"
                 aria-label="Open right panel"
               >
                 <TbLayoutSidebar size={18} className="text-neutral-600 rotate-180" />

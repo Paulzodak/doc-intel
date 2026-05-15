@@ -7,10 +7,10 @@ const GetStarted = () => {
     router.push("/use-cases");
   };
   return (
-    <div className="fslex text-black borsder-y-[1px] py-20">
+    <div className="fslex text-black borsder-y-[1px] py-10 md:py-20">
       <div>
-        <h1 className="text-5xl font-lora font-medium">Start for free.</h1>
-        <p className="mt-8 text-gray-500 text-lg tracksing-tight font-google-sans max-w-[65%]">
+        <h1 className="text-3xl md:text-5xl font-lora font-medium">Start for free.</h1>
+        <p className="mt-4 md:mt-8 text-gray-500 text-sm  md:text-lg tracksing-tight font-google-sans max-w-[65%]">
           Get started for free. No credit card required.
         </p>
       </div>

@@ -310,7 +310,7 @@ export default function LoginPage() {
                         <Input
                           type="email"
                           placeholder="E-mail"
-                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-12"
+                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-10"
                           {...field}
                         />
                       </div>
@@ -334,7 +334,7 @@ export default function LoginPage() {
                         <Input
                           type="password"
                           placeholder="Password"
-                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-12"
+                          className="bg-white border-gray-200 text-[#0a0a0a] placeholder:text-gray-400 rounded-full h-12 focus:border-primary-green pl-10"
                           {...field}
                         />
                       </div>
@@ -387,7 +387,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => router.push("/auth/magic-link")}
                   variant="primary-green"
-                  className="w-full rounded-full px-6 py-4 shadow-none"
+                  className="w-full rounded-full px-6 py-4 shadow-none "
                 >
                   <FaLink className="text-white" />
                   <span className="text-base">Use Magic Link</span>

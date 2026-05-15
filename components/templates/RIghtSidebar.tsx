@@ -4,13 +4,8 @@ import { useParams } from "next/navigation";
 import AnalysisPanel from "../doc/analysisPanel/AnalysisPanel";
 import { useDoc } from "@/data/document";
 import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
-import type {
-  Advantage,
-  DocumentAnalysis,
-  Highlight,
-  KeyPoint,
-  Risk,
-} from "@/types/analysis";
+import type { Advantage, DocumentAnalysis, Highlight, KeyPoint, Risk } from "@/types/analysis";
+import NoContent from "../atoms/NoContent";
 
 // API may return `advantages` either as an array (list of advantages)
 // or as a number (overall advantages score).
@@ -33,10 +28,20 @@ const RightSidebar = () => {
   const params = useParams();
   const docId = Array.isArray(params?.docId) ? params.docId[0] : params?.docId;
   const { data: docData } = useDoc(docId ?? "");
+  console.log(docId, "docId");
+
+  if (!docId) {
+    return (
+      <div className="h-full flex items-center justify-center text-black">
+        {/* <p>No document selected</p> */}
+        <NoContent className="!h-auto" />
+      </div>
+    );
+  }
 
   if (!docData) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="h-full flex items-center justify-center ">
         <QlaretyLogo className="animate-pulse" />
       </div>
     );

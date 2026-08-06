@@ -1,13 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { CloseIcon } from "@/assets/svg/CloseIcon";
 import { LockIcon } from "@/assets/svg/LockIcon";
+import { PasswordInput } from "@/components/atoms/form";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useChangePassword } from "@/data/user";
 import { ToastLogger } from "@/utils/toastUtils";
@@ -25,8 +26,19 @@ const passwordSchema = z
 
 type PasswordFormValues = z.infer<typeof passwordSchema>;
 
+type PasswordFieldName = "oldPassword" | "newPassword" | "confirmNewPassword";
+
 export default function ChangePasswordModal({ onClose }: { onClose: () => void }) {
   const { mutate: changePassword, isPending } = useChangePassword();
+  const [hidePasswords, setHidePasswords] = useState<Record<PasswordFieldName, boolean>>({
+    oldPassword: true,
+    newPassword: true,
+    confirmNewPassword: true,
+  });
+
+  const toggleHidePassword = (field: PasswordFieldName) => {
+    setHidePasswords((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
   const form = useForm<PasswordFormValues>({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
@@ -53,7 +65,7 @@ export default function ChangePasswordModal({ onClose }: { onClose: () => void }
   };
 
   return (
-    <div className="fixed inset-0 z-10 flex items-center justify-center p-4 font-jakarta">
+    <div className="fixed inset-0 z-10 flex items-center justify-center p-4 font-google-sans">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -92,15 +104,18 @@ export default function ChangePasswordModal({ onClose }: { onClose: () => void }
               name="oldPassword"
               render={({ field }) => (
                 <FormItem>
-                  <label htmlFor="oldPassword" className="mb-2 block text-sm font-semibold text-gray-900">
+                  <label
+                    htmlFor="oldPassword"
+                    className="mb-2 block text-sm font-semibold text-gray-900"
+                  >
                     Old password
                   </label>
                   <FormControl>
-                    <Input
+                    <PasswordInput
                       id="oldPassword"
-                      type="password"
+                      hidePassword={hidePasswords.oldPassword}
+                      onToggleHide={() => toggleHidePassword("oldPassword")}
                       autoComplete="current-password"
-                      className="h-11 rounded-full border-gray-200 py-3"
                       placeholder="Enter old password"
                       {...field}
                     />
@@ -115,15 +130,18 @@ export default function ChangePasswordModal({ onClose }: { onClose: () => void }
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <label htmlFor="newPassword" className="mb-2 block text-sm font-semibold text-gray-900">
+                  <label
+                    htmlFor="newPassword"
+                    className="mb-2 block text-sm font-semibold text-gray-900"
+                  >
                     New password
                   </label>
                   <FormControl>
-                    <Input
+                    <PasswordInput
                       id="newPassword"
-                      type="password"
+                      hidePassword={hidePasswords.newPassword}
+                      onToggleHide={() => toggleHidePassword("newPassword")}
                       autoComplete="new-password"
-                      className="h-11 rounded-full border-gray-200 py-3"
                       placeholder="Enter new password"
                       {...field}
                     />
@@ -145,11 +163,11 @@ export default function ChangePasswordModal({ onClose }: { onClose: () => void }
                     Confirm new password
                   </label>
                   <FormControl>
-                    <Input
+                    <PasswordInput
                       id="confirmNewPassword"
-                      type="password"
+                      hidePassword={hidePasswords.confirmNewPassword}
+                      onToggleHide={() => toggleHidePassword("confirmNewPassword")}
                       autoComplete="new-password"
-                      className="h-11 rounded-full border-gray-200 py-3"
                       placeholder="Confirm new password"
                       {...field}
                     />
@@ -159,7 +177,7 @@ export default function ChangePasswordModal({ onClose }: { onClose: () => void }
               )}
             />
 
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex justify-end gap-2 pt-2 text-black text-sm">
               <Button
                 type="button"
                 variant="outline"

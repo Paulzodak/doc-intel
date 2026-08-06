@@ -24,7 +24,7 @@ export default function Security({ user }: { user: User }) {
               id="change-password"
               onClick={() => setShowChangePasswordModal(true)}
               // variant="primary-green"
-              className="ws-full rounded-full px-6 py-2 h-10"
+              className="ws-full rounded-full px-6 py-2 h-10 shadow-none"
             >
               <span className="text-sm">Manage</span>
             </Button>
@@ -41,7 +41,7 @@ export default function Security({ user }: { user: User }) {
               id="reset-password"
               onClick={() => setShowResetPasswordModal(true)}
               // variant="primary-green"
-              className="ws-full rounded-full px-6 py-2 h-10"
+              className="ws-full rounded-full px-6 py-2 h-10 shadow-none"
             >
               <span className="text-sm">Manage</span>
             </Button>

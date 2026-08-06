@@ -7,7 +7,7 @@ export default function RootLayout({
 }>) {
   return (
     <div>
-      <DecorativeDots count={30} className="opacity-50" dropAnimate />
+      {/* <DecorativeDots count={30} className="opacity-50" dropAnimate /> */}
       {children}
     </div>
   );

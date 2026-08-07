@@ -60,7 +60,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData, classN
             key={tab.id}
             onClick={() => dispatch(setActiveTab(tab.id as AnalysisPanelTab))}
             className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium transition-colors relative ${
-              activeTab === tab.id ? "text-green-800" : "text-gray-600 hover:text-gray-900"
+              activeTab === tab.id ? "text-[#11161f]" : "text-gray-600 hover:text-gray-900"
             } ${tab.id === "details" ? "lg:flex hidden" : ""}`}
           >
             <tab.icon size={16} />
@@ -68,7 +68,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData, classN
             {activeTab === tab.id && (
               <motion.div
                 layoutId="activeTab"
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-800"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-green"
               />
             )}
           </button>

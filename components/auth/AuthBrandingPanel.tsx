@@ -73,8 +73,8 @@ export function AuthBrandingPanel() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mb-12 text-center"
         >
-          <h1 className="text-5xl md:text-6xl font-black text-white mb-4 flex items-center justify-center leading-tight">
-            <QlaretyLogo width={100} height={100} />
+          <h1 className="text-2xl md:text-3xl font-black text-white/90 mb-4 flex items-center justify-center leading-tight">
+            <QlaretyLogo width={60} height={60} />
             larety
           </h1>
         </motion.div>
@@ -354,7 +354,9 @@ export function AuthBrandingPanel() {
                   <div className="text-gray-400 text-xs">{testimonial.title}</div>
                 </div>
               </div>
-              <div className="text-gray-400 text-xs font-medium mb-2">{testimonial.testimonial}</div>
+              <div className="text-gray-400 text-xs font-medium mb-2">
+                {testimonial.testimonial}
+              </div>
               <div className="absolute bottom-2 right-3 w-6 h-6 bg-white/80 rounded-full flex items-center justify-center">
                 <IoIosArrowRoundUp size={15} className="text-primary-blue-dark rotate-45" />
               </div>

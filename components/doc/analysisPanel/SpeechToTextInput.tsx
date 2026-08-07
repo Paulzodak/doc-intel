@@ -2,10 +2,8 @@
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MicrophoneIcon } from "@/assets/svg/MicrophoneIcon";
+import { Button } from "@/components/ui/button";
 import { ArrowLeftIcon } from "@/assets/svg/ArrowLeftIcon";
-import { SendIcon } from "@/assets/svg/SendIcon";
-import { SendIconFilled } from "@/assets/svg/SendIconFilled";
 
 interface SpeechRecognitionEventLike {
   resultIndex: number;
@@ -62,6 +60,7 @@ export const SpeechToTextInput: React.FC<SpeechToTextInputProps> = ({
   const [recognitionError, setRecognitionError] = useState<string | null>(null);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const liveTranscriptRef = useRef("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const stopRecording = useCallback(() => {
     const rec = recognitionRef.current;
@@ -135,18 +134,6 @@ export const SpeechToTextInput: React.FC<SpeechToTextInputProps> = ({
     }
   }, []);
 
-  const toggleRecording = useCallback(() => {
-    if (isRecording) {
-      stopRecording();
-      const captured = liveTranscriptRef.current;
-      onChange(value.trim() ? `${value.trim()} ${captured}` : captured);
-      liveTranscriptRef.current = "";
-    } else {
-      liveTranscriptRef.current = "";
-      startRecording();
-    }
-  }, [isRecording, value, onChange, startRecording, stopRecording]);
-
   useEffect(() => {
     return () => {
       const rec = recognitionRef.current;
@@ -161,75 +148,79 @@ export const SpeechToTextInput: React.FC<SpeechToTextInputProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    const el = textareaRef.current;
+    if (!el || isRecording) return;
+    el.style.height = "0px";
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+  }, [value, isRecording]);
+
+  // Keep startRecording referenced so speech API stays available for future mic UI
+  void startRecording;
+  void stopRecording;
+
   return (
-    <div className="mt-auto">
-      {recognitionError && <p className="text-xs text-red-600 mb-2">{recognitionError}</p>}
-      <div className="fledx gap-2 border border-gray-200 min-h-[80px] rounded-3xl bg-zinc-100/50 p-4 sm:p-3">
-        <AnimatePresence mode="wait">
-          {isRecording ? (
-            <motion.div
-              key="recording"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex-1 w-full flex flex-col justify-center min-h-[44px] px-2"
-            >
-              <div className="flex items-center gap-2 text-red-600 mb-1">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
-                </span>
-                <span className="text-xs font-medium">Listening...</span>
-              </div>
-              <p className="text-sm text-gray-700 whitespace-pre-wrap wrap-break-word min-h-5">
-                {liveTranscript || <span className="text-gray-400 italic">Speak now...</span>}
-              </p>
-            </motion.div>
-          ) : (
-            <input
-              key="input"
-              type="text"
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey && value.trim() && !disabled) {
-                  e.preventDefault();
-                  onSend();
-                }
-              }}
-              placeholder={placeholder}
-              className="w-full font-google-sans border-none outline-none bg-transparent focus:outline-none focus:ring-0 text-gray-700 placeholder:text-gray-500 text-[16px] min-w-0"
-              disabled={disabled}
-            />
-          )}
-        </AnimatePresence>
-        <div className="flex items-center justify-end shrink-0">
-          <div className="flex gap-2 items-center">
-            {/* <button
-              type="button"
-              onClick={toggleRecording}
-              disabled={disabled}
-              className={`p-[6px] border rounded-full shadow-sm cursor-pointer transition-colors ${
-                isRecording
-                  ? "border-red-300 bg-red-50 hover:bg-red-100 text-red-600"
-                  : "border-gray-300 bg-white hover:bg-gray-200"
-              } disabled:opacity-50 disabled:cursor-not-allowed`}
-              aria-label={isRecording ? "Stop recording" : "Start voice input"}
-            >
-              <MicrophoneIcon size={16} color={isRecording ? "#dc2626" : "black"} />
-            </button> */}
-            <button
-              type="button"
-              onClick={onSend}
-              disabled={!value.trim() || disabled}
-              className="p-[8px] rounded-full bg-green-700 text-white shadow-sm hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              aria-label="Send message"
-            >
-              {/* <ArrowLeftIcon size={16} color="white" className="rotate-90" /> */}
-              <SendIconFilled size={18} color="white" className="" />
-            </button>
-          </div>
+    <div className="mt-auto w-full">
+      {recognitionError && (
+        <p className="mb-2 text-center text-xs text-red-600">{recognitionError}</p>
+      )}
+      <div className="relative rounded-[1.35rem] border border-[#1e2939]/10 bg-white/90 p-2 shadow-[0_12px_40px_rgba(17,22,31,0.08)] backdrop-blur-md dark:border-white/10 dark:bg-[#11161f]/90">
+        <div className="flex items-end gap-2">
+          <AnimatePresence mode="wait">
+            {isRecording ? (
+              <motion.div
+                key="recording"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex min-h-[44px] flex-1 flex-col justify-center px-3 py-2"
+              >
+                <div className="mb-1 flex items-center gap-2 text-red-600">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+                  </span>
+                  <span className="text-xs font-medium">Listening...</span>
+                </div>
+                <p className="min-h-5 wrap-break-word whitespace-pre-wrap text-sm text-gray-700">
+                  {liveTranscript || <span className="italic text-gray-400">Speak now...</span>}
+                </p>
+              </motion.div>
+            ) : (
+              <textarea
+                key="input"
+                ref={textareaRef}
+                rows={1}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey && value.trim() && !disabled) {
+                    e.preventDefault();
+                    onSend();
+                  }
+                }}
+                placeholder={placeholder}
+                className="max-h-[120px] min-h-[44px] flex-1 resize-none bg-transparent px-3 py-2.5 text-sm text-[#11161f] outline-none placeholder:text-gray-400 disabled:opacity-60 dark:text-white"
+                disabled={disabled}
+              />
+            )}
+          </AnimatePresence>
+          <Button
+            type="button"
+            variant="primary-green"
+            size="sm"
+            onClick={onSend}
+            disabled={!value.trim() || disabled || isRecording}
+            className="shrink-0"
+            aria-label="Send message"
+          >
+            Send
+            <ArrowLeftIcon size={14} className="rotate-180" />
+          </Button>
         </div>
+        <p className="px-3 pb-1 text-[10px] text-gray-400">
+          Enter to send · Shift+Enter for a new line · About this document only
+        </p>
       </div>
     </div>
   );

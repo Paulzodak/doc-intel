@@ -213,7 +213,14 @@ export default function LoginPage() {
                       </FormControl>
                       <div className="space-y-1 leading-none">
                         <FormLabel className="text-gray-600 text-sm font-normal cursor-pointer">
-                          Accept terms and conditions
+                          Accept{" "}
+                          <Link href="/terms" className="text-[#11161f] underline hover:text-primary-green">
+                            Terms
+                          </Link>{" "}
+                          and{" "}
+                          <Link href="/privacy" className="text-[#11161f] underline hover:text-primary-green">
+                            Privacy Policy
+                          </Link>
                         </FormLabel>
                       </div>
                     </div>

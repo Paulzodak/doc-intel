@@ -1,27 +1,31 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { ArrowLeftIcon } from "@/assets/svg/ArrowLeftIcon";
+import { Button } from "@/components/ui/button";
+
 const GetStarted = () => {
   const router = useRouter();
-  const handleGetStarted = () => {
-    router.push("/use-cases");
-  };
+
   return (
-    <div className="fslex text-black borsder-y-[1px] py-10 md:py-20">
+    <div className="py-10 text-black md:py-20">
       <div>
-        <h1 className="text-3xl md:text-5xl font-lora font-medium">Start for free.</h1>
-        <p className="mt-4 md:mt-8 text-gray-500 text-sm  md:text-lg tracksing-tight font-google-sans max-w-[65%]">
+        <h1 className="font-lora text-3xl font-medium md:text-5xl">Start for free.</h1>
+        <p className="mt-4 max-w-[65%] font-google-sans text-sm text-gray-500 md:mt-8 md:text-lg">
           Get started for free. No credit card required.
         </p>
       </div>
 
-      <button
-        onClick={handleGetStarted}
-        className="mt-8 flex items-center gap-2 bg-primary-green text-legal-navy px-10 py-4 rounded-xl text-[13px] font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer"
+      <Button
+        type="button"
+        variant="primary-green"
+        size="lg"
+        className="mt-8"
+        onClick={() => router.push("/use-cases")}
       >
         Start For Free
         <ArrowLeftIcon size={15} className="rotate-180" />
-      </button>
+      </Button>
     </div>
   );
 };

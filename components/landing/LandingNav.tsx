@@ -9,6 +9,7 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useGetSession } from "@/data/auth";
 import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
+import { Button } from "@/components/ui/button";
 
 interface NavItem {
   label: string;
@@ -90,43 +91,46 @@ export function LandingNav() {
         </div>
         <div className="flex items-center gap-3">
           {isAuthenticated ? (
-            <button
+            <Button
+              type="button"
+              variant="primary-green"
+              size="sm"
               onClick={handleGoToDashboard}
-              className="bg-primary-green  text-black px-3.5 py-1.5 rounded-xl text-[13px] font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer flex items-center gap-2"
+              className="gap-2"
             >
-              <span className="w-6 h-6 rounded-full bg-white/30 flex items-center justify-center text-xs font-black uppercase">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/30 text-xs font-black uppercase">
                 {user?.username?.charAt(0) || user?.email?.charAt(0) || "U"}
               </span>
               <span className="hidden sm:inline">Dashboard</span>
-            </button>
+            </Button>
           ) : (
             <>
-              <button
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
                 onClick={goToLogin}
-                className="hidden sm:block px-4 py-1.5 text-[13px] font-bold hover:bg-gray-100 rounded-xl transition-colors hover:text-primary-green cursor-pointer"
+                className="hidden sm:inline-flex"
               >
                 Log In
-              </button>
-              <button
-                onClick={goToSignUp}
-                className="bg-primary-green text-legal-navy px-5 py-2 rounded-xl text-[13px] font-extrabold shadow-lg shadow-primary-green/30 hover:scale-105 transition-transform active:scale-95 cursor-pointer"
-              >
+              </Button>
+              <Button type="button" variant="primary-green" size="sm" onClick={goToSignUp}>
                 Start Free Trial
-              </button>
+              </Button>
             </>
           )}
 
           {/* Mobile Menu Button — z-30 keeps it above the backdrop/popup so the X stays tappable */}
           <button
             onClick={toggleMobileMenu}
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors border border-gray-300 relative z-30"
+            className="relative z-30 rounded-full border border-gray-300 p-2 transition-colors hover:bg-gray-100 md:hidden"
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? (
-              <IoCloseOutline className="w-6 h-6" />
+              <IoCloseOutline className="h-6 w-6" />
             ) : (
-              <HiOutlineMenuAlt3 className="w-6 h-6" />
+              <HiOutlineMenuAlt3 className="h-6 w-6" />
             )}
           </button>
         </div>
@@ -168,31 +172,34 @@ export function LandingNav() {
                         <span className="font-medium">{item.label}</span>
                       </Link>
                     ))}
-                    <div className="pt-4 border-t border-gray-200 space-y-2 mt-4">
+                    <div className="mt-4 space-y-2 border-t border-gray-200 pt-4">
                       {isAuthenticated ? (
-                        <button
+                        <Button
                           type="button"
-                          className="w-full bg-primary-green text-legal-navy px-4 py-3 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/20 active:scale-95 transition-transform"
+                          variant="primary-green"
+                          className="w-full"
                           onClick={handleGoToDashboard}
                         >
                           Go to Dashboard
-                        </button>
+                        </Button>
                       ) : (
                         <>
-                          <button
+                          <Button
                             type="button"
-                            className="w-full px-4 py-3 text-sm font-bold hover:bg-gray-100 rounded-xl transition-colors text-left"
+                            variant="ghost"
+                            className="w-full justify-start"
                             onClick={goToLogin}
                           >
                             Log In
-                          </button>
-                          <button
+                          </Button>
+                          <Button
                             type="button"
-                            className="w-full bg-primary-green text-legal-navy px-4 py-3 rounded-xl text-sm font-extrabold shadow-lg shadow-primary-green/20 active:scale-95 transition-transform"
+                            variant="primary-green"
+                            className="w-full"
                             onClick={goToSignUp}
                           >
                             Start Free Trial
-                          </button>
+                          </Button>
                         </>
                       )}
                     </div>

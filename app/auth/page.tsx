@@ -224,11 +224,11 @@ export default function LoginPage() {
             className="text-xs text-gray-500 text-center leading-relaxed"
           >
             By continuing, you agree to our{" "}
-            <a href="#" className="text-[#0a0a0a] hover:text-primary-green underline">
+            <a href="/terms" className="text-[#0a0a0a] hover:text-primary-green underline">
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="#" className="text-[#0a0a0a] hover:text-primary-green underline">
+            <a href="/privacy" className="text-[#0a0a0a] hover:text-primary-green underline">
               Privacy Policy
             </a>
             .

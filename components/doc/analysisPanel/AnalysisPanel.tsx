@@ -19,23 +19,26 @@ import { GradingPanel } from "./GradingPanel";
 import { AIConsultantPanel } from "./AIConsultantPanel";
 import { DetailsPanel } from "./DetailsPanel";
 import { LockIcon } from "@/assets/svg/LockIcon";
+import { GalleryIconFilled } from "@/assets/svg/GalleryIconFilled";
+import { ExportButton } from "../ExportButton";
+import { DownloadIcon } from "@/assets/svg/DownloadIcon";
+import { ShareIcon } from "@/assets/svg/ShareIcon";
 
 export interface AnalysisPanelProps {
   analysis: DocumentAnalysis;
   documentSummary?: string;
   docData: Document;
+  className?: string;
 }
 
-const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
+const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData, className }) => {
   const dispatch = useDispatch();
   const activeTab = useSelector(selectActiveTab);
   const analysisPanelLocked = useSelector(selectAnalysisPanelLocked);
 
   return (
     <div
-      className={`h-fuldl sticky top-0 flexs flexs-col bg-white overflow-scroll border border-gray-200 max-h-full rounded-3xl 
-        ${analysisPanelLocked ? "mdax-sm:sticky mdax-sm:top-0 dmax-sm:z-20 mmax-sm:shadow-lg" : ""}
-      `}
+      className={` bg-white flex flex-col overflow-scroll border border-gray-200 lg:max-h-[40rem] lg:max-h-full rounded-2xl ${className}`}
     >
       {/* <button
         type="button"
@@ -45,10 +48,10 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
         <LockIcon className="shrink-0" size={16} />
         <span className="text-sm font-medium">{analysisPanelLocked ? "Locked" : "Unlocked"}</span>
       </button> */}
-      <div className="flex border-b border-gray-200 bg-white/80 sticky top-0 z-10">
+      <div className="flex border-b border-gray-200 bg-white/80">
         {[
           { id: "grading", label: "Grading", icon: FiTrendingUp },
-          ...(!docData.externalDocId
+          ...(!docData?.externalDocId
             ? [{ id: "chat", label: "AI Chat", icon: FiMessageCircle }]
             : []),
           { id: "details", label: "Details", icon: FiCheckCircle },
@@ -57,7 +60,7 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
             key={tab.id}
             onClick={() => dispatch(setActiveTab(tab.id as AnalysisPanelTab))}
             className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm font-medium transition-colors relative ${
-              activeTab === tab.id ? "text-green-800" : "text-gray-600 hover:text-gray-900"
+              activeTab === tab.id ? "text-[#11161f]" : "text-gray-600 hover:text-gray-900"
             } ${tab.id === "details" ? "lg:flex hidden" : ""}`}
           >
             <tab.icon size={16} />
@@ -65,14 +68,14 @@ const AnalysisPanel: React.FC<AnalysisPanelProps> = ({ analysis, docData }) => {
             {activeTab === tab.id && (
               <motion.div
                 layoutId="activeTab"
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-800"
+                className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-green"
               />
             )}
           </button>
         ))}
       </div>
 
-      <div className="flex-1 overflow-hidden p-4 sm:p-6 ">
+      <div className="flex-1 overflow-scroll bordser border-red-800 smasx-h-[20rem]  px-2 sm:px-0 ">
         {activeTab === "grading" && (
           <GradingPanel analysis={analysis} documentSummary={docData.documentSummary} />
         )}

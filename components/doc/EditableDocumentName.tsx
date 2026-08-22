@@ -86,7 +86,7 @@ const EditableDocumentName: React.FC<EditableDocumentNameProps> = ({ docData }) 
         <button
           type="button"
           onClick={() => setIsEditing(true)}
-          className="group flex items-center gap-1.5 min-w-0"
+          className="group flex items-center gap-1.5 min-w-0  cursor-pointer"
         >
           <h2 className="text-lg sm:text-xl font-bold text-gray-900 font-jakarta truncate min-w-0 flex-1 max-w-[15ch] sm:max-w-none">
             {docData.documentName}

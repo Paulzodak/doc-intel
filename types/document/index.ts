@@ -63,6 +63,13 @@ export interface UpdateDocumentResponse {
   message?: string;
 }
 
+/** Response from POST /api/document/:jobId/archive */
+export interface ArchiveDocumentResponse {
+  success: boolean;
+  message?: string;
+  data?: Document;
+}
+
 export interface SaveAllowedUsersRequest {
   userIds: string[];
 }
@@ -151,4 +158,27 @@ export interface ShareDocumentResponse {
   permission: boolean;
   visibility: number;
   externalDocId: string;
+}
+
+export interface GeneratePdfRequest {
+  html: string;
+  scale?: number;
+  output?: "png" | "pdf";
+  fileName?: string;
+  viewportWidth?: number;
+  viewportHeight?: number;
+  fullPage?: boolean;
+}
+
+export interface GeneratePdfResponse {
+  success: boolean;
+  message?: string;
+}
+
+export interface ISidebarDoc {
+  id: string;
+  jobId: string;
+  name: string;
+  externalDocId: string;
+  date: string;
 }

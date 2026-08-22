@@ -1,0 +1,108 @@
+Qlarety — Admin / Back-Office Features
+======================================
+Living list aligned with product-spec.md (Qlarety: AI legal document intelligence).
+Last updated: 2026-03-25
+
+------------------------------------------------------------
+1. CORE (baseline)
+------------------------------------------------------------
+
+*User directory
+  - Search/filter: email, verification status, plan, created date
+  - User detail: account flags, last activity (if logged)
+
+Admin access control
+  - Role-based admin (e.g. support vs super-admin)
+  - Strong authentication for admin surfaces
+  - Audit: who performed each admin action
+
+*Abuse and safety
+  - Suspend / ban users
+  - Revoke sessions
+  - Mitigate abuse (spam uploads, scraping) via limits and blocks
+
+Support operations
+  - Impersonation OR read-only "view as user" for debugging (with strict logging)
+  - Internal notes on accounts
+
+------------------------------------------------------------
+2. PRODUCT-SPECIFIC
+------------------------------------------------------------
+
+*Documents and jobs
+  - List documents and processing jobs: status, owner, engine, errors
+  - Retry failed jobs; cancel stuck jobs
+  - Optional soft-delete / purge aligned with privacy policy
+
+*Sharing and visibility
+  - Oversight of Public documents
+  - Revoke share links; force Me Only in incidents
+
+*Guest usage
+  - Metrics and limits (per guest id / IP)
+  - Optional disable guest analysis or tighten limits
+
+*AI / engine configuration
+  - Enable/disable models; default engine
+  - Pro engine availability by plan
+  - Feature flags: chat, OCR, languages
+
+*System content (if config-driven)
+  - Landing/marketing copy, maintenance banners
+  - Legal link references (ToS / Privacy)
+
+------------------------------------------------------------
+3. COMPLIANCE, TRUST, ENTERPRISE
+------------------------------------------------------------
+
+Audit log
+  - Admin actions
+  - Critical user actions: login, share changes, deletes, exports (if added)
+
+Data retention and deletion
+  - Retention windows
+  - Export / delete user data (privacy requests)
+  - Documented purge jobs matching product promises
+
+Organization / tenant admin (Enterprise)
+  - Seat management
+  - Domain allowlist
+  - SSO (if offered)
+  - Customer-delegated org admins
+
+------------------------------------------------------------
+4. COMMERCIAL (when billing ships)
+------------------------------------------------------------
+
+*Plans and entitlements
+  - Map users/orgs to Basic / Pro / Enterprise
+  - Trials, credits, manual overrides
+
+*Usage and cost visibility
+  - Uploads, analyses, token/API usage by period
+  - Support for billing and throttling questions
+
+------------------------------------------------------------
+5. NICE-TO-HAVE (later)
+------------------------------------------------------------
+
+Feature flags (broader rollout control)
+In-app announcements (downtime, new capabilities)
+Contact / demo queue (if sales/support needs a workflow from contact form)
+
+------------------------------------------------------------
+6. SUGGESTED IMPLEMENTATION ORDER
+------------------------------------------------------------
+
+Phase A
+  - Admin RBAC + audit log
+  - User and document/job visibility in admin
+  - Abuse controls (suspend, limits)
+  - Engine / feature flags
+
+Phase B
+  - Retention and deletion tooling
+  - Org and billing admin (with real payments)
+
+Phase C
+  - Broader feature flags, announcements, support tooling refinements

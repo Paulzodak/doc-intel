@@ -2,6 +2,7 @@ import axios from "axios";
 import { store } from "@/redux/store";
 import { selectUser } from "@/redux/slices/user/user.slice";
 import type { User } from "@/types/user";
+import staticData from "@/lib/staticData";
 
 // Configure axios instance with base URL
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
@@ -24,9 +25,15 @@ export function getUserFromRedux(): User | null {
   }
 }
 
-function getGuestIdFromStorage(): string | null {
+/** Dedicated localStorage key for guest id (in addition to redux-persist). */
+export const GUEST_ID_LOCAL_STORAGE_KEY = "qlarety_guest_id";
+
+export function getGuestIdFromStorage(): string | null {
   if (typeof window === "undefined") return null;
   try {
+    const direct = localStorage.getItem(GUEST_ID_LOCAL_STORAGE_KEY);
+    if (direct) return direct;
+
     const raw = localStorage.getItem("persist:root");
     if (!raw) return null;
     const parsed = JSON.parse(raw) as { auth?: string };
@@ -60,9 +67,14 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 401 && typeof window !== "undefined" && getUserFromRedux()) {
-      window.location.href = "/auth";
-    }
+    // if (
+    //   error.response?.status === 401 &&
+    //   typeof window !== "undefined" &&
+    //   getUserFromRedux() &&
+    //   !staticData.excludedRedirectPages.includes(window.location.pathname)
+    // ) {
+    //   window.location.href = "/auth";
+    // }
     return Promise.reject(error);
   },
 );

@@ -12,6 +12,10 @@ import { ShareModal } from "@/components/doc/ShareModal";
 import { Document } from "@/types/document";
 import { LockIcon } from "@/assets/svg/LockIcon";
 import { ExportButton } from "./ExportButton";
+import { CursorPointerIcon } from "@/assets/svg/CursorPointerIcon";
+import { SelectIcon } from "@/assets/svg/SelectIcon";
+import { MetaInfoModal } from "@/components/doc/MetaInfoModal";
+import { FiInfo } from "react-icons/fi";
 
 interface DocumentContentUtilityTabProps {
   docId: string;
@@ -25,24 +29,29 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
   docData,
 }) => {
   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [metaInfoOpen, setMetaInfoOpen] = useState(false);
 
   return (
-    <div className="border-b py-4 font-jakarta px-4 sm:px-8">
+    <div className="borsder-b py-4 font-jakarta px-4 sm:psx-8">
       <div className="flex items-center justify-between font-jakarta">
         <EditableDocumentName docData={docData} />
         <div className="flex gap-2">
           <div className="flex gap-2 text-[10px] sm:text-xs leading-5 hidden sm:flex">
-            <span className="px-2 py-1 bg-red-100 text-red-700 rounded-full">Risks</span>
-            <span className="px-2 py-1 bg-green-100 text-primary-blue-dark rounded-full">
+            <span className="px-2 py-1 border border-red-500 bg-red-100 text-red-700 rounded-full">
+              Risks
+            </span>
+            <span className="px-2 py-1 border border-green-500 bg-green-100 text-primary-blue-dark rounded-full">
               Advantages
             </span>
-            <span className="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full">Compliance</span>
+            <span className="px-2 py-1 border border-yellow-500 bg-yellow-100 text-yellow-700 rounded-full">
+              Compliance
+            </span>
             <div className="border-l border-gray-200 my-1" />
             <div className="gap-2 hidden md:flex">
-              <div className="flex border bg-neutral-50 text-sm border-neutral-300 gap-2 text-gray-500 items-center px-2 py-1 rounded-full">
+              {/* <div className="flex border bg-neutral-50 text-sm border-neutral-300 gap-2 text-gray-500 items-center px-2 py-1 rounded-full">
                 <Copy color="black" size={14} />
                 <span>Copy</span>
-              </div>
+              </div> */}
               {/* <div className="flex border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full">
                 <ShareIcon size={15} color="#6a7282" />
                 <span>Share</span>
@@ -54,13 +63,13 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
       </div>
       {!docData.externalDocId && (
         <div className="flex gap-2 mt-2">
-          <div className="flex gap-2 text-[10px] sm:text-xs leading-5 hidden sm:flex">
-            <div className="gap-2 hidden md:flex">
+          <div className="flex gap-2 text-[11px] sm:text-xs leading-5 flex sm:flex">
+            <div className="gap-2 flex-wrap flex md:flex">
               <VisibilityButton documentId={docId} />
               <button
                 type="button"
                 onClick={() => setShareModalOpen(true)}
-                className="flex bg-neutral-50 border text-sm border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
+                className="flex bg-neutral-50 border  border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
               >
                 <ShareIcon size={15} />
                 <span>Share</span>
@@ -72,7 +81,29 @@ const DocumentContentUtilityTab: React.FC<DocumentContentUtilityTabProps> = ({
                 documentName={documentName}
                 docData={docData}
               />
-              {/* <ExportButton documentId={docId} /> */}
+              <button
+                type="button"
+                onClick={() => setMetaInfoOpen(true)}
+                className="flex bg-neutral-50 border border-gray-200 gap-2 text-gray-500 items-center px-2 py-1 rounded-full hover:bg-gray-50 transition-colors"
+              >
+                <FiInfo size={14} />
+                <span>Info</span>
+              </button>
+              <MetaInfoModal
+                isOpen={metaInfoOpen}
+                onClose={() => setMetaInfoOpen(false)}
+                jobId={docData.jobId}
+              />
+              <ExportButton docData={docData} />
+              <div className="border-l border-gray-200 my-1" />
+              <div className="flex gap-4 items-center">
+                <button>
+                  <SelectIcon size={18} color="black" />
+                </button>
+                <button>
+                  <CursorPointerIcon size={18} color="black" />
+                </button>
+              </div>
             </div>
           </div>
         </div>

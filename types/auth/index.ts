@@ -43,6 +43,19 @@ export interface MagicLinkResponse {
   };
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ForgotPasswordResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    email: string;
+    sent: boolean;
+  };
+}
+
 export interface VerifyEmailRequest {
   token: string;
 }
@@ -65,6 +78,11 @@ export interface SessionResponse {
     email: string;
     email_verified?: boolean;
   };
+}
+
+export interface LogoutResponse {
+  success: boolean;
+  message?: string;
 }
 
 export type OAuthProvider = "google" | "apple" | "github";

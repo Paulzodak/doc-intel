@@ -1,8 +1,16 @@
 import { useEffect } from "react";
 import { ToastLogger } from "@/utils/toastUtils";
-import { useMutation, UseMutationOptions, useQuery, UseQueryOptions } from "@tanstack/react-query";
+import {
+  useMutation,
+  UseMutationOptions,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { apiClient } from "@/lib/axios";
 import type {
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
   SignUpRequest,
   SignUpResponse,
   LoginRequest,
@@ -12,6 +20,7 @@ import type {
   VerifyEmailRequest,
   VerifyEmailResponse,
   SessionResponse,
+  LogoutResponse,
   OAuthProvider,
 } from "@/types/auth";
 import { setUser, clearUser } from "@/redux/slices/user/user.slice";
@@ -25,8 +34,10 @@ export const authKeys = {
   signUp: () => [...authKeys.all, "signup"] as const,
   login: () => [...authKeys.all, "login"] as const,
   magicLink: () => [...authKeys.all, "magic-link"] as const,
+  forgotPassword: () => [...authKeys.all, "forgot-password"] as const,
   verifyEmail: () => [...authKeys.all, "verify-email"] as const,
   oauth: (provider: OAuthProvider) => [...authKeys.all, "oauth", provider] as const,
+  logout: () => [...authKeys.all, "logout"] as const,
 };
 
 // Hook to get current session
@@ -66,6 +77,30 @@ export function useGetSession(
   // }, [dispatch, query.data, query.error]);
 
   return query;
+}
+
+// Hook to log out (clears session cookie on server)
+export function useLogout(
+  options?: UseMutationOptions<LogoutResponse, AxiosError<LogoutResponse>, void>,
+) {
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+  const { onSuccess: userOnSuccess, onError: userOnError, ...restOptions } = options ?? {};
+
+  return useMutation({
+    mutationKey: authKeys.logout(),
+    mutationFn: async () => {
+      const response = await apiClient.post<LogoutResponse>("/api/auth/signout");
+      return response.data;
+    },
+    ...restOptions,
+    onSuccess: (data, variables, context, options) => {
+      dispatch(clearUser());
+      queryClient.removeQueries({ queryKey: authKeys.session() });
+      userOnSuccess?.(data, variables, context, options);
+    },
+    onError: userOnError,
+  });
 }
 
 // Hook to sign up
@@ -129,6 +164,30 @@ export function useMagicLink(
     },
     onError: (error: Error) => {
       ToastLogger.error("auth", `Failed to send magic link: ${error.message}`);
+    },
+    ...options,
+  });
+}
+
+export function useForgotPassword(
+  options?: UseMutationOptions<
+    ForgotPasswordResponse,
+    AxiosError<ForgotPasswordResponse>,
+    ForgotPasswordRequest
+  >,
+) {
+  return useMutation({
+    mutationFn: async (data: ForgotPasswordRequest) => {
+      const response = await apiClient.post<ForgotPasswordResponse>("/api/auth/forgot-password", {
+        email: data.email,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      ToastLogger.success("auth", "Password reset email sent");
+    },
+    onError: (error: Error) => {
+      ToastLogger.error("auth", `Failed to send reset email: ${error.message}`);
     },
     ...options,
   });

@@ -16,6 +16,7 @@ import {
 import type { Highlight } from "@/types/analysis";
 import LogoLoading from "@/components/atoms/LogoLoading";
 import { ErrorFeedback } from "@/components/atoms/form/feedback";
+import DocumentContentUtilityTab from "@/components/doc/DocumentContentUtilityTab";
 
 interface DocPageProps {
   params: Promise<{ docId: string }>;
@@ -158,29 +159,36 @@ export default function DocPage({ params }: DocPageProps) {
 
       {/* Content */}
       {docData && (
-        <div className="flex-1 overflow-y-auto h-full bodrder border-red-800 relative">
-          <div className="madx-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 hs-full bodrder">
-            <div className="flex flex-col lg:grid lg:grid-cols-10 gap-6 s border-blue-800 h-full md:overflow-hidden">
-              {/* Analysis Panel - First on mobile, right column on desktop */}
-              <div className=" order-1 lg:order-2 lg:col-span-3  md:overflow-scroll     border-green-800 rounde">
-                {/* <div className="lg:ssticky lg:top-6 max-h-full  rounded-2xl border border-red-800"> */}
-                <AnalysisPanel analysis={analysis} docData={docData} />
-              </div>
-              {/* </div> */}
+        <div className="flex-1 overflow-y-scroll sm:h-full borsder border-red-800 reldative">
+          {/* <div className="ma÷dx-w-7xl mx-auto pxs-4 sm:pxs-6 lg:pxs-8 psy-6  sm:h-full borderr overflow-hidden"> */}
+          <div className="flex flex-col lg:grid sm:grid-rows-1 lg:grid-cols-10 gap-6 borderr border-blue-800 h-full md:overfslow-hidden relatsive">
+            {/* Analysis Panel - First on mobile, right column on desktop */}
+            <div className="hidden lg:block order-1 lg:order-2 lg:col-span-3  md:overflow-scroll border-green-800  z-0">
+              <AnalysisPanel analysis={analysis} docData={docData} />
+            </div>
+            {/* </div> */}
 
-              {/* Document Text - Second on mobile, left column on desktop */}
-              <div className="order-2 lg:order-1 lg:col-span-7 md:overflow-scroll h-full bodrder border-red-800">
-                <DocumentContent
-                  docId={docId}
+            {/* Document Text - Second on mobile, left column on desktop */}
+            <div className="order-2 lg:order-1 lg:col-span-7 md:ovesrflow-scroll lg:grid grid-rows-[1fr_auto_7fr] borderr border-red-800">
+              <div className="border  bg-white rounded-2xl">
+                <DocumentContentUtilityTab
                   docData={docData}
-                  documentName={docData?.documentName ?? `Document ${docId.slice(0, 8)}`}
-                  documentText={documentText}
-                  highlights={highlights}
-                  onHighlightClick={handleHighlightClick}
+                  docId={docId}
+                  documentName={docData.documentName}
                 />
               </div>
+              <div className="border-l w-1 h-6 mx-auto" />
+              <DocumentContent
+                docId={docId}
+                docData={docData}
+                documentName={docData?.documentName ?? `Document ${docId.slice(0, 8)}`}
+                documentText={documentText}
+                highlights={highlights}
+                onHighlightClick={handleHighlightClick}
+              />
             </div>
           </div>
+          {/* </div> */}
         </div>
       )}
 

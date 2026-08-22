@@ -111,7 +111,7 @@ const InputMethodTemplate = ({
             </span>
           </div>
           <div className="">
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-black text-gray-900 dark:text-white mb-2">
+            <h2 className="text-lg md:text-2xl lg:text-3xl font-black text-gray-900 dark:text-white mb-2">
               {title}
             </h2>
             <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">{description}</p>
@@ -129,7 +129,9 @@ const InputMethodTemplate = ({
             {features.map((feature, index) => (
               <li key={index} className="flex items-center gap-3">
                 <span className={`w-2 h-2 ${colors.featureDot} rounded-full`}></span>
-                <span className="text-gray-900 dark:text-white font-medium">{feature.name}</span>
+                <span className="text-gray-900 dark:text-white font-medium text-xs md:text-sm">
+                  {feature.name}
+                </span>
               </li>
             ))}
           </ul>
@@ -143,7 +145,7 @@ const InputMethodTemplate = ({
       <div
         className={`transition-all duration-500 ease-in-out ${
           !isExpanded
-            ? "max-h-[200px] opacity-100 p-6 flex items-center gap-6"
+            ? "max-h-[200px] opacity-100 p-4 sm:p-6 flex items-center gap-6"
             : "max-h-0 opacity-0 overflow-hidden p-0"
         }`}
       >

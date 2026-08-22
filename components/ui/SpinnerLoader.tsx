@@ -21,13 +21,13 @@ export const SpinnerLoader: React.FC<SpinnerLoaderProps> = ({
   return (
     <div
       className={cn(
-        "inline-block rounded-full border-solid border-t-transparent border-r-transparent border-b-transparent animate-spin",
+        "text-green-700 inline-block rounded-full border-solid border-t-transparent border-r-transparent border-b-transparent animate-spin",
         sizeClasses[size],
         color,
-        className
+        className,
       )}
       style={{
-        borderTopColor: "currentColor",
+        borderTopColor: "oklch(52.7% 0.154 150.069)",
       }}
       aria-label="Loading"
       role="status"

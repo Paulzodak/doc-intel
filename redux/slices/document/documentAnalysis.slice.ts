@@ -6,13 +6,15 @@ export interface IDocumentAnalysisState {
   isKeyPointsExpanded: boolean;
   isSummaryExpanded: boolean;
   analysisPanelLocked: boolean;
+  exportFormat: "png" | "pdf" | "jpeg";
 }
 
 const initialState: IDocumentAnalysisState = {
-  isGradingExpanded: false,
-  isKeyPointsExpanded: false,
+  isGradingExpanded: true,
+  isKeyPointsExpanded: true,
   isSummaryExpanded: true,
   analysisPanelLocked: true,
+  exportFormat: "png",
 };
 
 const documentAnalysisSlice = createSlice({
@@ -31,6 +33,9 @@ const documentAnalysisSlice = createSlice({
     setAnalysisPanelLocked(state, action: PayloadAction<boolean>) {
       state.analysisPanelLocked = action.payload;
     },
+    setExportFormat(state, action: PayloadAction<"png" | "pdf">) {
+      state.exportFormat = action.payload;
+    },
   },
 });
 
@@ -39,6 +44,7 @@ export const {
   setKeyPointsExpanded,
   setSummaryExpanded,
   setAnalysisPanelLocked,
+  setExportFormat,
 } = documentAnalysisSlice.actions;
 
 export const selectIsGradingExpanded = (state: RootState) =>
@@ -49,5 +55,6 @@ export const selectIsSummaryExpanded = (state: RootState) =>
   state.documentAnalysis.isSummaryExpanded;
 export const selectAnalysisPanelLocked = (state: RootState) =>
   state.documentAnalysis.analysisPanelLocked;
+export const selectExportFormat = (state: RootState) => state.documentAnalysis.exportFormat;
 
 export default documentAnalysisSlice.reducer;

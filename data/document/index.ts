@@ -1,5 +1,5 @@
 import { ToastLogger } from "@/utils/toastUtils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   useMutation,
   UseMutationOptions,
@@ -9,8 +9,10 @@ import {
 } from "@tanstack/react-query";
 import { apiClient } from "@/lib/axios";
 import type {
+  ArchiveDocumentResponse,
   CleanTextRequest,
   CleanTextResponse,
+  GeneratePdfRequest,
   JobResponse,
   ListDocumentsResponse,
   ProcessDocumentRequest,
@@ -32,9 +34,11 @@ import {
   removeDocument,
 } from "@/redux/slices/document/documentsList.slice";
 import { store } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import { AxiosError } from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { AxiosError, AxiosResponse } from "axios";
 import type { Document } from "@/types/document";
+import { selectExportFormat } from "@/redux/slices/document/documentAnalysis.slice";
+import { toast } from "sonner";
 
 // Query keys factory
 export const documentsKeys = {
@@ -48,6 +52,8 @@ export const documentsKeys = {
   processing: () => [...documentsKeys.all, "processing"] as const,
   analysis: (id: string) => [...documentsKeys.all, "analysis", id] as const,
   job: (jobId: string) => [...documentsKeys.all, "job", jobId] as const,
+  search: (q: string) => [...documentsKeys.all, "search", q] as const,
+  archived: () => [...documentsKeys.all, "archived"] as const,
 };
 
 // Hook to attach document to entity
@@ -195,6 +201,50 @@ export function useDocumentsList(
   return query;
 }
 
+/**
+ * Searches documents via GET /api/documents/search.
+ * Waits {@link DOCUMENT_SEARCH_DEBOUNCE_MS} after `searchInput` stops changing before requesting.
+ * Clearing the input resets the debounced term immediately (no request).
+ */
+export function useDocumentsSearch(
+  searchInput: string,
+  options?: Omit<
+    UseQueryOptions<ListDocumentsResponse["data"], AxiosError<ListDocumentsResponse["data"]>>,
+    "queryKey" | "queryFn" | "enabled"
+  >,
+) {
+  const query = useQuery({
+    queryKey: documentsKeys.search(searchInput),
+    queryFn: async () => {
+      const response = await apiClient.get<ListDocumentsResponse>("/api/documents/search", {
+        params: { name: searchInput },
+      });
+      return response.data.data;
+    },
+    enabled: searchInput.length > 0,
+    ...options,
+  });
+
+  return { ...query, searchInput };
+}
+
+/** GET /api/documents/archived — same shape as {@link ListDocumentsResponse} */
+export function useArchivedDocuments(
+  options?: Omit<
+    UseQueryOptions<ListDocumentsResponse, AxiosError<ListDocumentsResponse>>,
+    "queryKey" | "queryFn"
+  >,
+) {
+  return useQuery({
+    queryKey: documentsKeys.archived(),
+    queryFn: async () => {
+      const response = await apiClient.get<ListDocumentsResponse>("/api/documents/archived");
+      return response.data;
+    },
+    ...options,
+  });
+}
+
 // Hook to delete a document
 export function useDeleteDocument(
   options?: UseMutationOptions<{ success: boolean; message?: string }, Error, string>,
@@ -204,13 +254,76 @@ export function useDeleteDocument(
   return useMutation({
     mutationFn: async (documentId: string) => {
       const response = await apiClient.delete<{ success: boolean; message?: string }>(
-        `/api/documents/${documentId}`,
+        `/api/document/${documentId}`,
       );
       return response.data;
     },
     onSuccess: (_data, documentId) => {
       dispatch(removeDocument(documentId));
       queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.archived() });
+    },
+    ...options,
+  });
+}
+
+/** POST /api/document/:jobId/archive */
+export function useArchiveDocument(
+  options?: UseMutationOptions<
+    ArchiveDocumentResponse,
+    AxiosError<ArchiveDocumentResponse>,
+    string
+  >,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (jobId: string) => {
+      const response = await apiClient.patch<ArchiveDocumentResponse>(
+        `/api/document/${jobId}/archive`,
+      );
+      return response.data;
+    },
+    onSuccess: (_data, jobId) => {
+      queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.archived() });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.job(jobId) });
+    },
+    onError: (error: AxiosError<ArchiveDocumentResponse>) => {
+      ToastLogger.error(
+        "documents",
+        error.response?.data?.message ?? error.message ?? "Failed to archive document",
+      );
+    },
+    ...options,
+  });
+}
+
+/** PATCH /api/document/:jobId/unarchive */
+export function useUnarchiveDocument(
+  options?: UseMutationOptions<
+    ArchiveDocumentResponse,
+    AxiosError<ArchiveDocumentResponse>,
+    string
+  >,
+) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (jobId: string) => {
+      const response = await apiClient.patch<ArchiveDocumentResponse>(
+        `/api/document/${jobId}/unarchive`,
+      );
+      return response.data;
+    },
+    onSuccess: (_data, jobId) => {
+      queryClient.invalidateQueries({ queryKey: documentsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.archived() });
+      queryClient.invalidateQueries({ queryKey: documentsKeys.job(jobId) });
+    },
+    onError: (error: AxiosError<ArchiveDocumentResponse>) => {
+      ToastLogger.error(
+        "documents",
+        error.response?.data?.message ?? error.message ?? "Failed to unarchive document",
+      );
     },
     ...options,
   });
@@ -335,6 +448,52 @@ export function useShareDocument(
     },
     enabled: !!shareId,
     ...options,
+  });
+}
+
+export function useGeneratePdf(
+  options?: UseMutationOptions<AxiosResponse<Blob>, AxiosError, GeneratePdfRequest>,
+) {
+  return useMutation({
+    mutationFn: async (data: GeneratePdfRequest) => {
+      const response = await apiClient.post<Blob>(`/api/pdf`, data, {
+        responseType: "blob",
+      });
+      console.log(response);
+      return response;
+    },
+    ...options,
+  });
+}
+export function useGeneratePdfFromPage(
+  options?: UseMutationOptions<AxiosResponse<Blob>, AxiosError, GeneratePdfRequest>,
+) {
+  const selectedExportFormat = useSelector(selectExportFormat);
+  const { onError: userOnError, ...restOptions } = options ?? {};
+  return useMutation({
+    mutationFn: async (data: GeneratePdfRequest) => {
+      const response = await apiClient.post<Blob>(
+        `/api/pdf/render`,
+        { ...data, output: selectedExportFormat },
+        {
+          responseType: "blob",
+        },
+      );
+      console.log(response);
+      return response;
+    },
+
+    // ...restOptions,
+    onError: (error, variables, onMutateResult, context) => {
+      // toast("error");
+      console.log("error", error);
+      const axiosError = error as AxiosError<{ message?: string }>;
+      ToastLogger.error(
+        "documents",
+        axiosError.response?.data?.message ?? axiosError.message ?? "Failed to generate export",
+      );
+      // userOnError?.(error, variables, onMutateResult, context);
+    },
   });
 }
 

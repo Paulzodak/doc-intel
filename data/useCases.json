@@ -1,0 +1,78 @@
+[
+  {
+    "id": "contract-risk-reviews",
+    "header": "Contract Risk Reviews",
+    "title": "Catch high-impact legal risks before signature",
+    "description": [
+      {
+        "title": "How teams get here",
+        "description": "Legal and procurement teams are expected to clear large contract queues under aggressive business timelines. In practice, reviews happen across email threads, redlined PDFs, and disconnected version histories, which makes it difficult to maintain consistent quality. Critical issues such as uncapped indemnities, hidden auto-renewals, broad termination rights, and one-sided liability allocation can slip through simply because reviewers are forced to move too quickly."
+      },
+      {
+        "title": "What Qlarety does",
+        "description": "Qlarety analyzes agreements clause-by-clause and surfaces risky language, missing protections, and unusual legal patterns in seconds. Instead of manually scanning every section, reviewers get a prioritized map of potential legal and commercial exposure. The platform helps teams focus attention on what matters most first, with clearer context for why a provision is problematic and where renegotiation effort should be spent."
+      },
+      {
+        "title": "The result",
+        "description": "Contract review becomes faster, more repeatable, and easier to scale across teams. High-risk documents are identified earlier in the process, negotiation strategy improves through clearer evidence, and fewer issues are discovered late in approval cycles. The result is better legal protection without slowing down revenue or vendor onboarding."
+      }
+    ]
+  },
+  {
+    "id": "compliance-readiness-checks",
+    "header": "Compliance Readiness Checks",
+    "title": "Ensure documents meet policy and regulatory standards",
+    "description": [
+      {
+        "title": "How teams get here",
+        "description": "Regulatory requirements, internal policies, and customer obligations evolve continuously, but contract language often lags behind. Legal and compliance teams must manually check whether each document still aligns with current standards, which is time-consuming and difficult to do consistently at scale. As document volume grows, small compliance gaps accumulate and increase audit, legal, and reputational risk."
+      },
+      {
+        "title": "What Qlarety does",
+        "description": "Qlarety evaluates contract content against expected compliance signals and flags potential violations, missing clauses, and ambiguous wording that can create downstream exposure. It gives teams a structured way to identify where a document may diverge from policy requirements and where additional controls or clarifications are needed before approval."
+      },
+      {
+        "title": "The result",
+        "description": "Compliance reviews become more standardized and defensible, with stronger consistency across reviewers and business units. Teams spend less time repeating manual checks, improve audit readiness, and maintain tighter governance without creating bottlenecks for legal operations or commercial teams."
+      }
+    ]
+  },
+  {
+    "id": "due-diligence-acceleration",
+    "header": "Due Diligence Acceleration",
+    "title": "Analyze large document sets quickly during deals",
+    "description": [
+      {
+        "title": "How teams get here",
+        "description": "During M&A, investment review, or major vendor onboarding, teams are asked to evaluate large sets of legal documents in limited time. Important obligations are often buried in dense language across inconsistent templates and historical amendments. Without rapid triage, legal teams can spend too much time on low-impact files while material risks remain hidden until late in the deal cycle."
+      },
+      {
+        "title": "What Qlarety does",
+        "description": "Qlarety extracts key terms, summarizes obligations, and identifies recurring risk themes across many documents at once. This enables legal and deal teams to rank files by materiality, quickly isolate high-priority issues, and direct senior reviewer time toward the contracts most likely to affect deal value, timeline, or post-close exposure."
+      },
+      {
+        "title": "The result",
+        "description": "Decision-makers gain earlier visibility into legal exposure and can make go/no-go calls with greater confidence. Deal execution accelerates because legal teams are no longer trapped in manual sorting, and reviewers can focus on substantive analysis and negotiation strategy rather than administrative triage."
+      }
+    ]
+  },
+  {
+    "id": "negotiation-preparation",
+    "header": "Negotiation Preparation",
+    "title": "Strengthen negotiation strategy with clause-level context",
+    "description": [
+      {
+        "title": "How teams get here",
+        "description": "Many negotiations begin with incomplete insight into where the real risk sits in the agreement. Business stakeholders push for speed, while legal teams are still uncovering problematic language around liability, data handling, payment obligations, or termination rights. That delay creates reactive negotiations and weakens leverage in late-stage discussions."
+      },
+      {
+        "title": "What Qlarety does",
+        "description": "Qlarety highlights unfavorable terms early and explains the practical impact of each issue in clear, structured language. Legal and commercial teams can align faster on fallback positions, redline priorities, and acceptable risk boundaries, making negotiation prep more strategic and less dependent on ad hoc clause-by-clause debate."
+      },
+      {
+        "title": "The result",
+        "description": "Negotiations become more proactive, with stronger preparation before counterpart calls begin. Teams enter discussions with clearer priorities, defend positions with better evidence, and reduce unnecessary back-and-forth cycles. Over time, this improves contract quality while shortening time to signature."
+      }
+    ]
+  }
+]

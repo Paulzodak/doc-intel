@@ -1,0 +1,21 @@
+1. Delete Document
+2. Recycle bin 
+3. View failed document processing and retry options 
+4. Change memoji
+5. Notification implemention. Setup notification for (Premium) :
+ - Document processing completion
+6. Search document
+7. AI clause correction for high risk clause (Premium)
+8. Mark or select texts to 
+  - Save with color code
+  - Ask questions with AI
+  - Download as Image
+9. Feedback on 
+ - Processed document
+ - AI responses
+
+10. Customer support 
+ - AI Chat
+ - Send message to customer support
+
+11. Refactor Landing Page

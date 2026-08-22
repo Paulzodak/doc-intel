@@ -3,38 +3,39 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiX, FiAlertTriangle } from "react-icons/fi";
+import { Button } from "../ui/button";
 
+interface ButtonProps {
+  onClick: () => void;
+  children: React.ReactNode;
+  className?: string;
+  variant?: "default" | "outline" | "destructive" | "ghost" | "link" | "primary-green";
+}
 interface DialogProps {
   isOpen: boolean;
-  onClose: () => void;
+  primaryButton: ButtonProps;
+  secondaryButton: ButtonProps;
   title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-  onConfirm: () => void;
-  variant?: "danger" | "warning" | "info";
+  message: string | React.ReactNode;
+  onClose: () => void;
+
+  variant: "danger" | "warning" | "info";
   className?: string;
 }
 
 const Dialog: React.FC<DialogProps> = ({
   isOpen,
-  onClose,
   title,
   message,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
-  onConfirm,
+  onClose,
+  primaryButton,
+  secondaryButton,
   variant = "info",
   className = "",
 }) => {
-  const handleConfirm = () => {
-    onConfirm();
-    onClose();
-  };
-
   const variantStyles = {
     danger: {
-      button: "bg-red-600 hover:bg-red-700 text-white",
+      button: "bg-red-800 hover:bg-red-700 text-white",
       icon: "text-red-500",
       border: "border-red-200",
     },
@@ -73,47 +74,49 @@ const Dialog: React.FC<DialogProps> = ({
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ type: "spring", damping: 20, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className={`bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden ${className}`}
+              className={`bg-white relative rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden ${className}`}
             >
+              <button
+                onClick={onClose}
+                className="p-1 hover:bg-gray-100 rounded-full transition-colors absolute top-4 right-4"
+              >
+                <FiX className="text-gray-500" size={20} />
+              </button>
               {/* Header */}
-              <div className={`p-6 border-b ${styles.border}`}>
-                <div className="flex items-start gap-4">
+              <div className={`p-4 bosrder-b ${styles.border}`}>
+                <div className="flex items-center justify-center">
                   <motion.div
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ duration: 0.3, type: "spring", stiffness: 200 }}
+                    className="bg-red-50 rounded-full mx-auto p-4 rounded-f"
                   >
                     <FiAlertTriangle className={`w-6 h-6 ${styles.icon}`} />
                   </motion.div>
-                  <div className="flex-1">
+                </div>
+                <div className="flex items-start gap-4 my-4">
+                  <div className="mx-auto grid gap-2 text-center">
                     <h3 className="text-lg font-bold text-gray-900">{title}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{message}</p>
+                    <p className="text-sm text-gray-600">{message}</p>
                   </div>
-                  <button
-                    onClick={onClose}
-                    className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-                  >
-                    <FiX className="text-gray-500" size={20} />
-                  </button>
                 </div>
               </div>
 
               {/* Footer */}
-              <div className="p-6 flex gap-3 justify-end">
-                <button
-                  onClick={onClose}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              <div className="p-6  grid-cols-2 grid grid-flow-col gap-3 bg-gray-100">
+                <Button
+                  className="w-full rounded-full text-sm text-gray-500"
+                  onClick={secondaryButton.onClick}
+                  variant="outline"
                 >
-                  {cancelText}
-                </button>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleConfirm}
-                  className={`px-4 py-2 text-sm font-semibold rounded-lg transition-colors ${styles.button}`}
+                  {secondaryButton.children}
+                </Button>
+                <Button
+                  className={`${styles.button} w-full rounded-full text-sm border-none`}
+                  onClick={primaryButton.onClick}
                 >
-                  {confirmText}
-                </motion.button>
+                  {primaryButton.children}
+                </Button>
               </div>
             </motion.div>
           </div>

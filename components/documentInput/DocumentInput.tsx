@@ -21,96 +21,122 @@ const DocumentInput = () => {
   const [expandedMethod, setExpandedMethod] = useState<MethodType>("upload");
 
   const handleMethodClick = (method: MethodType) => {
-    // If clicking the same method, collapse it; otherwise expand the new one
     setExpandedMethod(expandedMethod === method ? method : method);
   };
 
+  const trustSignals = [
+    { icon: LockIcon, label: "Encrypted" },
+    { icon: DisplayIcon, label: "AI insights" },
+    { icon: VerifiedCheckedIcon, label: "Legal-grade" },
+  ] as const;
+
   return (
-    <section className="relative py-12   max-w-full ">
-      {/* Dotted Grid Background */}
-      <div
-        className="absolute inset-0 opacity-30"
-        // style={{
-        //   backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)",
-        //   backgroundSize: "24px 24px",
-        // }}
-      />
-      <div className="relative max-w-[800px]  mx-auto">
-        <div className=" grid gap-6 relative">
-          <div className="bg-[#1e2939] dasrk:bg-gray-900 rounded-4xl px-8 py-6 shadow-lg ">
-            <div className="flex flex-col md:flex-row itesms-center justify-between gap-6">
-              {/* Left Side */}
-              <div className="">
-                <h3 className="text-xl lg:text-2xl font-black text-white mb-2">
-                  Ready to proceed?
+    <section className="relative py-6 sm:py-10 max-w-full">
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute left-1/2 top-8 h-64 w-[28rem] -translate-x-1/2 rounded-full bg-primary-green/10 blur-3xl" />
+        <div className="absolute right-[10%] bottom-16 h-40 w-40 rounded-full bg-[#1e2939]/8 blur-2xl" />
+      </div>
+
+      <div className="relative mx-auto max-w-[800px]">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="relative mb-5 overflow-hidden rounded-[1.75rem] border border-[#1e2939]/10 bg-gradient-to-br from-[#11161f] via-[#1a2332] to-[#1e2939] px-5 py-5 sm:px-7 sm:py-6"
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.35]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, rgba(71,225,140,0.18) 1px, transparent 0)",
+              backgroundSize: "22px 22px",
+            }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-primary-green/20 blur-2xl"
+          />
+
+          <div className="relative flex flex-col gap-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div className="max-w-md">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary-green opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-primary-green" />
+                  </span>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-primary-green/80">
+                    Analysis console
+                  </span>
+                </div>
+                <h3 className="font-lora text-xl font-semibold tracking-tight text-white sm:text-2xl">
+                  Choose how you bring the document in
                 </h3>
-                <p className="text-gray-300 text-xs md:text-sm">
-                  Review your selected input before initiating the AI engine.
+                <p className="mt-1.5 text-sm leading-relaxed text-white/55">
+                  Upload, scan, or paste — then tune the engine before you run analysis.
                 </p>
               </div>
-              {/* Right Side */}
-              <div className="grid sm:flex items-center gap-4">
-                {/* Avatars */}
-                <div className="flex items-center -space-x-3 mx-auto">
-                  <div className="w-10 h-10 rounded-full bg-orange-400 border-2 border-[#1e2939] dark:border-gray-900"></div>
-                  <div className="w-10 h-10 rounded-full bg-amber-700 border-2 border-[#1e2939] dark:border-gray-900"></div>
-                  <div className="w-10 h-10 rounded-full bg-gray-400 border-2 border-[#1e2939] dark:border-gray-900 flex items-center justify-center text-white text-xs font-bold">
-                    +12
-                  </div>
+
+              <div className="flex shrink-0 items-center gap-3 self-start sm:self-auto">
+                <div className="hidden h-px w-8 bg-gradient-to-r from-transparent to-primary-green/40 sm:block" />
+                <div className="rounded-full border border-primary-green/25 bg-primary-green/10 px-3 py-1.5 text-[11px] font-medium tracking-wide text-primary-green">
+                  3 input paths
                 </div>
-                {/* Analyze Button */}
-                {/* <Button variant="primary-green" size="analyze">
-                <span>Analyze Document</span>
-                <PlayIconFilled />
-              </Button> */}
               </div>
             </div>
-            <div className="flex items-center justify-center sm:justify-start gap-4 mt-4 sm:mt-2 flex-wrap sm:flex-nowrap">
+
+            <div className="flex flex-col gap-2.5 border-t border-white/10 pt-4 sm:flex-row sm:flex-wrap sm:items-center">
               <EngineSelector />
+              <div className="hidden h-4 w-px bg-white/10 sm:block" />
               <LanguageSelector />
             </div>
           </div>
-          <div className=" border-2 border-gray-200 w-[70%]  h-full absolute -z-20 top-0 left-[15%]" />
-          {/* Main Input Section - Method 01 */}
-          <UploadDocument
-            isExpanded={expandedMethod === "upload"}
-            onClick={() => handleMethodClick("upload")}
+        </motion.div>
+
+        <div className="relative grid gap-3.5 sm:gap-4">
+          <div
+            aria-hidden
+            className="absolute left-[8%] top-0 -z-10 h-full w-[84%] rounded-[2rem] border border-dashed border-[#1e2939]/12 sm:left-[12%] sm:w-[76%]"
           />
 
-          {/* Method 02 - Scan via OCR */}
-          <ScanOCR
-            isExpanded={expandedMethod === "scan"}
-            onClick={() => handleMethodClick("scan")}
-          />
-
-          {/* Method 03 - Paste Text */}
-          <PasteText
-            isExpanded={expandedMethod === "paste"}
-            onClick={() => handleMethodClick("paste")}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="grid gap-3.5 sm:gap-4"
+          >
+            <UploadDocument
+              isExpanded={expandedMethod === "upload"}
+              onClick={() => handleMethodClick("upload")}
+            />
+            <ScanOCR
+              isExpanded={expandedMethod === "scan"}
+              onClick={() => handleMethodClick("scan")}
+            />
+            <PasteText
+              isExpanded={expandedMethod === "paste"}
+              onClick={() => handleMethodClick("paste")}
+            />
+          </motion.div>
         </div>
-        {/* Call to Action Section */}
 
-        {/* Footer - Global Features */}
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 py-6">
-          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            {/* <span className="material-symbols-outlined text-lg">lock</span> */}
-            <LockIcon className="" size={20} />
-            <span className="text-xs font-bold uppercase tracking-wider">
-              END-TO-END ENCRYPTION
-            </span>
-          </div>
-          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            <DisplayIcon className="" size={20} />
-            <span className="text-xs font-bold uppercase tracking-wider">AI INSIGHTS</span>
-          </div>
-          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            <VerifiedCheckedIcon className="" size={20} />
-            <span className="text-xs font-bold uppercase tracking-wider">
-              LEGAL GRADE PRECISION
-            </span>
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-8"
+        >
+          {trustSignals.map(({ icon: Icon, label }) => (
+            <div
+              key={label}
+              className="flex items-center gap-2 text-[#1e2939]/70 dark:text-gray-300"
+            >
+              <Icon size={16} />
+              <span className="text-[11px] font-medium tracking-wide sm:text-xs">{label}</span>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
@@ -151,8 +177,8 @@ const EngineSelector = () => {
         <ArrowLeftIcon color="white" className="w-3 h-3 text-gray-200 rotate-180" />
       </div>
       <div
-        onClick={() => setShowModelOptions(!showModelOptions)}
-        className="flex bg-white/5  rounded-full p-2 px-3 text-gray-200 cursor-pointer"
+        // onClick={() => setShowModelOptions(!showModelOptions)}
+        className="flex bg-white/5  rounded-full p-2 px-3 text-gray-200 cursor-not-allowed"
       >
         {modelSelected && (
           <div className="flex items-center gap-2">
@@ -244,8 +270,8 @@ const LanguageSelector = () => {
         <ArrowLeftIcon color="white" className="w-3 h-3 text-gray-200 rotate-180" />
       </div>
       <div
-        onClick={() => setShowLanguageOptions(!showLanguageOptions)}
-        className="flex bg-white/5  rounded-full p-2 px-3 text-gray-200 cursor-pointer"
+        // onClick={() => setShowLanguageOptions(!showLanguageOptions)}
+        className="flex bg-white/5  rounded-full p-2 px-3 text-gray-200 cursor-not-allowed"
       >
         {languageSelected && (
           <div className="flex items-center gap-2">

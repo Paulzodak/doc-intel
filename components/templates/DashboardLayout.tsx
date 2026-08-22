@@ -2,9 +2,6 @@
 
 import { useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Input } from "@/components/ui/input";
-import { MdKeyboardCommandKey } from "react-icons/md";
-import { SearchIcon } from "@/assets/svg/SearchIcon";
 import { MailIcon } from "@/assets/svg/MailIcon";
 import { BellIcon } from "@/assets/svg/BellIcon";
 import Sidebar from "./Sidebar";
@@ -13,23 +10,31 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectUser } from "@/redux/slices/user/user.slice";
 import {
   selectMobileSidebarOpen,
+  selectMobileRightSidebarOpen,
   selectDesktopSidebarOpen,
   setMobileSidebarOpen,
+  setMobileRightSidebarOpen,
   toggleDesktopSidebar,
 } from "@/redux/slices/dashboard/layout.slice";
 import staticData from "@/lib/staticData";
 import { TbLayoutSidebar } from "react-icons/tb";
 import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
+import { AppSearch } from "../dashboardLayout/AppSearch";
+import SettingsModal from "../settings/SettingsModal";
+import { selectShowSetting } from "@/redux/slices/settings/settings.slice";
+import RightSidebar from "./RIghtSidebar";
+
 export default function DashboardLayout({
   children,
-  title,
 }: {
   children: React.ReactNode;
   title: string;
 }) {
+  const showSettingsModal = useSelector(selectShowSetting);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const mobileSidebarOpen = useSelector(selectMobileSidebarOpen);
+  const mobileRightSidebarOpen = useSelector(selectMobileRightSidebarOpen);
   const desktopSidebarOpen = useSelector(selectDesktopSidebarOpen);
   const handleToggleDesktopSidebar = useCallback(() => {
     dispatch(toggleDesktopSidebar());
@@ -40,34 +45,43 @@ export default function DashboardLayout({
   const handleCloseMobileSidebar = useCallback(() => {
     dispatch(setMobileSidebarOpen(false));
   }, [dispatch]);
+  const handleOpenMobileRightSidebar = useCallback(() => {
+    dispatch(setMobileRightSidebarOpen(true));
+  }, [dispatch]);
+  const handleCloseMobileRightSidebar = useCallback(() => {
+    dispatch(setMobileRightSidebarOpen(false));
+  }, [dispatch]);
 
   const MemojiComponent = staticData.memoji[user?.memoji ?? 1] ?? staticData.memoji[1];
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex font-nunito relative max-w-[1800px] mx-auto bg-white">
-      <DotGridBackground
+    <div className="h-screen w-screen  overflow-hidden flexs font-nunito relative masx-w-[1800px] ssmx-auto bg-gray-100/40">
+      {/* <DotGridBackground
         dotColor="#d1d5dc"
-        className="absolute w-screen h-screen inset-0 opacity-50 bg-gdray-300 "
-      />
-      <div className="w-screen h-screen max-h-screen  p-2 flex flex-row  sm:p-4 grsid grid-cols-1  sm:grid-cols-[18rem_auto] gap-4 min-[1500px]:p-8 min-[1500px]:gap-6 font-nunito">
+        className="absolute w-screen h-screen inset-0 opacity-50 bg-gdray-300"
+      /> */}
+      <div
+        // className="w-screen border border-blue-800 h-screen max-h-screen pss-2 flex flex-row  sm:ps-8 grsid grisd-cols-1  sm:grisd-cols-[18rem_auto] gsasp-4 min-[1500px]:ps-8 min-[1500px]:gasps-6 font-nunito">
+        className="flex h-screen font-nunito"
+      >
         {desktopSidebarOpen && (
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.2 }}
-            className="bg-gray-100/50 rounded-2xl hidden lg:flex border border-gray-200/50 shrink-0"
+            className="bg-white rounded-2sxl hidden relative lg:flex border border-gray-200/50 shrink-0"
           >
             <Sidebar />
           </motion.div>
         )}
-        <div className="flex  grow flex-col  gap-4 relative z-10 ">
+        <div className="flex px-2 py-4 sm:p-4 lg:p-8 grow flex-col  gap-6 relkative z-10 max-w-[80rem] mx-auto ">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
-            className="bg-gray-100/50 rounded-2xl flex items-center justify-between px-3 py-3 border border-gray-200/50"
+            className="bag-gray-100/50 bg-white rounded-2xl flex items-center justify-between px-3 py-3 border border-gray-200"
           >
-            <div className="flex gap-4">
+            <div className="flex gap-4 ">
               <div className="flex items-center">
                 <button
                   type="button"
@@ -86,21 +100,7 @@ export default function DashboardLayout({
                   <TbLayoutSidebar size={18} className="text-neutral-600" />
                 </button>
               </div>
-              <div className="relative hidden lg:block">
-                <Input
-                  placeholder="Search documents..."
-                  className="bg-white rounded-full border shadow-none px-10 py-3"
-                />
-                <SearchIcon
-                  color="#4a5565"
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"
-                  size={18}
-                />
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-gray-200 p-1 rounded-sm flex gap-1 items-center justify-center text-gray-600 ">
-                  <MdKeyboardCommandKey size={14} />
-                  <span className="text-xs ">F</span>
-                </div>
-              </div>
+              <AppSearch />
             </div>
             <div className="flex items-center gap-2">
               <QlaretyLogo className="hidden lg:block" width={30} height={30} />
@@ -111,12 +111,13 @@ export default function DashboardLayout({
               <div className="block lg:hidden text-black">Qlarety</div>
             </div> */}
             <div className="relative h-full flex gap-4 px-2">
-              <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
+              <div className="flex md:w-32"></div>
+              {/* <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
                 <MailIcon className="" color="#101828" size={18} />
               </div>
               <div className="bg-white p-3 h-full rounded-full bsg-gray-900 aspect-square flex items-center justify-center">
                 <BellIcon className="" color="#101828" size={18} />
-              </div>
+              </div> */}
               <div>
                 {MemojiComponent ? (
                   <MemojiComponent
@@ -125,16 +126,37 @@ export default function DashboardLayout({
                   />
                 ) : null}
               </div>
+              <button
+                type="button"
+                onClick={handleOpenMobileRightSidebar}
+                className="hover:bg-neutral-200/50 p-2 lg:hidden rounded-sm cursor-pointer lg:hidden"
+                aria-label="Open right panel"
+              >
+                <TbLayoutSidebar size={18} className="text-neutral-600 rotate-180" />
+              </button>
             </div>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            className="bg-gray-100/50 rounded-2xl border border-gray-200/50 overflow-scroll h-full relative z-10 "
-          >
-            {children}
-          </motion.div>
+          <div className="bordesr border-green-800 grid h-full overflow-scroll">{children}</div>
+          {/* <div className="grid grid-cols-[3fr_1fr] gap-8 flex-col gap-4">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+              className="bgs-gray-100/50 roundsed-2xl borsder borsder-gray-200/50 overflow-scroll h-full relaktive "
+            >
+              {children}
+            </motion.div>
+            <motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+                className="kbg-gray-100/50 rounded-2xl border h-[40rem] border-gray-200 overflow-scroll  relaktive "
+              >
+                {children}
+              </motion.div>
+            </motion.div>
+          </div> */}
         </div>
       </div>
       <AnimatePresence>
@@ -163,15 +185,33 @@ export default function DashboardLayout({
           </motion.div>
         )}
       </AnimatePresence>
-      {/* Sidebar - Persists across navigation */}
-      {/* <DocumentSidebar */}
-      {/* currentDocumentName={currentDocumentName}
-        recentDocuments={recentDocuments}
-        onDocumentSelect={handleDocumentSelect}
-        onDocumentDelete={handleDocumentDelete}
-        showCreateNew={showCreateNew}
-        currentDocumentId={docId} */}
-      {/* /> */}
+      <AnimatePresence>
+        {mobileRightSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="h-full absolute top-0 left-0 w-full z-50 lg:hidden"
+          >
+            <div
+              onClick={handleCloseMobileRightSidebar}
+              className="absolute h-full w-full top-0 left-0 bg-black/50 z-0"
+              aria-hidden
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.2 }}
+              className="relative h-full bordesr border-blue-800 w-full bg-white max-w-[20rem] shadow-xl z-10 ml-auto"
+            >
+              <RightSidebar />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>{showSettingsModal ? <SettingsModal /> : null}</AnimatePresence>
 
       {/* <div
         style={{

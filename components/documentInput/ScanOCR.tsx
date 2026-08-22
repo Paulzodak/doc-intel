@@ -144,7 +144,7 @@ const OCRResult: React.FC<OCRResultProps> = ({
               className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4 max-h-96 overflow-y-auto"
             >
               <pre className="whitespace-pre-wrap text-sm text-gray-900 dark:text-gray-100 font-mono">
-                {extractedText}
+                {editedText}
               </pre>
             </motion.div>
           )}
@@ -241,7 +241,7 @@ const ScanOCR = ({ isExpanded, onClick }: ScanOCRProps) => {
   }, []);
 
   const handleProcess = () => {
-    const textToProcess = isEditing ? editedText : extractedText;
+    const textToProcess = editedText;
     if (textToProcess.trim()) {
       processText(textToProcess);
     }
@@ -266,6 +266,9 @@ const ScanOCR = ({ isExpanded, onClick }: ScanOCRProps) => {
     };
   }, [selectedImages]);
 
+  useEffect(() => {
+    setEditedText(extractedText);
+  }, [extractedText]);
   return (
     <InputMethodTemplate
       isExpanded={isExpanded}

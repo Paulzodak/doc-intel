@@ -1,11 +1,44 @@
+"use client";
+
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { FiMessageCircle } from "react-icons/fi";
+import { Copy } from "lucide-react";
 import type { DocumentChatMessage } from "@/types/document";
+import { ThumbsUpIcon } from "@/assets/svg/ThumbsUpIcon";
+import { ThumbsDownIcon } from "@/assets/svg/ThumbsDownIcon";
+import { ExportResponseButton } from "@/components/doc/analysisPanel/Chat/ExportResponseButton";
+import { QlaretyLogo } from "@/assets/svg/QlaretyLogo";
+import { ToastLogger } from "@/utils/toastUtils";
 
 export interface ChatMessagesProps {
   chatMessages: DocumentChatMessage[];
   isSending: boolean;
+}
+
+function TypingIndicator() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex items-end gap-2.5"
+    >
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#11161f] ring-2 ring-primary-green/30">
+        <QlaretyLogo width={22} height={22} shouldNavigate={false} />
+      </div>
+      <div className="rounded-2xl rounded-bl-md border border-[#1e2939]/8 bg-[#f7f9f8] px-4 py-3 dark:border-white/10 dark:bg-[#161c27]">
+        <div className="flex gap-1.5">
+          {[0, 1, 2].map((i) => (
+            <motion.span
+              key={i}
+              className="h-1.5 w-1.5 rounded-full bg-primary-green"
+              animate={{ opacity: [0.3, 1, 0.3], y: [0, -2, 0] }}
+              transition={{ duration: 0.9, repeat: Infinity, delay: i * 0.15 }}
+            />
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
 }
 
 export const ChatMessages: React.FC<ChatMessagesProps> = ({ chatMessages, isSending }) => {
@@ -33,54 +66,90 @@ export const ChatMessages: React.FC<ChatMessagesProps> = ({ chatMessages, isSend
     }
   }, [chatMessages, isSending]);
 
+  const copyText = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      ToastLogger.success("documents", "Copied to clipboard");
+    } catch {
+      ToastLogger.error("documents", "Could not copy");
+    }
+  };
+
   return (
     <div
       ref={scrollRef}
       onScroll={handleScroll}
-      className="flex-1 overflow-y-auto mb-4 min-h-0"
+      className="relative min-h-0 flex-1 overflow-y-auto px-1 sm:px-2"
     >
-      <div className="min-h-full flex flex-col justify-end space-y-4">
-        {chatMessages.length === 0 ? (
-          <div className="text-center py-12">
-            <FiMessageCircle className="text-gray-400 mx-auto mb-2" size={32} />
-            <p className="text-gray-500 text-sm mb-1">Ask questions about this document</p>
-            <p className="text-gray-400 text-xs">
-              Get insights, explanations, and analysis powered by AI
-            </p>
-          </div>
-        ) : (
-          chatMessages.map((message) => (
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-25"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, rgba(71,225,140,0.22) 1px, transparent 0)",
+          backgroundSize: "20px 20px",
+        }}
+      />
+      <div className="relative flex min-h-full flex-col justify-end space-y-4 py-3">
+        {chatMessages.map((message) => {
+          const isUser = message.role === "user";
+          return (
             <motion.div
               key={message.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className={`flex items-end gap-2.5 ${isUser ? "flex-row-reverse" : ""}`}
             >
-              <div
-                className={`max-w-[85%] rounded-lg p-3 ${
-                  message.role === "user" ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-900"
-                }`}
-              >
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+              {!isUser && (
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#11161f] ring-2 ring-primary-green/25">
+                  <QlaretyLogo width={22} height={22} shouldNavigate={false} />
+                </div>
+              )}
+              <div className={`max-w-[85%] space-y-2 ${isUser ? "items-end" : ""}`}>
+                <div
+                  className={
+                    isUser
+                      ? "rounded-2xl rounded-br-md bg-[#11161f] px-4 py-3 text-sm leading-relaxed text-white shadow-lg shadow-[#11161f]/15"
+                      : "rounded-2xl rounded-bl-md border border-[#1e2939]/8 bg-[#f7f9f8] px-4 py-3 text-sm leading-relaxed text-[#1e2939] dark:border-white/10 dark:bg-[#161c27] dark:text-gray-100"
+                  }
+                >
+                  <p className="whitespace-pre-wrap">{message.content}</p>
+                </div>
+                {!isUser && (
+                  <div className="flex items-center gap-0.5 text-gray-400">
+                    <button
+                      type="button"
+                      onClick={() => copyText(message.content)}
+                      className="rounded-lg p-1.5 transition-colors hover:bg-[#11161f]/5 hover:text-[#11161f]"
+                      aria-label="Copy"
+                    >
+                      <Copy size={14} />
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-lg p-1.5 transition-colors hover:bg-[#11161f]/5"
+                      aria-label="Thumbs up"
+                    >
+                      <ThumbsUpIcon size={16} color="#6a7282" />
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-lg p-1.5 transition-colors hover:bg-[#11161f]/5"
+                      aria-label="Thumbs down"
+                    >
+                      <ThumbsDownIcon size={16} color="#6a7282" />
+                    </button>
+                    <span className="rounded-lg p-1.5 transition-colors hover:bg-[#11161f]/5">
+                      <ExportResponseButton text={message.content} />
+                    </span>
+                  </div>
+                )}
               </div>
             </motion.div>
-          ))
-        )}
-        {isSending && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex justify-start"
-          >
-            <div className="bg-gray-100 rounded-lg p-3">
-              <div className="flex gap-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]" />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]" />
-              </div>
-            </div>
-          </motion.div>
-        )}
+          );
+        })}
+        {isSending && <TypingIndicator />}
       </div>
     </div>
   );
